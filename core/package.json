@@ -51,6 +51,7 @@
     "registry": "http://npm.kubernetes.home.agrzes.pl/"
   },
   "dependencies": {
+    "commander": "^12.0.0",
     "debug": "^4.3.4",
     "express": "^4.18.2",
     "inversify": "^6.0.2",
