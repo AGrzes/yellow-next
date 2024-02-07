@@ -1,5 +1,5 @@
-//mocha test for ../../src/adbs/file-source.ts
 import 'mocha'
+import 'reflect-metadata'
 
 import chai from 'chai'
 import chaiAsPromised from 'chai-as-promised'

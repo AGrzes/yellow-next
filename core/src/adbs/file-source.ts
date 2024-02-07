@@ -1,9 +1,11 @@
 import { watch } from 'chokidar'
+import { inject, injectable } from 'inversify'
 import { Observable, Subject } from 'rxjs'
 import { ChangeEvent, UpdateEvent } from './model.js'
 
+@injectable()
 export class FileSource {
-  constructor(private createWatcher: typeof watch) {}
+  constructor(@inject(watch) private createWatcher: typeof watch) {}
 
   observe(documentDirectory: string): Observable<ChangeEvent<void, string>> {
     const subject = new Subject<ChangeEvent<void, string>>()
