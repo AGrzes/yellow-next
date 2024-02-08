@@ -1,4 +1,3 @@
-// Tests for ../../../src/adbs/file-parser/frontmatter-parser.ts
 import 'mocha'
 
 import { expect } from 'chai'
