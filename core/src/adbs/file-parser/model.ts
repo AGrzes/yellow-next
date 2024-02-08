@@ -6,4 +6,3 @@ export interface Parsed {
 export interface Parser {
   parse(path: string): Promise<Parsed[]>
 }
-//export type Parser = (path: string) => Promise<Parsed[]>
