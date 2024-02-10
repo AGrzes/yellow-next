@@ -1,7 +1,7 @@
 import { PartialObserver } from 'rxjs'
 import { ChangeEvent, MoveEvent, UpdateEvent } from '../model.js'
 
-export class DocumentLoaderService {
+export class DocumentLoader {
   constructor(
     private database: PouchDB.Database,
     private instance: string

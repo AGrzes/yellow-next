@@ -5,7 +5,7 @@ import chaiAsPromised from 'chai-as-promised'
 import 'pouchdb'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
-import { DocumentLoaderService } from '../../../src/adbs/documents/loader.js'
+import { DocumentLoader } from '../../../src/adbs/documents/loader.js'
 import { MoveEvent, UpdateEvent } from '../../../src/adbs/model.js'
 const { expect } = chai.use(chaiAsPromised).use(sinonChai)
 
@@ -13,7 +13,7 @@ describe('DocumentLoaderService', () => {
   it('should add a document', async () => {
     const put = sinon.stub().resolves()
     const database = { put } as unknown as PouchDB.Database
-    const loader = new DocumentLoaderService(database, 'instance')
+    const loader = new DocumentLoader(database, 'instance')
     loader.observer().next!({ kind: 'update', key: 'path', content: { value: 1 } } as UpdateEvent<
       Record<string, any>,
       string
@@ -25,7 +25,7 @@ describe('DocumentLoaderService', () => {
     const put = sinon.stub().onFirstCall().rejects({ name: 'conflict' }) //.onSecondCall().resolves()
     const get = sinon.stub().resolves({ _rev: '1' })
     const database = { put, get } as unknown as PouchDB.Database
-    const loader = new DocumentLoaderService(database, 'instance')
+    const loader = new DocumentLoader(database, 'instance')
     await loader.observer().next!({ kind: 'update', key: 'path', content: { value: 1 } } as UpdateEvent<
       Record<string, any>,
       string
@@ -48,7 +48,7 @@ describe('DocumentLoaderService', () => {
   it('should handle put errors', async () => {
     const put = sinon.stub().rejects()
     const database = { put } as unknown as PouchDB.Database
-    const loader = new DocumentLoaderService(database, 'instance')
+    const loader = new DocumentLoader(database, 'instance')
     await expect(
       loader.observer().next!({ kind: 'update', key: 'path', content: { value: 1 } } as UpdateEvent<
         Record<string, any>,
@@ -60,7 +60,7 @@ describe('DocumentLoaderService', () => {
     const allDocs = sinon.stub().resolves({ rows: [{ id: 'document:instance:path', value: { rev: '1' } }] })
     const remove = sinon.stub().resolves()
     const database = { allDocs, remove } as unknown as PouchDB.Database
-    const loader = new DocumentLoaderService(database, 'instance')
+    const loader = new DocumentLoader(database, 'instance')
     await loader.observer().next!({ kind: 'delete', key: 'path' })
     expect(allDocs).to.have.been.calledOnce
     expect(allDocs).to.have.been.calledWith({
@@ -74,14 +74,14 @@ describe('DocumentLoaderService', () => {
     const allDocs = sinon.stub().resolves({ rows: [{ id: 'document:instance:path', value: { rev: '1' } }] })
     const remove = sinon.stub().rejects()
     const database = { allDocs, remove } as unknown as PouchDB.Database
-    const loader = new DocumentLoaderService(database, 'instance')
+    const loader = new DocumentLoader(database, 'instance')
     await expect(loader.observer().next!({ kind: 'delete', key: 'path' })).to.be.rejected
   })
   it('should handle remove conflicts', async () => {
     const allDocs = sinon.stub().resolves({ rows: [{ id: 'document:instance:path', value: { rev: '1' } }] })
     const remove = sinon.stub().rejects({ name: 'conflict' })
     const database = { allDocs, remove } as unknown as PouchDB.Database
-    const loader = new DocumentLoaderService(database, 'instance')
+    const loader = new DocumentLoader(database, 'instance')
     await loader.observer().next!({ kind: 'delete', key: 'path' })
     expect(allDocs).to.have.been.calledOnce
     expect(allDocs).to.have.been.calledWith({
@@ -98,7 +98,7 @@ describe('DocumentLoaderService', () => {
     const remove = sinon.stub().resolves()
     const put = sinon.stub().resolves()
     const database = { allDocs, remove, put } as unknown as PouchDB.Database
-    const loader = new DocumentLoaderService(database, 'instance')
+    const loader = new DocumentLoader(database, 'instance')
     await loader.observer().next!({ kind: 'move', key: 'path', newKey: 'newPath' } as MoveEvent<
       Record<string, any>,
       string
