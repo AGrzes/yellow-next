@@ -59,6 +59,8 @@
     "inversify": "^6.0.2",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
+    "pouchdb": "^8.0.1",
+    "pouchdb-adapter-memory": "^8.0.1",
     "reflect-metadata": "^0.2.1",
     "rxjs": "^7.8.1"
   },
@@ -71,6 +73,7 @@
     "@types/lodash": "^4.14.202",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.16",
+    "@types/pouchdb": "^6.4.2",
     "@types/sinon": "^17.0.3",
     "@types/sinon-chai": "^3.2.12",
     "c8": "^9.1.0",
