@@ -51,6 +51,6 @@ describe('DocumentSource', () => {
     const observable = source.observable
     expect(on).to.have.been.calledThrice
     on.secondCall.args[1]()
-    expect(firstValueFrom(observable.pipe(take(1), toArray()))).to.deep.equal([])
+    expect(await firstValueFrom(observable.pipe(take(1), toArray()))).to.deep.equal([])
   })
 })
