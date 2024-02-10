@@ -80,3 +80,6 @@ export class DocumentLoader {
     }
   }
 }
+
+export const documentLoaderFactory = (database: PouchDB.Database, instance: string) =>
+  new DocumentLoader(database, instance)

@@ -5,7 +5,7 @@ import chaiAsPromised from 'chai-as-promised'
 import 'pouchdb'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
-import { DocumentLoader } from '../../../src/adbs/documents/loader.js'
+import { DocumentLoader, documentLoaderFactory } from '../../../src/adbs/documents/loader.js'
 import { MoveEvent, UpdateEvent } from '../../../src/adbs/model.js'
 const { expect } = chai.use(chaiAsPromised).use(sinonChai)
 
@@ -118,5 +118,12 @@ describe('DocumentLoaderService', () => {
       path: 'newPath',
       value: 1,
     })
+  })
+})
+
+describe('documentLoaderFactory', () => {
+  it('should create a document loader', () => {
+    const loader = documentLoaderFactory({} as PouchDB.Database, 'instance')
+    expect(loader).to.be.instanceOf(DocumentLoader)
   })
 })
