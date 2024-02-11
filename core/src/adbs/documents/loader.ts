@@ -1,5 +1,8 @@
+import debug from 'debug'
 import { PartialObserver } from 'rxjs'
 import { ChangeEvent, MoveEvent, UpdateEvent } from '../model.js'
+
+const log = debug('yellow:adbs:documents:loader')
 
 export class DocumentLoader {
   constructor(
@@ -58,6 +61,7 @@ export class DocumentLoader {
     return {
       next: async (change) => {
         const id = `document:${this.instance}:${change.key}`
+        log(`DocumentLoader: ${id} ${change.kind}`)
         switch (change.kind) {
           case 'update':
             const { key: path, content } = change as UpdateEvent<Record<string, any>, string>
