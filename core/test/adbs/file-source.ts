@@ -24,7 +24,7 @@ describe('FileSource', () => {
     const observer = fileSource.observe('cwd')
     const first = firstValueFrom(observer)
     on.getCall(0).args[1]('path')
-    expect(await first).to.deep.equal({ key: 'path', kind: 'update', hint: 'add' })
+    expect(await first).to.deep.equal({ key: 'cwd/path', kind: 'update', hint: 'add' })
   })
   it('should react to change event', async () => {
     const on = stub()
@@ -33,7 +33,7 @@ describe('FileSource', () => {
     const observer = fileSource.observe('cwd')
     const first = firstValueFrom(observer)
     on.getCall(1).args[1]('path')
-    expect(await first).to.deep.equal({ key: 'path', kind: 'update', hint: 'update' })
+    expect(await first).to.deep.equal({ key: 'cwd/path', kind: 'update', hint: 'update' })
   })
   it('should react to addDir event', async () => {
     const on = stub()
@@ -42,7 +42,7 @@ describe('FileSource', () => {
     const observer = fileSource.observe('cwd')
     const first = firstValueFrom(observer)
     on.getCall(2).args[1]('path')
-    expect(await first).to.deep.equal({ key: 'path', kind: 'update', hint: 'add' })
+    expect(await first).to.deep.equal({ key: 'cwd/path', kind: 'update', hint: 'add' })
   })
   it('should react to unlink event', async () => {
     const on = stub()
@@ -51,7 +51,7 @@ describe('FileSource', () => {
     const observer = fileSource.observe('cwd')
     const first = firstValueFrom(observer)
     on.getCall(3).args[1]('path')
-    expect(await first).to.deep.equal({ key: 'path', kind: 'delete' })
+    expect(await first).to.deep.equal({ key: 'cwd/path', kind: 'delete' })
   })
   it('should react to unlinkDir event', async () => {
     const on = stub()
@@ -60,7 +60,7 @@ describe('FileSource', () => {
     const observer = fileSource.observe('cwd')
     const first = firstValueFrom(observer)
     on.getCall(4).args[1]('path')
-    expect(await first).to.deep.equal({ key: 'path', kind: 'delete' })
+    expect(await first).to.deep.equal({ key: 'cwd/path', kind: 'delete' })
   })
   it('should react to error event', async () => {
     const on = stub()
