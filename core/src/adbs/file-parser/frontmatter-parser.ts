@@ -1,9 +1,11 @@
 import matter from 'gray-matter'
+import { inject, injectable } from 'inversify'
 import { extname } from 'path'
-
+import { Read } from './model.js'
+@injectable()
 export class FrontmatterParser {
   constructor(
-    private read: (path: string) => Promise<string>,
+    @inject(Read) private read: (path: string) => Promise<string>,
     private extensions: string[] = ['.mdx']
   ) {}
   async parse(path: string) {

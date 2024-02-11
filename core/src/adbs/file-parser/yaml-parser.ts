@@ -1,11 +1,12 @@
+import { inject, injectable } from 'inversify'
 import yaml from 'js-yaml'
 import _ from 'lodash'
 import { extname } from 'path'
-import { Parser } from './model.js'
-
+import { Parser, Read } from './model.js'
+@injectable()
 export class YamlParser implements Parser {
   constructor(
-    private read: (path: string) => Promise<string>,
+    @inject(Read) private read: (path: string) => Promise<string>,
     private extensions: string[] = ['.yaml', '.yml']
   ) {}
   async parse(path: string) {

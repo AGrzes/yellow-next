@@ -1,13 +1,14 @@
 import debug from 'debug'
+import { injectable, multiInject } from 'inversify'
 import _ from 'lodash'
 import { OperatorFunction, concatMap, mergeMap, of } from 'rxjs'
 import { ChangeEvent, DeleteEvent, MoveEvent, UpdateEvent } from '../model.js'
 import { Parsed, Parser } from './model.js'
 
 const log = debug('yellow:adbs:file-parser')
-
+@injectable()
 export class FileParser {
-  constructor(private parsers: Parser[]) {}
+  constructor(@multiInject(Parser) private parsers: Parser[]) {}
   private async documentMapper(path: string): Promise<Parsed[]> {
     return _.flatten(
       await Promise.all(
