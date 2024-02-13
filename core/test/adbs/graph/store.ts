@@ -84,7 +84,7 @@ describe('adbs', () => {
           const storeValue = await firstValueFrom(store.observableStore)
           expect(storeValue.getQuads(null, null, null, DataFactory.namedNode('urn:graph'))).to.deep.equal([])
         })
-        it('should provide unin store', async () => {
+        it('should provide union store', async () => {
           const store = new GraphStore()
           store.observer.next!({
             key: DataFactory.namedNode('urn:graph'),
