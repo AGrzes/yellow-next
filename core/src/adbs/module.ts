@@ -4,12 +4,15 @@ import { readFile } from 'fs/promises'
 import { ContainerModule } from 'inversify'
 import { ADBS } from './adbs.js'
 import { DocumentLoader, documentLoaderFactory } from './documents/loader.js'
+import { DocumentSource, documentSourceFactory } from './documents/source.js'
 import { DocumentStore, documentStoreFactory } from './documents/store.js'
 import { FileParser } from './file-parser/file-parser.js'
 import { FrontmatterParser } from './file-parser/frontmatter-parser.js'
 import { Parser, Read } from './file-parser/model.js'
 import { YamlParser } from './file-parser/yaml-parser.js'
 import { FileSource } from './file-source.js'
+import { DocumentGraphMapper, JSONLDMapping, Mapping } from './graph/mapper.js'
+import { GraphStore } from './graph/store.js'
 
 export const adbsModule = new ContainerModule((bind) => {
   bind(watch).toConstantValue(watch)
@@ -23,4 +26,10 @@ export const adbsModule = new ContainerModule((bind) => {
   bind(Parser).toService(FrontmatterParser)
   bind(ADBS).toSelf().inSingletonScope()
   bind(Read).toConstantValue((path) => readFile(path, 'utf-8'))
+  bind(DocumentGraphMapper).toSelf().inSingletonScope()
+  bind(Mapping)
+    .toDynamicValue((context) => JSONLDMapping('graph'))
+    .inSingletonScope()
+  bind(DocumentSource).toFactory(() => documentSourceFactory)
+  bind(GraphStore).toSelf().inSingletonScope()
 })

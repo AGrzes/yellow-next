@@ -1,10 +1,12 @@
 import debug from 'debug'
+import { injectable } from 'inversify'
 import { DataFactory, Quad_Graph, Store, Triple } from 'n3'
 import { BehaviorSubject, Observable, PartialObserver, debounceTime, map } from 'rxjs'
 import { ChangeEvent, DeleteEvent, MoveEvent, UpdateEvent } from '../model.js'
 
 const log = debug('yellow:adbs:graph:store')
 
+@injectable()
 export class GraphStore {
   public readonly store: Store = new Store()
   private storeSubject = new BehaviorSubject<Store>(this.store)

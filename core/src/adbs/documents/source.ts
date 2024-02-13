@@ -32,3 +32,5 @@ export class DocumentSource {
     return subject
   }
 }
+
+export const documentSourceFactory = (database: PouchDB.Database) => new DocumentSource(database)

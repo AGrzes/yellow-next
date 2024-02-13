@@ -7,7 +7,11 @@ export const serverCliModule = new ContainerModule((bind) => {
     .toDynamicValue((context: interfaces.Context) => {
       const parent = context.container.getNamed(Command, 'root')
       const command = new Command('server')
-      command.action(async () => (await context.container.getAsync(ADBS)).setupFileFlow(['documents']))
+      command.action(async () => {
+        const adbs = await context.container.getAsync(ADBS)
+        adbs.setupFileFlow(['documents'])
+        adbs.setupGraphFlow()
+      })
       parent.addCommand(command)
       return command
     })

@@ -13,15 +13,18 @@ describe('cli', () => {
     it('should create server command', async () => {
       const container = new Container()
       const setupFileFlow = sinon.stub()
+      const setupGraphFlow = sinon.stub()
       container.load(
         serverCliModule,
         new ContainerModule((bind) => {
-          bind(ADBS).toConstantValue({ setupFileFlow } as unknown as ADBS)
+          bind(ADBS).toConstantValue({ setupFileFlow, setupGraphFlow } as unknown as ADBS)
           bind(Command).toConstantValue(new Command()).whenTargetNamed('root')
         })
       )
       const serverCommand = container.getNamed(Command, 'server')
       await serverCommand.parseAsync([])
+      expect(setupFileFlow).to.have.been.calledOnceWith(['documents'])
+      expect(setupGraphFlow).to.have.been.calledOnce
     })
   })
 })

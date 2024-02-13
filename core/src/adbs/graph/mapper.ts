@@ -1,5 +1,6 @@
 import { randomBytes } from 'crypto'
 import debug from 'debug'
+import { injectable, interfaces, multiInject } from 'inversify'
 import jsonld, { JsonLdDocument } from 'jsonld'
 import _ from 'lodash'
 import { DataFactory, Quad_Graph, Term, Triple } from 'n3'
@@ -9,7 +10,7 @@ import { ChangeEvent, DeleteEvent, MoveEvent, UpdateEvent } from '../model.js'
 const log = debug('yellow:adbs:graph:mapper')
 
 export type Mapping = (document: Record<string, any>) => Promise<Triple[]>
-
+export const Mapping: interfaces.ServiceIdentifier<Mapping> = Symbol('Mapping')
 function uniqueBlankNode(salt: string) {
   return function <T extends Term>(term: T): T {
     if (term.termType === 'BlankNode') {
@@ -48,13 +49,13 @@ export function AsyncFunctionMapping(
     return uniqueBlankNodes(await (jsonld.toRDF(await objectToJsonLd(document)) as Promise<Triple[]>))
   }
 }
-
+@injectable()
 export class DocumentGraphMapper {
-  constructor(private mappings: Mapping[]) {}
-  async documentMapper(document: Record<string, any>): Promise<Triple[]> {
+  constructor(@multiInject(Mapping) private mappings: Mapping[]) {}
+  private async documentMapper(document: Record<string, any>): Promise<Triple[]> {
     return _.flatten(await Promise.all(this.mappings.map((m) => m(document))))
   }
-  keyMapper(key: string): Quad_Graph {
+  private keyMapper(key: string): Quad_Graph {
     return DataFactory.namedNode(key)
   }
 

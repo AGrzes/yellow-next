@@ -7,7 +7,7 @@ import pouchDbAdapterMemory from 'pouchdb-adapter-memory'
 import { firstValueFrom, take, toArray } from 'rxjs'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
-import { DocumentSource } from '../../../src/adbs/documents/source.js'
+import { DocumentSource, documentSourceFactory } from '../../../src/adbs/documents/source.js'
 const { expect } = chai.use(sinonChai).use(chaiAsPromised)
 
 PouchDB.plugin(pouchDbAdapterMemory)
@@ -53,6 +53,12 @@ describe('adbs', () => {
         expect(on).to.have.been.calledThrice
         on.secondCall.args[1]()
         expect(await firstValueFrom(observable.pipe(take(1), toArray()))).to.deep.equal([])
+      })
+    })
+    describe('documentSourceFactory', () => {
+      it('should create a document loader', () => {
+        const source = documentSourceFactory({} as PouchDB.Database)
+        expect(source).to.be.instanceOf(DocumentSource)
       })
     })
   })
