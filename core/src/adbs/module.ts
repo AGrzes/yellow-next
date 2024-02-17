@@ -1,5 +1,6 @@
 /* c8 ignore start */
 import { watch } from 'chokidar'
+import { Router } from 'express'
 import { readFile } from 'fs/promises'
 import { ContainerModule } from 'inversify'
 import { ADBS } from './adbs.js'
@@ -12,6 +13,7 @@ import { Parser, Read } from './file-parser/model.js'
 import { YamlParser } from './file-parser/yaml-parser.js'
 import { FileSource } from './file-source.js'
 import { DocumentGraphMapper, JSONLDMapping, Mapping } from './graph/mapper.js'
+import { GraphHandler } from './graph/server.js'
 import { GraphStore } from './graph/store.js'
 
 export const adbsModule = new ContainerModule((bind) => {
@@ -32,4 +34,7 @@ export const adbsModule = new ContainerModule((bind) => {
     .inSingletonScope()
   bind(DocumentSource).toFactory(() => documentSourceFactory)
   bind(GraphStore).toSelf().inSingletonScope()
+  bind(GraphHandler).toDynamicValue(
+    (context) => new GraphHandler(context.container.get(GraphStore).observableStore, Router())
+  )
 })
