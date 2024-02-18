@@ -1,0 +1,63 @@
+{
+  "name": "@agrzes/yellow-next-web",
+  "version": "0.0.1",
+  "description": "",
+  "main": "target",
+  "scripts": {
+    "test": "c8 mocha test/**/*.{ts,tsx}",
+    "start": "node target",
+    "build": "rm -rf target types && tsc",
+    "watch": "tsc --watch --preserveWatchOutput"
+  },
+  "types": "types",
+  "type": "module",
+  "c8": {
+    "all": true,
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "include": [
+      "src/**/*"
+    ],
+    "reporter": [
+      "html",
+      "text",
+      "lcov"
+    ]
+  },
+  "mocha": {
+    "require": [
+      "ts-node/esm",
+      "source-map-support/register"
+    ],
+    "node-option": [
+      "experimental-specifier-resolution=node",
+      "loader=ts-node/esm"
+    ]
+  },
+  "author": "Grzegorz Abramczyk <abramczykg@gmail.com>",
+  "license": "MIT",
+  "files": [
+    "target",
+    "types",
+    "LICENSE",
+    "package.json"
+  ],
+  "publishConfig": {
+    "registry": "http://npm.kubernetes.home.agrzes.pl/"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.3",
+    "reflect-metadata": "^0.2.1",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.25"
+  }
+}
