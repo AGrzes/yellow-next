@@ -5,6 +5,7 @@ import 'mocha'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
 import { ADBS } from '../../src/adbs/adbs.js'
+import { DocumentsHandler } from '../../src/adbs/documents/server.js'
 import { GraphHandler } from '../../src/adbs/graph/server.js'
 import { serverCliModule } from '../../src/cli/server.js'
 import { HttpServer } from '../../src/server/server.js'
@@ -17,21 +18,24 @@ describe('cli', () => {
       const setupFileFlow = sinon.stub()
       const setupGraphFlow = sinon.stub()
       const server = { start: sinon.stub(), register: sinon.stub() }
-      const handler = sinon.stub()
+      const graphHandler = sinon.stub()
+      const documentsHandler = sinon.stub()
       container.load(
         serverCliModule,
         new ContainerModule((bind) => {
           bind(ADBS).toConstantValue({ setupFileFlow, setupGraphFlow } as unknown as ADBS)
           bind(Command).toConstantValue(new Command()).whenTargetNamed('root')
           bind(HttpServer).toConstantValue(server as unknown as HttpServer)
-          bind(GraphHandler).toConstantValue({ handler } as unknown as GraphHandler)
+          bind(GraphHandler).toConstantValue({ handler: graphHandler } as unknown as GraphHandler)
+          bind(DocumentsHandler).toConstantValue({ handler: documentsHandler } as unknown as DocumentsHandler)
         })
       )
       const serverCommand = container.getNamed(Command, 'server')
       await serverCommand.parseAsync([])
       expect(setupFileFlow).to.have.been.calledOnceWith(['documents'])
       expect(setupGraphFlow).to.have.been.calledOnce
-      expect(server.register).to.have.been.calledOnceWith({ handler, path: '/graph' })
+      expect(server.register).to.have.been.calledWith({ handler: graphHandler, path: '/graph' })
+      expect(server.register).to.have.been.calledWith({ handler: documentsHandler, path: '/', priority: 1000 })
       expect(server.start).to.have.been.calledOnce
     })
   })

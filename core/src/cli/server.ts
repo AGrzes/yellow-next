@@ -1,6 +1,7 @@
 import { Command } from 'commander'
 import { ContainerModule, interfaces } from 'inversify'
 import { ADBS } from '../adbs/adbs.js'
+import { DocumentsHandler } from '../adbs/documents/server.js'
 import { GraphHandler } from '../adbs/graph/server.js'
 import { HttpServer } from '../server/server.js'
 
@@ -15,6 +16,7 @@ export const serverCliModule = new ContainerModule((bind) => {
         adbs.setupGraphFlow()
         const server = await context.container.getAsync(HttpServer)
         server.register({ handler: context.container.get(GraphHandler).handler, path: '/graph' })
+        server.register({ handler: context.container.get(DocumentsHandler).handler, path: '/', priority: 1000 })
         await server.start()
       })
       parent.addCommand(command)
