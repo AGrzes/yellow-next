@@ -18,6 +18,7 @@ const log = debug('yellow:adbs:documents:server')
 export class DocumentsHandler {
   public readonly handler: Handler
   constructor(private router: Router) {
+    const documentDirectory = 'documents'
     this.router.use(historyFallback())
     this.router.use(
       webpackMiddleware(
@@ -39,7 +40,7 @@ export class DocumentsHandler {
               'node_modules',
             ],
             alias: {
-              '@documents': join(cwd(), 'documents'),
+              '@documents': join(cwd(), documentDirectory),
             },
             extensions: ['.js', '.json', '.wasm', '.mdx'],
           },
