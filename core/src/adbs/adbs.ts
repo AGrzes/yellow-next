@@ -7,6 +7,7 @@ import { FileParser } from './file-parser/file-parser.js'
 import { FileSource } from './file-source.js'
 import { DocumentGraphMapper } from './graph/mapper.js'
 import { GraphStore } from './graph/store.js'
+import { TocService } from './toc/service.js'
 
 @injectable()
 export class ADBS {
@@ -24,7 +25,8 @@ export class ADBS {
     private documentStoreFactory: interfaces.SimpleFactory<DocumentStore, [string]>,
     @inject(DocumentGraphMapper) private documentGraphMapper: DocumentGraphMapper,
     @inject(GraphStore) private graphStore: GraphStore,
-    @inject(DocumentSource) private documentSourceFactory: interfaces.SimpleFactory<DocumentSource, [DocumentStore]>
+    @inject(DocumentSource) private documentSourceFactory: interfaces.SimpleFactory<DocumentSource, [DocumentStore]>,
+    @inject(TocService) private tocService: TocService
   ) {
     this.documentStore = this.documentStoreFactory('adbs')
     this.documentLoader = this.documentLoaderFactory(this.documentStore, 'adbs')
@@ -32,9 +34,9 @@ export class ADBS {
   }
 
   public setupFileFlow(sourceFolders: string[]) {
-    merge(...sourceFolders.map((folder) => this.fileSource.observe(folder)))
-      .pipe(this.fileParser.parse())
-      .subscribe(this.documentLoader.observer())
+    const source = merge(...sourceFolders.map((folder) => this.fileSource.observe(folder)))
+    source.pipe(this.fileParser.parse()).subscribe(this.documentLoader.observer())
+    source.subscribe(this.tocService.observer)
   }
 
   public setupGraphFlow() {

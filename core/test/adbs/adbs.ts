@@ -12,6 +12,7 @@ import { FileSource } from '../../src/adbs/file-source.js'
 import { DocumentGraphMapper } from '../../src/adbs/graph/mapper.js'
 import { GraphStore } from '../../src/adbs/graph/store.js'
 import { ChangeEvent } from '../../src/adbs/model.js'
+import { TocService } from '../../src/adbs/toc/service.js'
 const { expect } = chai.use(sinonChai)
 describe('adbs', () => {
   describe('ADBS', () => {
@@ -30,6 +31,7 @@ describe('adbs', () => {
       const documentStoreFactory = sinon.stub().returns('store')
       const documentSourceFactory = sinon.stub().returns({ observable: of({}) })
       const storeObserver = new ReplaySubject()
+      const tocService = { observer: new ReplaySubject() }
       const adbs = new ADBS(
         fileSource,
         fileParser,
@@ -50,7 +52,8 @@ describe('adbs', () => {
             })),
         } as unknown as DocumentGraphMapper,
         { observer: storeObserver } as unknown as GraphStore,
-        documentSourceFactory
+        documentSourceFactory,
+        tocService as unknown as TocService
       )
       adbs.setupFileFlow(['folder'])
       adbs.setupGraphFlow()
@@ -74,6 +77,11 @@ describe('adbs', () => {
             DataFactory.namedNode('urn:o')
           ),
         ],
+      })
+      expect(await firstValueFrom(tocService.observer)).to.deep.equal({
+        key: 'path',
+        kind: 'update',
+        hint: 'add',
       })
     })
   })
