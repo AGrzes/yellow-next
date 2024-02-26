@@ -16,6 +16,8 @@ import { FileSource } from './file-source.js'
 import { DocumentGraphMapper, JSONLDMapping, Mapping } from './graph/mapper.js'
 import { GraphHandler } from './graph/server.js'
 import { GraphStore } from './graph/store.js'
+import { TocHandler } from './toc/server.js'
+import { TocService } from './toc/service.js'
 
 export const adbsModule = new ContainerModule((bind) => {
   bind(watch).toConstantValue(watch)
@@ -39,4 +41,6 @@ export const adbsModule = new ContainerModule((bind) => {
     (context) => new GraphHandler(context.container.get(GraphStore).observableStore, Router())
   )
   bind(DocumentsHandler).toDynamicValue((context) => new DocumentsHandler(Router()))
+  bind(TocService).toSelf().inSingletonScope()
+  bind(TocHandler).toDynamicValue((context) => new TocHandler(context.container.get(TocService), Router()))
 })
