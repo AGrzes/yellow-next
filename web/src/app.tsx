@@ -1,7 +1,7 @@
 import React from 'react'
 import { RouterProvider, useParams } from 'react-router-dom'
-import { Document } from './Document.js'
-import { router } from './router.js'
+import { Document } from './Document'
+import { router } from './router'
 
 function CustomPathDocument({ path }: { path: string }) {
   const params = useParams()

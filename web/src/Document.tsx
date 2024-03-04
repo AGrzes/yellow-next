@@ -13,7 +13,7 @@ export function Document({ path, ...other }: { path: string }) {
           component = (await import(/* webpackInclude: /\.(mdx|tsx|md)$/ */ `@documents/${path}${extension}`)).default
           break
         } catch (error) {
-          console.error(error)
+          // Ignore error
         }
       }
 
