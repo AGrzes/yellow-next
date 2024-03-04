@@ -1,4 +1,17 @@
-import { Box, Container, CssBaseline, Divider, Fab, Icon, Link, Stack } from '@mui/material'
+import {
+  Box,
+  Container,
+  CssBaseline,
+  Divider,
+  Fab,
+  Icon,
+  List,
+  ListItem,
+  ListItemButton,
+  Stack,
+  SxProps,
+  Theme,
+} from '@mui/material'
 import React, { Fragment } from 'react'
 import { Outlet, Link as RouterLink, useLoaderData } from 'react-router-dom'
 import './PageLayout.scss'
@@ -10,22 +23,21 @@ interface TocNode {
 }
 
 export function TocItems({ items, level }: { items: TocNode[]; level?: number }) {
-  level = level || 0
+  level = level || 1
   return (
     <Fragment>
       {items.map((item: TocNode, index) => (
         <Fragment key={item.href || `${item.label}-${index}`}>
           {item.href ? (
-            <Link
+            <ListItemButton
               component={RouterLink}
               to={`/documents/${item.href}`}
-              variant="body2"
               sx={{ padding: 0.25, paddingLeft: level }}
             >
               {item.label}
-            </Link>
+            </ListItemButton>
           ) : (
-            <Box sx={{ padding: 0.25, paddingLeft: level }}> {item.label}</Box>
+            <ListItem sx={{ padding: 0.25, paddingLeft: level }}> {item.label}</ListItem>
           )}
           {item.children && <TocItems items={item.children} level={level + 1} />}
         </Fragment>
@@ -34,11 +46,11 @@ export function TocItems({ items, level }: { items: TocNode[]; level?: number })
   )
 }
 
-export function Toc({ toc }: { toc: TocNode[] }) {
+export function Toc({ toc, sx }: { toc: TocNode[]; sx?: SxProps<Theme> }) {
   return (
-    <Stack direction="column">
+    <List sx={sx}>
       <TocItems items={toc} />
-    </Stack>
+    </List>
   )
 }
 
@@ -64,16 +76,14 @@ export function PageLayout() {
           </Stack>
         </Box>
         <Divider orientation="vertical" flexItem />
-        <Box
+        <Toc
+          toc={toc}
           sx={{
             minWidth: 100,
-            padding: 1,
-            display: open === 'toc' ? 'flex' : 'none',
+            display: open === 'toc' ? null : 'none',
             borderRight: 'solid rgba(0, 0, 0, 0.12) 1px',
           }}
-        >
-          <Toc toc={toc} />
-        </Box>
+        />
       </Stack>
       <Container>
         <Outlet />
