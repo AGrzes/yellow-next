@@ -19,7 +19,6 @@ export function PageLayout() {
       setOpen(key)
     }
   }
-  console.log(toc)
   return (
     <>
       <CssBaseline />
@@ -41,17 +40,21 @@ export function PageLayout() {
           }}
         >
           <Stack direction="column">
-            {toc.map((item: TocNode, index) => (
-              <Link
-                component={RouterLink}
-                to={`/documents/${item.href}`}
-                variant="body2"
-                key={item.href || `${item.label}-${index}`}
-                sx={{ padding: 0.25 }}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {toc.map((item: TocNode, index) =>
+              item.href ? (
+                <Link
+                  component={RouterLink}
+                  to={`/documents/${item.href}`}
+                  variant="body2"
+                  key={item.href || `${item.label}-${index}`}
+                  sx={{ padding: 0.25 }}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <Box key={item.href || `${item.label}-${index}`}> {item.label}</Box>
+              )
+            )}
           </Stack>
         </Box>
       </Stack>
