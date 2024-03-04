@@ -1,7 +1,7 @@
 import debug from 'debug'
 import { injectable } from 'inversify'
 import lodash from 'lodash'
-import { basename, dirname, extname, relative, sep } from 'path'
+import { basename, dirname, extname, join, relative, sep } from 'path'
 import { PartialObserver } from 'rxjs'
 import { ChangeEvent, MoveEvent } from '../model.js'
 const { filter, groupBy, map, omit, startCase } = lodash
@@ -54,10 +54,13 @@ export class TocService {
   private entries: Record<string, Entry> = {}
 
   private async createEntry(path: string): Promise<Entry> {
+    const dir = dirname(path)
+    const ext = extname(path)
+    const base = basename(path, ext)
     return {
-      path,
-      label: startCase(basename(path, extname(path))),
-      skip: !['.mdx', '.md', '.tsx', '.jsx'].includes(extname(path)),
+      path: join(dir, base),
+      label: startCase(base),
+      skip: !['.mdx', '.md', '.tsx', '.jsx'].includes(ext),
     }
   }
 
