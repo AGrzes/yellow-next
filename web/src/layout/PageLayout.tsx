@@ -1,5 +1,5 @@
 import { Box, Container, CssBaseline, Divider, Fab, Icon, Link, Stack } from '@mui/material'
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Outlet, Link as RouterLink, useLoaderData } from 'react-router-dom'
 import './PageLayout.scss'
 
@@ -7,6 +7,39 @@ interface TocNode {
   href: string
   label: string
   children: TocNode[]
+}
+
+export function TocItems({ items, level }: { items: TocNode[]; level?: number }) {
+  level = level || 0
+  return (
+    <Fragment>
+      {items.map((item: TocNode, index) => (
+        <Fragment key={item.href || `${item.label}-${index}`}>
+          {item.href ? (
+            <Link
+              component={RouterLink}
+              to={`/documents/${item.href}`}
+              variant="body2"
+              sx={{ padding: 0.25, paddingLeft: level }}
+            >
+              {item.label}
+            </Link>
+          ) : (
+            <Box sx={{ padding: 0.25, paddingLeft: level }}> {item.label}</Box>
+          )}
+          {item.children && <TocItems items={item.children} level={level + 1} />}
+        </Fragment>
+      ))}
+    </Fragment>
+  )
+}
+
+export function Toc({ toc }: { toc: TocNode[] }) {
+  return (
+    <Stack direction="column">
+      <TocItems items={toc} />
+    </Stack>
+  )
 }
 
 export function PageLayout() {
@@ -39,23 +72,7 @@ export function PageLayout() {
             borderRight: 'solid rgba(0, 0, 0, 0.12) 1px',
           }}
         >
-          <Stack direction="column">
-            {toc.map((item: TocNode, index) =>
-              item.href ? (
-                <Link
-                  component={RouterLink}
-                  to={`/documents/${item.href}`}
-                  variant="body2"
-                  key={item.href || `${item.label}-${index}`}
-                  sx={{ padding: 0.25 }}
-                >
-                  {item.label}
-                </Link>
-              ) : (
-                <Box key={item.href || `${item.label}-${index}`}> {item.label}</Box>
-              )
-            )}
-          </Stack>
+          <Toc toc={toc} />
         </Box>
       </Stack>
       <Container>

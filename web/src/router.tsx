@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { createBrowserRouter } from 'react-router-dom'
-import { PageLayout, pageLayoutLoader } from './PageLayout'
 import { PathDocument } from './PathDocument'
+import { PageLayout, pageLayoutLoader } from './layout/PageLayout'
 
 export const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter([
   {
