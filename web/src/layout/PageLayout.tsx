@@ -13,7 +13,7 @@ import {
   Theme,
 } from '@mui/material'
 import React, { Fragment } from 'react'
-import { Outlet, Link as RouterLink, useLoaderData } from 'react-router-dom'
+import { Link, Outlet, useLoaderData, useMatch } from 'react-router-dom'
 import './PageLayout.scss'
 
 interface TocNode {
@@ -22,25 +22,29 @@ interface TocNode {
   children: TocNode[]
 }
 
+export function TocItem({ item, level }: { item: TocNode; level: number }) {
+  const href = item.href ? `/documents/${item.href}` : null
+  const match = useMatch(href || '')
+  return (
+    <Fragment>
+      {href ? (
+        <ListItemButton component={Link} to={href} sx={{ padding: 0.25, paddingLeft: level }} selected={Boolean(match)}>
+          {item.label}
+        </ListItemButton>
+      ) : (
+        <ListItem sx={{ padding: 0.25, paddingLeft: level }}> {item.label}</ListItem>
+      )}
+      {item.children && <TocItems items={item.children} level={level + 1} />}
+    </Fragment>
+  )
+}
+
 export function TocItems({ items, level }: { items: TocNode[]; level?: number }) {
   level = level || 1
   return (
     <Fragment>
       {items.map((item: TocNode, index) => (
-        <Fragment key={item.href || `${item.label}-${index}`}>
-          {item.href ? (
-            <ListItemButton
-              component={RouterLink}
-              to={`/documents/${item.href}`}
-              sx={{ padding: 0.25, paddingLeft: level }}
-            >
-              {item.label}
-            </ListItemButton>
-          ) : (
-            <ListItem sx={{ padding: 0.25, paddingLeft: level }}> {item.label}</ListItem>
-          )}
-          {item.children && <TocItems items={item.children} level={level + 1} />}
-        </Fragment>
+        <TocItem key={item.href || `${item.label}-${index}`} item={item} level={level}></TocItem>
       ))}
     </Fragment>
   )
