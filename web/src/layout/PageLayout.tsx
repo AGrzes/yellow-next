@@ -8,6 +8,8 @@ import {
   List,
   ListItem,
   ListItemButton,
+  ListItemIcon,
+  ListItemText,
   Stack,
   SxProps,
   Theme,
@@ -25,14 +27,28 @@ interface TocNode {
 export function TocItem({ item, level }: { item: TocNode; level: number }) {
   const href = item.href ? `/documents/${item.href}` : null
   const match = useMatch(href || '')
+  const icon = href ? 'description' : 'folder'
   return (
     <Fragment>
       {href ? (
-        <ListItemButton component={Link} to={href} sx={{ padding: 0.25, paddingLeft: level }} selected={Boolean(match)}>
-          {item.label}
+        <ListItemButton
+          component={Link}
+          to={href}
+          sx={{ padding: 0.25, paddingLeft: level, paddingRight: 1 }}
+          selected={Boolean(match)}
+        >
+          <ListItemIcon sx={{ minWidth: '32px' }}>
+            <Icon>{icon}</Icon>
+          </ListItemIcon>
+          <ListItemText primary={item.label} />
         </ListItemButton>
       ) : (
-        <ListItem sx={{ padding: 0.25, paddingLeft: level }}> {item.label}</ListItem>
+        <ListItem sx={{ padding: 0.25, paddingLeft: level, paddingRight: 1 }}>
+          <ListItemIcon sx={{ minWidth: '32px' }}>
+            <Icon>{icon}</Icon>
+          </ListItemIcon>
+          <ListItemText primary={item.label} />
+        </ListItem>
       )}
       {item.children && <TocItems items={item.children} level={level + 1} />}
     </Fragment>
