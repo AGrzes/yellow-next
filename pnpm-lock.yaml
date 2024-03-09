@@ -178,6 +178,67 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  shared:
+    dependencies:
+      jsonld:
+        specifier: ^8.3.2
+        version: 8.3.2
+      n3:
+        specifier: ^1.17.2
+        version: 1.17.2
+      reflect-metadata:
+        specifier: ^0.2.1
+        version: 0.2.1
+    devDependencies:
+      '@types/chai':
+        specifier: ^4.3.11
+        version: 4.3.11
+      '@types/chai-as-promised':
+        specifier: ^7.1.8
+        version: 7.1.8
+      '@types/mocha':
+        specifier: ^10.0.6
+        version: 10.0.6
+      '@types/node':
+        specifier: ^20.11.16
+        version: 20.11.16
+      '@types/sinon':
+        specifier: ^17.0.3
+        version: 17.0.3
+      '@types/sinon-chai':
+        specifier: ^3.2.12
+        version: 3.2.12
+      c8:
+        specifier: ^9.1.0
+        version: 9.1.0
+      chai:
+        specifier: ^4.4.1
+        version: 4.4.1
+      chai-as-promised:
+        specifier: ^7.1.1
+        version: 7.1.1(chai@4.4.1)
+      mocha:
+        specifier: ^10.2.0
+        version: 10.2.0
+      prettier:
+        specifier: ^3.2.5
+        version: 3.2.5
+      sinon:
+        specifier: ^17.0.1
+        version: 17.0.1
+      sinon-chai:
+        specifier: ^3.7.0
+        version: 3.7.0(chai@4.4.1)(sinon@17.0.1)
+      source-map-support:
+        specifier: ^0.5.21
+        version: 0.5.21
+      ts-node:
+        specifier: ^10.9.1
+        version: 10.9.2(@types/node@20.11.16)(typescript@5.3.3)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
   web:
     dependencies:
       '@emotion/react':
