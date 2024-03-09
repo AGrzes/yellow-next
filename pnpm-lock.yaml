@@ -186,6 +186,9 @@ importers:
 
   shared:
     dependencies:
+      '@inrupt/vocab-common-rdf':
+        specifier: ^1.0.5
+        version: 1.0.5
       jsonld:
         specifier: 8.3.2
         version: 8.3.2
@@ -520,6 +523,10 @@ packages:
 
   /@fontsource/roboto@5.0.12:
     resolution: {integrity: sha512-x0o17jvgoSSbS9OZnUX2+xJmVRvVCfeaYJjkS7w62iN7CuJWtMf5vJj8LqgC7ibqIkitOHVW+XssRjgrcHn62g==}
+    dev: false
+
+  /@inrupt/vocab-common-rdf@1.0.5:
+    resolution: {integrity: sha512-onrehQte8m0XW83WwM6T4o5WgmYGzdYUCef6FDjMKfQCF64FnARFNn5fYhKodimBaAOFKhuJ3vw1NBZV/EYqJw==}
     dev: false
 
   /@istanbuljs/schema@0.1.3:
