@@ -3,7 +3,8 @@ import { readFile } from 'fs/promises'
 import jsonld from 'jsonld'
 import 'mocha'
 import { Quad, Store } from 'n3'
-import { Model, ModelOptions } from '../src/dynamic.js'
+import { Model } from '../../../src/access/dynamic/index.js'
+import { ModelOptions } from '../../../src/access/dynamic/model.js'
 
 const modelOptions: ModelOptions = {
   classes: [
@@ -66,7 +67,9 @@ const modelOptions: ModelOptions = {
   ],
 }
 
-const store = new Store((await jsonld.toRDF(JSON.parse(await readFile('test/books.jsonld', 'utf-8')))) as Quad[])
+const store = new Store(
+  (await jsonld.toRDF(JSON.parse(await readFile('test/access/dynamic/books.jsonld', 'utf-8')))) as Quad[]
+)
 describe.only('Model', () => {
   it('should list all books', () => {
     const model = new Model(store, modelOptions)
