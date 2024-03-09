@@ -5,8 +5,8 @@
   "scripts": {
     "syncpack": "syncpack list",
     "syncpack:fix": "syncpack fix-mismatches",
+    "syncpack:format": "syncpack format",
     "syncpack:lint": "syncpack lint",
-    "syncpack:update": "syncpack update",
-    "syncpack:format": "syncpack format"
+    "syncpack:update": "syncpack update"
   }
 }
