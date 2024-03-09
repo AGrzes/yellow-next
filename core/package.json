@@ -1,16 +1,11 @@
 {
   "name": "@agrzes/yellow-next-core",
-  "version": "0.0.1",
   "description": "",
-  "main": "target",
-  "scripts": {
-    "test": "c8 mocha test/**/*.{ts,tsx}",
-    "start": "node target",
-    "build": "rm -rf target types && tsc",
-    "watch": "tsc --watch --preserveWatchOutput"
+  "version": "0.0.1",
+  "author": "Grzegorz Abramczyk <abramczykg@gmail.com>",
+  "bin": {
+    "yd": "bin/cli.mjs"
   },
-  "types": "types",
-  "type": "module",
   "c8": {
     "all": true,
     "extension": [
@@ -28,27 +23,6 @@
       "text",
       "lcov"
     ]
-  },
-  "mocha": {
-    "require": [
-      "ts-node/esm",
-      "source-map-support/register"
-    ],
-    "node-option": [
-      "experimental-specifier-resolution=node",
-      "loader=ts-node/esm"
-    ]
-  },
-  "author": "Grzegorz Abramczyk <abramczykg@gmail.com>",
-  "license": "MIT",
-  "files": [
-    "target",
-    "types",
-    "LICENSE",
-    "package.json"
-  ],
-  "publishConfig": {
-    "registry": "http://npm.kubernetes.home.agrzes.pl/"
   },
   "dependencies": {
     "@agrzes/yellow-next-web": "workspace:*",
@@ -110,7 +84,33 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.3.3"
   },
-  "bin": {
-    "yd": "bin/cli.mjs"
-  }
+  "files": [
+    "target",
+    "types",
+    "LICENSE",
+    "package.json"
+  ],
+  "license": "MIT",
+  "main": "target",
+  "mocha": {
+    "require": [
+      "ts-node/esm",
+      "source-map-support/register"
+    ],
+    "node-option": [
+      "experimental-specifier-resolution=node",
+      "loader=ts-node/esm"
+    ]
+  },
+  "publishConfig": {
+    "registry": "http://npm.kubernetes.home.agrzes.pl/"
+  },
+  "scripts": {
+    "build": "rm -rf target types && tsc",
+    "start": "node target",
+    "test": "c8 mocha test/**/*.{ts,tsx}",
+    "watch": "tsc --watch --preserveWatchOutput"
+  },
+  "type": "module",
+  "types": "types"
 }
