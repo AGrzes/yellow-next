@@ -1,0 +1,76 @@
+{
+  "@context": {
+    "@vocab": "http://agrzes.pl/books#",
+    "author": {
+      "@type": "@id"
+    },
+    "pages": {
+      "@type": "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "released": {
+      "@type": "http://www.w3.org/2001/XMLSchema#date"
+    },
+    "Book": {
+      "@id": "http://agrzes.pl/books#Book",
+      "@context": {
+        "author": {
+          "@id": "http://agrzes.pl/books#Book/author",
+          "@type": "@id"
+        },
+        "pages": {
+          "@id": "http://agrzes.pl/books#Book/pages",
+          "@type": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        "released": {
+          "@id": "http://agrzes.pl/books#Book/released",
+          "@type": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        "series": {
+          "@id": "http://agrzes.pl/books#Book/series",
+          "@type": "@id"
+        }
+      }
+    },
+    "Series": {
+      "@id": "http://agrzes.pl/books#Series"
+    },
+    "Author": {
+      "@id": "http://agrzes.pl/books#Author"
+    },
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "books": "http://agrzes.pl/books#",
+    "authors": "http://agrzes.pl/authors#",
+    "series": "http://agrzes.pl/series#"
+  },
+  "@graph": [
+    {
+      "@id": "books:B1",
+      "@type": "Book",
+      "rdfs:label": "B1",
+      "pages": 1,
+      "released": "1993-10-01",
+      "author": "authors:A1",
+      "series": "series:S1"
+    },
+    {
+      "@id": "books:B2",
+      "@type": "Book",
+      "rdfs:label": "B2",
+      "pages": 2,
+      "released": "1993-10-01",
+      "author": "authors:A1",
+      "series": "books:S1"
+    },
+    {
+      "@id": "series:S1",
+      "@type": "Series",
+      "rdfs:label": "S1"
+    },
+    {
+      "@id": "authors:A1",
+      "@type": "Author",
+      "rdfs:label": "A1"
+    }
+  ]
+}
