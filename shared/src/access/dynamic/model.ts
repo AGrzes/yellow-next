@@ -1,22 +1,22 @@
 import { BlankNode, NamedNode } from 'n3'
 
 export interface ClassOptions {
-  name: string
-  iri: string
-  properties: PropertyOptions[]
+  readonly name: string
+  readonly iri: string
+  readonly properties: PropertyOptions[]
 }
 
 export interface PropertyOptions {
-  name: string
-  iri: string
-  reverse?: boolean
+  readonly name: string
+  readonly iri: string
+  readonly reverse?: boolean
 }
 
 export interface ModelOptions {
-  classes: ClassOptions[]
+  readonly classes: ClassOptions[]
 }
 
 export interface TypedNode {
-  iri: NamedNode | BlankNode
-  classes: ClassOptions[]
+  readonly iri: NamedNode | BlankNode
+  readonly classes: ClassOptions[]
 }
