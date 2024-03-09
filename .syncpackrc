@@ -30,16 +30,6 @@
         "@agrzes/yellow-next-*"
       ],
       "pinVersion": "workspace:*"
-    },
-    {
-      "label": "Keep chai 4",
-      "packages": [
-        "**"
-      ],
-      "dependencies": [
-        "chai"
-      ],
-      "pinVersion": "^4.0.0"
     }
   ]
 }
