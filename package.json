@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "syncpack:lint": "syncpack lint",
+    "syncpack:fix": "syncpack fix-mismatches",
+    "syncpack": "syncpack list",
+    "syncpack:update": "syncpack update"
+  },
+  "dependencies": {
+    "syncpack": "12.3.0"
+  }
+}

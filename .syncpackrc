@@ -1,0 +1,45 @@
+{
+  "semverGroups": [
+    {
+      "range": "",
+      "dependencyTypes": [
+        "prod",
+        "resolutions",
+        "overrides",
+        "pnpmOverrides",
+        "local"
+      ],
+      "dependencies": [
+        "**"
+      ],
+      "packages": [
+        "**"
+      ]
+    }
+  ],
+  "lintSemverRanges": true,
+  "versionGroups": [
+    {
+      "packages": [
+        "**"
+      ],
+      "dependencyTypes": [
+        "!local"
+      ],
+      "dependencies": [
+        "@agrzes/yellow-next-*"
+      ],
+      "pinVersion": "workspace:*"
+    },
+    {
+      "label": "Keep chai 4",
+      "packages": [
+        "**"
+      ],
+      "dependencies": [
+        "chai"
+      ],
+      "pinVersion": "^4.0.0"
+    }
+  ]
+}
