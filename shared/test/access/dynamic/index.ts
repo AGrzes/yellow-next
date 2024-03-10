@@ -70,26 +70,30 @@ const modelOptions: ModelOptions = {
 const store = new Store(
   (await jsonld.toRDF(JSON.parse(await readFile('test/access/dynamic/books.jsonld', 'utf-8')))) as Quad[]
 )
-describe.only('Model', () => {
-  it('should list all books', () => {
-    const model = new Model(store, modelOptions)
-    const books = model.all('Book')
-    expect(books).to.have.lengthOf(2)
-    expect(books[0].title).to.equal('B1')
-    expect(books[1].title).to.equal('B2')
-  })
-  it('should navigate to author', () => {
-    const model = new Model(store, modelOptions)
-    const books = model.all('Book')
-    expect(books[0].author.name).to.equal('A1')
-  })
-  it('should navigate back book', () => {
-    const model = new Model(store, modelOptions)
-    const books = model.all('Book')
-    expect(books[0].author.books[0].title).to.equal('B1')
-  })
-  it('should fail on missing class', () => {
-    const model = new Model(store, modelOptions)
-    expect(() => model.all('Bookz')).to.throw()
+describe('access', () => {
+  describe('dynamic', () => {
+    describe('Model', () => {
+      it('should list all books', () => {
+        const model = new Model(store, modelOptions)
+        const books = model.all('Book')
+        expect(books).to.have.lengthOf(2)
+        expect(books[0].title).to.equal('B1')
+        expect(books[1].title).to.equal('B2')
+      })
+      it('should navigate to author', () => {
+        const model = new Model(store, modelOptions)
+        const books = model.all('Book')
+        expect(books[0].author.name).to.equal('A1')
+      })
+      it('should navigate back book', () => {
+        const model = new Model(store, modelOptions)
+        const books = model.all('Book')
+        expect(books[0].author.books[0].title).to.equal('B1')
+      })
+      it('should fail on missing class', () => {
+        const model = new Model(store, modelOptions)
+        expect(() => model.all('Bookz')).to.throw()
+      })
+    })
   })
 })
