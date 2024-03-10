@@ -1,4 +1,5 @@
 //import { Options } from '@mdx-js/loader'
+import simplePlantUML from '@akebifiky/remark-simple-plantuml'
 import historyFallback from 'connect-history-api-fallback'
 import debug from 'debug'
 import { Handler, Router } from 'express'
@@ -73,7 +74,7 @@ export class DocumentsHandler {
                     loader: '@mdx-js/loader',
                     /** @type {import('@mdx-js/loader').Options} */
                     options: {
-                      remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter, remarkGfm],
+                      remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter, remarkGfm, simplePlantUML],
                     }, //as Options,
                   },
                 ],
