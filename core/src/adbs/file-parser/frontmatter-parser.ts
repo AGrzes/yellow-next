@@ -6,7 +6,7 @@ import { Read } from './model.js'
 export class FrontmatterParser {
   constructor(
     @inject(Read) private read: (path: string) => Promise<string>,
-    private extensions: string[] = ['.mdx']
+    private extensions: string[] = ['.mdx', '.md']
   ) {}
   async parse(path: string) {
     if (this.extensions.includes(extname(path))) {
