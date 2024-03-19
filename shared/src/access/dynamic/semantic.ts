@@ -51,10 +51,10 @@ export class SemanticClassOptions implements ClassOptions {
   get properties(): PropertyOptions[] {
     return [
       ...this.store
-        .getObjects(DataFactory.namedNode(this.iri), RDFS.domain, null)
+        .getSubjects(RDFS.domain, DataFactory.namedNode(this.iri), null)
         .map((iri) => new SemanticPropertyOptions(this.store, iri.value, false)),
       ...this.store
-        .getObjects(DataFactory.namedNode(this.iri), RDFS.range, null)
+        .getSubjects(RDFS.range, DataFactory.namedNode(this.iri), null)
         .map((iri) => new SemanticPropertyOptions(this.store, iri.value, true)),
     ]
   }

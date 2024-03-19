@@ -51,14 +51,14 @@ describe('access', () => {
         })
         it('should return properties', () => {
           const store = new Store<Quad>()
-          store.addQuad(BOOK, DataFactory.namedNode('http://www.w3.org/2000/01/rdf-schema#domain'), BOOK_TITLE)
+          store.addQuad(BOOK_TITLE, DataFactory.namedNode('http://www.w3.org/2000/01/rdf-schema#domain'), BOOK)
           const classOptions = new SemanticClassOptions(store, BOOK.value)
           expect(classOptions.properties).to.have.length(1)
           expect(classOptions.properties[0].iri).to.equal(BOOK_TITLE.value)
         })
         it('should return reverse properties', () => {
           const store = new Store<Quad>()
-          store.addQuad(BOOK, DataFactory.namedNode('http://www.w3.org/2000/01/rdf-schema#range'), BOOK_TITLE)
+          store.addQuad(BOOK_TITLE, DataFactory.namedNode('http://www.w3.org/2000/01/rdf-schema#range'), BOOK)
           const classOptions = new SemanticClassOptions(store, BOOK.value)
           expect(classOptions.properties).to.have.length(1)
           expect(classOptions.properties[0].iri).to.equal(BOOK_TITLE.value)
