@@ -1,11 +1,11 @@
 import { RDF, RDFS } from '@inrupt/vocab-common-rdf'
-import { DataFactory, Store } from 'n3'
+import { DataFactory, NamedNode, Store } from 'n3'
 import { ClassOptions, ModelOptions, PropertyOptions } from './model.js'
 
-export const CLASS_TYPE = DataFactory.namedNode('agrzes:yellow-next:dynamic:Class')
-export const CLASS_NAME = DataFactory.namedNode('agrzes:yellow-next:dynamic:Class:name')
-export const PROPERTY_NAME = DataFactory.namedNode('agrzes:yellow-next:dynamic:Property:name')
-export const PROPERTY_REVERSE_NAME = DataFactory.namedNode('agrzes:yellow-next:dynamic:Property:reverse_name')
+export const CLASS_TYPE: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Class')
+export const CLASS_NAME: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Class:name')
+export const PROPERTY_NAME: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Property:name')
+export const PROPERTY_REVERSE_NAME: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Property:reverse_name')
 
 export class SemanticPropertyOptions implements PropertyOptions {
   constructor(
