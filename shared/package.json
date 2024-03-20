@@ -75,5 +75,19 @@
     "watch": "tsc --watch --preserveWatchOutput"
   },
   "type": "module",
-  "types": "types"
+  "types": "types",
+  "exports": {
+    "./access/dynamic": "./target/access/dynamic/index.js",
+    "./access/dynamic/semantic": "./target/access/dynamic/semantic.js"
+  },
+  "typesVersions": {
+    "*": {
+      "access/dynamic": [
+        "types/access/dynamic/index.d.ts"
+      ],
+      "access/dynamic/semantic": [
+        "types/access/dynamic/semantic.d.ts"
+      ]
+    }
+  }
 }
