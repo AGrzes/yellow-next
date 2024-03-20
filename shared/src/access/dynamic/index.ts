@@ -10,6 +10,9 @@ export class Model {
   ) {
     this.handler = {
       get: (target, property, receiver) => {
+        if (property === 'iri') {
+          return target.iri.value
+        }
         const propertyOptions = target.classes.flatMap((c) => c.properties).find((p) => p.name === property)
         if (propertyOptions) {
           const values = propertyOptions.reverse
