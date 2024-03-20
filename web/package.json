@@ -22,10 +22,13 @@
     ]
   },
   "dependencies": {
+    "@agrzes/yellow-next-shared": "workspace:*",
     "@emotion/react": "11.11.4",
     "@emotion/styled": "11.11.0",
     "@fontsource/roboto": "5.0.12",
     "@mui/material": "5.15.12",
+    "jsonld": "8.3.2",
+    "n3": "1.17.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.22.3",
@@ -33,6 +36,8 @@
     "typescript": "5.4.2"
   },
   "devDependencies": {
+    "@types/jsonld": "^1.5.13",
+    "@types/n3": "^1.16.4",
     "@types/react": "^18.2.64"
   },
   "files": [
@@ -63,5 +68,16 @@
     "watch": "tsc --watch --preserveWatchOutput"
   },
   "type": "module",
-  "types": "types"
+  "types": "types",
+  "exports": {
+    ".": "./src/index.tsx",
+    "./documents": "./src/documents/index.ts"
+  },
+  "typesVersions": {
+    "*": {
+      "documents": [
+        "types/documents/index.d.ts"
+      ]
+    }
+  }
 }

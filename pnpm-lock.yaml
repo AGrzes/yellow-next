@@ -259,6 +259,9 @@ importers:
 
   web:
     dependencies:
+      '@agrzes/yellow-next-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@emotion/react':
         specifier: 11.11.4
         version: 11.11.4(@types/react@18.2.64)(react@18.2.0)
@@ -271,6 +274,12 @@ importers:
       '@mui/material':
         specifier: 5.15.12
         version: 5.15.12(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@types/react@18.2.64)(react-dom@18.2.0)(react@18.2.0)
+      jsonld:
+        specifier: 8.3.2
+        version: 8.3.2
+      n3:
+        specifier: 1.17.2
+        version: 1.17.2
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -287,6 +296,12 @@ importers:
         specifier: 5.4.2
         version: 5.4.2
     devDependencies:
+      '@types/jsonld':
+        specifier: ^1.5.13
+        version: 1.5.13
+      '@types/n3':
+        specifier: ^1.16.4
+        version: 1.16.4
       '@types/react':
         specifier: ^18.2.64
         version: 18.2.64
