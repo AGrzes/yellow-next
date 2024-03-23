@@ -98,6 +98,36 @@ describe('mapper', () => {
           },
         })
       })
+      it('should add properties to context', () => {
+        const document = {}
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@context': {
+            Book: {
+              '@context': {
+                title: { '@id': 'http://www.w3.org/2000/01/rdf-schema#label' },
+              },
+            },
+          },
+        })
+      })
+      it('should add all properties to context', () => {
+        const document = {}
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@context': {
+            Book: {
+              '@context': {
+                title: {},
+                pages: {},
+                released: {},
+                author: {},
+                series: {},
+              },
+            },
+          },
+        })
+      })
     })
   })
 })
