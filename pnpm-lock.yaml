@@ -208,6 +208,9 @@ importers:
       '@types/chai-as-promised':
         specifier: ^7.1.8
         version: 7.1.8
+      '@types/chai-subset':
+        specifier: ^1.3.5
+        version: 1.3.5
       '@types/jsonld':
         specifier: ^1.5.13
         version: 1.5.13
@@ -235,6 +238,9 @@ importers:
       chai-as-promised:
         specifier: ^7.1.1
         version: 7.1.1(chai@4.4.1)
+      chai-subset:
+        specifier: ^1.6.0
+        version: 1.6.0
       mocha:
         specifier: ^10.3.0
         version: 10.3.0
@@ -900,6 +906,12 @@ packages:
 
   /@types/chai-as-promised@7.1.8:
     resolution: {integrity: sha512-ThlRVIJhr69FLlh6IctTXFkmhtP3NpMZ2QGq69StYLyKZFp/HOp1VdKZj7RvfNWYYcJ1xlbLGLLWj1UvP5u/Gw==}
+    dependencies:
+      '@types/chai': 4.3.12
+    dev: true
+
+  /@types/chai-subset@1.3.5:
+    resolution: {integrity: sha512-c2mPnw+xHtXDoHmdtcCXGwyLMiauiAyxWMzhGpqHC4nqI/Y5G2XhTampslK2rb59kpcuHon03UH8W6iYUzw88A==}
     dependencies:
       '@types/chai': 4.3.12
     dev: true
@@ -1710,6 +1722,11 @@ packages:
     dependencies:
       chai: 4.4.1
       check-error: 1.0.3
+    dev: true
+
+  /chai-subset@1.6.0:
+    resolution: {integrity: sha512-K3d+KmqdS5XKW5DWPd5sgNffL3uxdDe+6GdnJh3AYPhwnBGRY5urfvfcbRtWIvvpz+KxkL9FeBB6MZewLUNwug==}
+    engines: {node: '>=4'}
     dev: true
 
   /chai@4.4.1:
