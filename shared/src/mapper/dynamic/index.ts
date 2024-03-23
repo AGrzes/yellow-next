@@ -6,7 +6,17 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
       clazz.name,
       {
         '@id': clazz.iri,
-        '@context': Object.fromEntries(clazz.properties.map((property) => [property.name, { '@id': property.iri }])),
+        '@context': Object.fromEntries(
+          clazz.properties.map((property) => {
+            const p = {}
+            if (property.reverse) {
+              p['@reverse'] = property.iri
+            } else {
+              p['@id'] = property.iri
+            }
+            return [property.name, p]
+          })
+        ),
       },
     ])
   )

@@ -128,6 +128,19 @@ describe('mapper', () => {
           },
         })
       })
+      it('should handle reverse properties', () => {
+        const document = {}
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@context': {
+            Author: {
+              '@context': {
+                books: { '@reverse': 'http://agrzes.pl/books#Book/author' },
+              },
+            },
+          },
+        })
+      })
     })
   })
 })
