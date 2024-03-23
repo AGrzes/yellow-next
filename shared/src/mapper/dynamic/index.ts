@@ -20,8 +20,17 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
       },
     ])
   )
+  function mapRoots(document: Record<string, any>) {
+    return Object.entries(options.roots).flatMap(([key, value]) =>
+      document[key]
+        ? Array.isArray(document[key])
+          ? document[key].map((item) => ({ ...item, '@type': value }))
+          : { ...document[key], '@type': value }
+        : []
+    )
+  }
 
   return (document) => {
-    return { '@context': context, ...document }
+    return { '@context': context, '@graph': mapRoots(document) }
   }
 }

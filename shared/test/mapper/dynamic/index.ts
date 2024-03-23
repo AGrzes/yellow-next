@@ -141,6 +141,20 @@ describe('mapper', () => {
           },
         })
       })
+      it('should handle roots', () => {
+        const document = { books: { a: 'b' } }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ a: 'b' }],
+        })
+      })
+      it('should handle array roots', () => {
+        const document = { books: [{ a: 'b' }] }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ a: 'b' }],
+        })
+      })
     })
   })
 })
