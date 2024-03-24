@@ -5,6 +5,7 @@ import { ClassOptions, MapperOptions, ModelOptions, PropertyOptions } from './mo
 export const CLASS_TYPE: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Class')
 export const CLASS_NAME: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Class:name')
 export const PROPERTY_NAME: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Property:name')
+export const PROPERTY_PREDICATE: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Property:predicate')
 export const PROPERTY_REVERSE_NAME: NamedNode = DataFactory.namedNode(
   'agrzes:yellow-next:dynamic:Property:reverse_name'
 )
@@ -34,6 +35,9 @@ export class SemanticPropertyOptions implements PropertyOptions {
     } else {
       return this.forwardName
     }
+  }
+  get predicate(): string {
+    return this.store.getObjects(DataFactory.namedNode(this.iri), PROPERTY_PREDICATE, null)[0]?.value || this.iri
   }
 }
 

@@ -14,23 +14,30 @@ const modelOptions: ModelOptions = {
       properties: [
         {
           iri: 'http://agrzes.pl/books#Book/pages',
+          predicate: 'http://agrzes.pl/books#Book/pages',
           name: 'pages',
         },
         {
           iri: 'http://agrzes.pl/books#Book/released',
+          predicate: 'http://agrzes.pl/books#Book/released',
           name: 'released',
         },
         {
-          iri: 'http://www.w3.org/2000/01/rdf-schema#label',
+          iri: 'http://agrzes.pl/books#Book/title',
+          predicate: 'http://www.w3.org/2000/01/rdf-schema#label',
           name: 'title',
         },
         {
           iri: 'http://agrzes.pl/books#Book/author',
+          predicate: 'http://agrzes.pl/books#Book/author',
           name: 'author',
+          type: 'Author',
         },
         {
           iri: 'http://agrzes.pl/books#Book/series',
+          predicate: 'http://agrzes.pl/books#Book/series',
           name: 'series',
+          type: 'Series',
         },
       ],
     },
@@ -39,13 +46,16 @@ const modelOptions: ModelOptions = {
       iri: 'http://agrzes.pl/books#Author',
       properties: [
         {
-          iri: 'http://www.w3.org/2000/01/rdf-schema#label',
+          iri: 'http://agrzes.pl/books#Author/name',
+          predicate: 'http://www.w3.org/2000/01/rdf-schema#label',
           name: 'name',
         },
         {
           name: 'books',
           iri: 'http://agrzes.pl/books#Book/author',
+          predicate: 'http://agrzes.pl/books#Book/author',
           reverse: true,
+          type: 'Book',
         },
       ],
     },
@@ -54,13 +64,16 @@ const modelOptions: ModelOptions = {
       iri: 'http://agrzes.pl/books#Series',
       properties: [
         {
-          iri: 'http://www.w3.org/2000/01/rdf-schema#label',
+          iri: 'http://agrzes.pl/books#Series/name',
+          predicate: 'http://www.w3.org/2000/01/rdf-schema#label',
           name: 'name',
         },
         {
           name: 'books',
           iri: 'http://agrzes.pl/books#Book/series',
+          predicate: 'http://agrzes.pl/books#Book/series',
           reverse: true,
+          type: 'Book',
         },
       ],
     },

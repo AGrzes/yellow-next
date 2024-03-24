@@ -1,4 +1,4 @@
-import { RDF } from '@inrupt/vocab-common-rdf'
+import { RDF, RDFS } from '@inrupt/vocab-common-rdf'
 import { expect } from 'chai'
 import 'mocha'
 import { DataFactory, Quad, Store } from 'n3'
@@ -6,6 +6,7 @@ import {
   CLASS_NAME,
   CLASS_TYPE,
   PROPERTY_NAME,
+  PROPERTY_PREDICATE,
   PROPERTY_REVERSE_NAME,
   ROOT_PREDICATE,
   SemanticClassOptions,
@@ -100,6 +101,17 @@ describe('access', () => {
           store.addQuad(BOOK_TITLE, PROPERTY_NAME, DataFactory.literal('title'))
           const propertyOptions = new SemanticPropertyOptions(store, BOOK_TITLE.value, true)
           expect(propertyOptions).to.have.property('name', '^title')
+        })
+        it('should return predicate', () => {
+          const store = new Store<Quad>()
+          store.addQuad(BOOK_TITLE, PROPERTY_PREDICATE, DataFactory.namedNode(RDFS.label))
+          const propertyOptions = new SemanticPropertyOptions(store, BOOK_TITLE.value, false)
+          expect(propertyOptions).to.have.property('predicate', RDFS.label)
+        })
+        it('should return iri as predicate if not defined', () => {
+          const store = new Store<Quad>()
+          const propertyOptions = new SemanticPropertyOptions(store, BOOK_TITLE.value, false)
+          expect(propertyOptions).to.have.property('predicate', BOOK_TITLE.value)
         })
       })
       describe('SemanticMapperOptions', () => {

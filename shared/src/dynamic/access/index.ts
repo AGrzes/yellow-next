@@ -17,10 +17,10 @@ export class Model {
         if (propertyOptions) {
           const values = propertyOptions.reverse
             ? this.store
-                .getSubjects(DataFactory.namedNode(propertyOptions.iri), target.iri, null)
+                .getSubjects(DataFactory.namedNode(propertyOptions.predicate), target.iri, null)
                 .map((iri: NamedNode | BlankNode) => this.proxy(iri))
             : this.store
-                .getObjects(target.iri, DataFactory.namedNode(propertyOptions.iri), null)
+                .getObjects(target.iri, DataFactory.namedNode(propertyOptions.predicate), null)
                 .map((iri: NamedNode | BlankNode) => this.proxy(iri))
           if (values.length === 1) {
             return values[0]

@@ -9,6 +9,7 @@ export interface ClassOptions {
 export interface PropertyOptions {
   readonly name: string
   readonly iri: string
+  readonly predicate: string
   readonly reverse?: boolean
   readonly type?: string
 }

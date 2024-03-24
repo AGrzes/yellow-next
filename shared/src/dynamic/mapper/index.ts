@@ -10,9 +10,9 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
           clazz.properties.map((property) => {
             const p = {}
             if (property.reverse) {
-              p['@reverse'] = property.iri
+              p['@reverse'] = property.predicate
             } else {
-              p['@id'] = property.iri
+              p['@id'] = property.predicate
             }
             return [property.name, p]
           })
