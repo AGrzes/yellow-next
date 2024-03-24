@@ -10,6 +10,7 @@ export interface PropertyOptions {
   readonly name: string
   readonly iri: string
   readonly reverse?: boolean
+  readonly type?: string
 }
 
 export interface ModelOptions {
