@@ -113,6 +113,20 @@ describe('access', () => {
           const propertyOptions = new SemanticPropertyOptions(store, BOOK_TITLE.value, false)
           expect(propertyOptions).to.have.property('predicate', BOOK_TITLE.value)
         })
+        it('should return type', () => {
+          const store = new Store<Quad>()
+          store.addQuad(BOOK_TITLE, DataFactory.namedNode(RDFS.range), BOOK)
+          store.addQuad(BOOK, CLASS_NAME, DataFactory.literal('Book'))
+          const propertyOptions = new SemanticPropertyOptions(store, BOOK_TITLE.value, false)
+          expect(propertyOptions).to.have.property('type', 'Book')
+        })
+        it('should return type for reverse property', () => {
+          const store = new Store<Quad>()
+          store.addQuad(BOOK_TITLE, DataFactory.namedNode(RDFS.domain), BOOK)
+          store.addQuad(BOOK, CLASS_NAME, DataFactory.literal('Book'))
+          const propertyOptions = new SemanticPropertyOptions(store, BOOK_TITLE.value, true)
+          expect(propertyOptions).to.have.property('type', 'Book')
+        })
       })
       describe('SemanticMapperOptions', () => {
         it('should list roots', () => {

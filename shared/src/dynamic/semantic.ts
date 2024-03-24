@@ -11,6 +11,14 @@ export const PROPERTY_REVERSE_NAME: NamedNode = DataFactory.namedNode(
 )
 export const ROOT_PREDICATE: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:root')
 
+function lookupClassName(store: Store, iri: string): string {
+  return (
+    store.getObjects(DataFactory.namedNode(iri), CLASS_NAME, null)[0]?.value ||
+    store.getObjects(DataFactory.namedNode(iri), RDFS.label, null)[0]?.value ||
+    iri
+  )
+}
+
 export class SemanticPropertyOptions implements PropertyOptions {
   constructor(
     private store: Store,
@@ -36,17 +44,22 @@ export class SemanticPropertyOptions implements PropertyOptions {
       return this.forwardName
     }
   }
+  get type(): string {
+    if (this.reverse) {
+      return lookupClassName(
+        this.store,
+        this.store.getObjects(DataFactory.namedNode(this.iri), RDFS.domain, null)[0]?.value
+      )
+    } else {
+      return lookupClassName(
+        this.store,
+        this.store.getObjects(DataFactory.namedNode(this.iri), RDFS.range, null)[0]?.value
+      )
+    }
+  }
   get predicate(): string {
     return this.store.getObjects(DataFactory.namedNode(this.iri), PROPERTY_PREDICATE, null)[0]?.value || this.iri
   }
-}
-
-function lookupClassName(store: Store, iri: string): string {
-  return (
-    store.getObjects(DataFactory.namedNode(iri), CLASS_NAME, null)[0]?.value ||
-    store.getObjects(DataFactory.namedNode(iri), RDFS.label, null)[0]?.value ||
-    iri
-  )
 }
 
 export class SemanticClassOptions implements ClassOptions {
