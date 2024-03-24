@@ -3,8 +3,8 @@ import { readFile } from 'fs/promises'
 import jsonld from 'jsonld'
 import 'mocha'
 import { Quad, Store } from 'n3'
-import { Model } from '../../../src/access/dynamic/index.js'
-import { ModelOptions } from '../../../src/access/dynamic/model.js'
+import { Model } from '../../../src/dynamic/access/index.js'
+import { ModelOptions } from '../../../src/dynamic/model.js'
 
 const modelOptions: ModelOptions = {
   classes: [
@@ -68,7 +68,7 @@ const modelOptions: ModelOptions = {
 }
 
 const store = new Store(
-  (await jsonld.toRDF(JSON.parse(await readFile('test/access/dynamic/books.jsonld', 'utf-8')))) as Quad[]
+  (await jsonld.toRDF(JSON.parse(await readFile('test/dynamic/access/books.jsonld', 'utf-8')))) as Quad[]
 )
 describe('access', () => {
   describe('dynamic', () => {

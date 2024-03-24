@@ -1,4 +1,4 @@
-import { MapperOptions } from './model.js'
+import { MapperOptions } from '../model.js'
 
 export function mapper(options: MapperOptions): (document: Record<string, any>) => Record<string, any> {
   const context = Object.fromEntries(

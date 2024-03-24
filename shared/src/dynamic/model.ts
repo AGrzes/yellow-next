@@ -21,3 +21,7 @@ export interface TypedNode {
   readonly iri: NamedNode | BlankNode
   readonly classes: ClassOptions[]
 }
+
+export interface MapperOptions extends ModelOptions {
+  roots: Record<string, string>
+}

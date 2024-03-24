@@ -1,5 +1,5 @@
 import { BlankNode, DataFactory, NamedNode, Store, Term } from 'n3'
-import { ModelOptions, TypedNode } from './model.js'
+import { ModelOptions, TypedNode } from '../model.js'
 
 export class Model {
   private handler: ProxyHandler<TypedNode>

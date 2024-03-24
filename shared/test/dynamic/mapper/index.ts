@@ -1,8 +1,8 @@
 import chai from 'chai'
 import chaiSubset from 'chai-subset'
 import 'mocha'
-import { mapper } from '../../../src/mapper/dynamic/index.js'
-import { MapperOptions } from '../../../src/mapper/dynamic/model.js'
+import { mapper } from '../../../src/dynamic/mapper/index.js'
+import { MapperOptions } from '../../../src/dynamic/model.js'
 const { expect } = chai.use(chaiSubset)
 
 const options: MapperOptions = {

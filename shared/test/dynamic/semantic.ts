@@ -10,7 +10,7 @@ import {
   SemanticClassOptions,
   SemanticModelOptions,
   SemanticPropertyOptions,
-} from '../../../src/access/dynamic/semantic.js'
+} from '../../src/dynamic/semantic.js'
 
 const BOOK = DataFactory.namedNode('http://agrzes.pl/books#Book')
 const BOOK_TITLE = DataFactory.namedNode('http://agrzes.pl/books#Book:title')

@@ -1,5 +1,5 @@
-import { Model } from '@agrzes/yellow-next-shared/access/dynamic'
-import { SemanticModelOptions } from '@agrzes/yellow-next-shared/access/dynamic/semantic'
+import { Model } from '@agrzes/yellow-next-shared/dynamic/access'
+import { SemanticModelOptions } from '@agrzes/yellow-next-shared/dynamic/semantic'
 import jsonld from 'jsonld'
 import { Store } from 'n3'
 import React from 'react'
