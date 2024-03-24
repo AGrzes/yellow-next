@@ -7,7 +7,9 @@ import {
   CLASS_TYPE,
   PROPERTY_NAME,
   PROPERTY_REVERSE_NAME,
+  ROOT_PREDICATE,
   SemanticClassOptions,
+  SemanticMapperOptions,
   SemanticModelOptions,
   SemanticPropertyOptions,
 } from '../../src/dynamic/semantic.js'
@@ -98,6 +100,15 @@ describe('access', () => {
           store.addQuad(BOOK_TITLE, PROPERTY_NAME, DataFactory.literal('title'))
           const propertyOptions = new SemanticPropertyOptions(store, BOOK_TITLE.value, true)
           expect(propertyOptions).to.have.property('name', '^title')
+        })
+      })
+      describe('SemanticMapperOptions', () => {
+        it('should list roots', () => {
+          const store = new Store<Quad>()
+          store.addQuad(BOOK, ROOT_PREDICATE, DataFactory.literal('books'))
+          store.addQuad(BOOK, CLASS_NAME, DataFactory.literal('Book'))
+          const modelOptions = new SemanticMapperOptions(store)
+          expect(modelOptions.roots).to.have.property('books', 'Book')
         })
       })
     })

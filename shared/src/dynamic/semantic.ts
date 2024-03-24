@@ -1,11 +1,14 @@
 import { RDF, RDFS } from '@inrupt/vocab-common-rdf'
 import { DataFactory, NamedNode, Store } from 'n3'
-import { ClassOptions, ModelOptions, PropertyOptions } from './model.js'
+import { ClassOptions, MapperOptions, ModelOptions, PropertyOptions } from './model.js'
 
 export const CLASS_TYPE: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Class')
 export const CLASS_NAME: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Class:name')
 export const PROPERTY_NAME: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Property:name')
-export const PROPERTY_REVERSE_NAME: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Property:reverse_name')
+export const PROPERTY_REVERSE_NAME: NamedNode = DataFactory.namedNode(
+  'agrzes:yellow-next:dynamic:Property:reverse_name'
+)
+export const ROOT_PREDICATE: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:root')
 
 export class SemanticPropertyOptions implements PropertyOptions {
   constructor(
@@ -34,6 +37,14 @@ export class SemanticPropertyOptions implements PropertyOptions {
   }
 }
 
+function lookupClassName(store: Store, iri: string): string {
+  return (
+    store.getObjects(DataFactory.namedNode(iri), CLASS_NAME, null)[0]?.value ||
+    store.getObjects(DataFactory.namedNode(iri), RDFS.label, null)[0]?.value ||
+    iri
+  )
+}
+
 export class SemanticClassOptions implements ClassOptions {
   constructor(
     private store: Store,
@@ -41,11 +52,7 @@ export class SemanticClassOptions implements ClassOptions {
   ) {}
 
   get name(): string {
-    return (
-      this.store.getObjects(DataFactory.namedNode(this.iri), CLASS_NAME, null)[0]?.value ||
-      this.store.getObjects(DataFactory.namedNode(this.iri), RDFS.label, null)[0]?.value ||
-      this.iri
-    )
+    return lookupClassName(this.store, this.iri)
   }
 
   get properties(): PropertyOptions[] {
@@ -61,11 +68,24 @@ export class SemanticClassOptions implements ClassOptions {
 }
 
 export class SemanticModelOptions implements ModelOptions {
-  constructor(private store: Store) {}
+  constructor(protected store: Store) {}
 
   get classes(): ClassOptions[] {
     return this.store
       .getSubjects(RDF.type, CLASS_TYPE, null)
       .map((iri) => new SemanticClassOptions(this.store, iri.value))
+  }
+}
+
+export class SemanticMapperOptions extends SemanticModelOptions implements MapperOptions {
+  constructor(store: Store) {
+    super(store)
+  }
+  get roots(): Record<string, string> {
+    return Object.fromEntries(
+      this.store
+        .getQuads(null, ROOT_PREDICATE, null, null)
+        .map((quad) => [quad.object.value, lookupClassName(this.store, quad.subject.value)])
+    )
   }
 }
