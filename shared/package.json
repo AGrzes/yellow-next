@@ -80,7 +80,7 @@
   "types": "types",
   "exports": {
     "./dynamic/access": "./target/dynamic/access/index.js",
-    "./dynamic/mapper": "./target/dynamic/access/mapper.js",
+    "./dynamic/mapper": "./target/dynamic/mapper/index.js",
     "./dynamic/semantic": "./target/dynamic/semantic.js"
   },
   "typesVersions": {
