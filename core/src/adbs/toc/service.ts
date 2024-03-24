@@ -71,8 +71,11 @@ export class TocService {
     delete this.entries[path]
   }
   private async moveEntry(oldPath: string, newPath: string): Promise<void> {
+    const dir = dirname(newPath)
+    const ext = extname(newPath)
+    const base = basename(newPath, ext)
     this.entries[newPath] = this.entries[oldPath]
-    this.entries[newPath].path = newPath
+    this.entries[newPath].path = join(dir, base)
     delete this.entries[oldPath]
   }
 

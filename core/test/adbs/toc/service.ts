@@ -20,7 +20,7 @@ describe('adbs', () => {
         expect(toc).to.deep.equal([
           {
             label: 'File',
-            href: 'file.md',
+            href: 'file',
           },
         ])
       })
@@ -34,7 +34,7 @@ describe('adbs', () => {
             children: [
               {
                 label: 'File',
-                href: 'folder/file.md',
+                href: 'folder/file',
               },
             ],
           },
@@ -53,7 +53,7 @@ describe('adbs', () => {
                 children: [
                   {
                     label: 'File',
-                    href: 'folder/subfolder/file.md',
+                    href: 'folder/subfolder/file',
                   },
                 ],
               },
@@ -83,7 +83,7 @@ describe('adbs', () => {
             children: [
               {
                 label: 'File',
-                href: 'folder/new.md',
+                href: 'folder/new',
               },
             ],
           },

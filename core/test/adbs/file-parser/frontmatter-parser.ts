@@ -15,7 +15,7 @@ describe('adbs', () => {
       it('should skip based on extension files', async () => {
         const read = async () => '---\nfoo: bar\n---\ncontent'
         const parser = new FrontmatterParser(read)
-        const parsed = await parser.parse('path.md')
+        const parsed = await parser.parse('path.mxd')
         expect(parsed).to.deep.equal([])
       })
 
