@@ -26,10 +26,12 @@ const options: MapperOptions = {
         {
           iri: 'http://agrzes.pl/books#Book/author',
           name: 'author',
+          type: 'Author',
         },
         {
           iri: 'http://agrzes.pl/books#Book/series',
           name: 'series',
+          type: 'Series',
         },
       ],
     },
@@ -45,6 +47,7 @@ const options: MapperOptions = {
           name: 'books',
           iri: 'http://agrzes.pl/books#Book/author',
           reverse: true,
+          type: 'Book',
         },
       ],
     },
@@ -60,6 +63,7 @@ const options: MapperOptions = {
           name: 'books',
           iri: 'http://agrzes.pl/books#Book/series',
           reverse: true,
+          type: 'Book',
         },
       ],
     },
@@ -154,6 +158,45 @@ describe('mapper', () => {
         expect(mapped).to.containSubset({
           '@graph': [{ a: 'b' }],
         })
+      })
+      it('should assign types to roots', () => {
+        const document = { books: { a: 'b' } }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ a: 'b', '@type': 'Book' }],
+        })
+      })
+      it('should assign types to nested objects', () => {
+        const document = { books: { author: { c: 'd' } } }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ author: { c: 'd', '@type': 'Author' } }],
+        })
+      })
+      it('should assign types to objects in arrays', () => {
+        const document = { books: { author: [{ c: 'd' }] } }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ author: [{ c: 'd', '@type': 'Author' }] }],
+        })
+      })
+      it('should ignore types for non-objects', () => {
+        const document = { books: { author: 'a' } }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ author: 'a' }],
+        })
+      })
+      it('should ignore types for non-objects in arrays', () => {
+        const document = { books: { author: ['a'] } }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ author: ['a'] }],
+        })
+      })
+      it('should thro error on unknown class', () => {
+        const document = { books: { author: ['a'] } }
+        expect(() => mapper({ roots: { books: 'Book' }, classes: [] })(document)).to.throw('Class Book not found')
       })
     })
   })

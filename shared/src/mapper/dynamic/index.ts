@@ -20,12 +20,43 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
       },
     ])
   )
+  function mapDocument(document: Record<string, any>, className: string) {
+    if (typeof document === 'object') {
+      const clazz = options.classes.find((c) => c.name === className)
+      if (clazz) {
+        return {
+          ...document,
+          '@type': className,
+          ...Object.fromEntries(
+            clazz.properties.flatMap((property) => {
+              const value = document[property.name]
+              if (document[property.name]) {
+                if (Array.isArray(value)) {
+                  return [[property.name, value.map((item) => mapDocument(item, property.type))]]
+                } else if (typeof value === 'object') {
+                  return [[property.name, mapDocument(value, property.type)]]
+                }
+                return []
+              } else {
+                return []
+              }
+            })
+          ),
+        }
+      } else {
+        throw new Error(`Class ${className} not found`)
+      }
+    } else {
+      return document
+    }
+  }
+
   function mapRoots(document: Record<string, any>) {
     return Object.entries(options.roots).flatMap(([key, value]) =>
       document[key]
         ? Array.isArray(document[key])
-          ? document[key].map((item) => ({ ...item, '@type': value }))
-          : { ...document[key], '@type': value }
+          ? document[key].map((item) => mapDocument(item, value))
+          : mapDocument(document[key], value)
         : []
     )
   }
