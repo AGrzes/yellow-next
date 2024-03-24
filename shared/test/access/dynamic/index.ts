@@ -94,6 +94,11 @@ describe('access', () => {
         const model = new Model(store, modelOptions)
         expect(() => model.all('Bookz')).to.throw()
       })
+      it('should expose iri', () => {
+        const model = new Model(store, modelOptions)
+        const books = model.all('Book')
+        expect(books[0].iri).to.equal('http://agrzes.pl/books#B1')
+      })
     })
   })
 })
