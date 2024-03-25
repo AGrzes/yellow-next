@@ -16,7 +16,7 @@ export const Mapping: interfaces.ServiceIdentifier<Mapping> = Symbol('Mapping')
 function uniqueBlankNode(salt: string) {
   return function <T extends Term>(term: T): T {
     if (term.termType === 'BlankNode') {
-      return DataFactory.blankNode(term.value.replace('_:', `${salt}`)) as T
+      return DataFactory.blankNode(term.value.replace('_:', `_:${salt}`)) as T
     } else {
       return term
     }
