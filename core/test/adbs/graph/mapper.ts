@@ -1,13 +1,15 @@
 import 'mocha'
 
+import { CLASS_NAME, CLASS_TYPE, ROOT_PREDICATE } from '@agrzes/yellow-next-shared/dynamic/semantic'
 import chai from 'chai'
-import { DataFactory } from 'n3'
+import { DataFactory, Store } from 'n3'
 import { firstValueFrom, of } from 'rxjs'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
 import {
   AsyncFunctionMapping,
   DocumentGraphMapper,
+  DynamicSemanticMapping,
   FunctionMapping,
   JSONLDMapping,
 } from '../../../src/adbs/graph/mapper.js'
@@ -105,7 +107,40 @@ describe('adbs', () => {
             .that.satisfies((object) => DataFactory.namedNode('urn:type').equals(object))
         })
       })
+      describe('DynamicSemanticMapping', () => {
+        it('should map from the start', async () => {
+          const mapper = DynamicSemanticMapping(of())
+          const document = { path: { '@id': 'urn:id', '@type': 'urn:type' } }
+          const triples = await mapper(document)
+          expect(triples).to.have.length(0)
+        })
+        it('should map after store update', async () => {
+          const store = new Store()
+          store.addQuad(DataFactory.namedNode('urn:type'), ROOT_PREDICATE, DataFactory.literal('root'))
+          store.addQuad(
+            DataFactory.namedNode('urn:type'),
+            DataFactory.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
+            CLASS_TYPE
+          )
+          store.addQuad(DataFactory.namedNode('urn:type'), CLASS_NAME, DataFactory.literal('Clazz'))
 
+          const mapper = DynamicSemanticMapping(of(store))
+          const document = { root: { '@id': 'urn:id' } }
+          const triples = await mapper(document)
+          expect(triples).to.have.length(1)
+          expect(triples[0])
+            .to.property('subject')
+            .that.satisfies((subject) => DataFactory.namedNode('urn:id').equals(subject))
+          expect(triples[0])
+            .to.property('predicate')
+            .that.satisfies((predicate) =>
+              DataFactory.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type').equals(predicate)
+            )
+          expect(triples[0])
+            .to.property('object')
+            .that.satisfies((object) => DataFactory.namedNode('urn:type').equals(object))
+        })
+      })
       describe('DocumentGraphMapper', () => {
         it('should map updates', async () => {
           const triple = DataFactory.triple(
