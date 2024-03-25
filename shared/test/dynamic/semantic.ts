@@ -5,6 +5,7 @@ import { DataFactory, Quad, Store } from 'n3'
 import {
   CLASS_NAME,
   CLASS_TYPE,
+  PROPERTY_MULTIPLICITY,
   PROPERTY_NAME,
   PROPERTY_PREDICATE,
   PROPERTY_REVERSE_NAME,
@@ -126,6 +127,17 @@ describe('access', () => {
           store.addQuad(BOOK, CLASS_NAME, DataFactory.literal('Book'))
           const propertyOptions = new SemanticPropertyOptions(store, BOOK_TITLE.value, true)
           expect(propertyOptions).to.have.property('type', 'Book')
+        })
+        it('should return multiplicity', () => {
+          const store = new Store<Quad>()
+          store.addQuad(BOOK_TITLE, PROPERTY_MULTIPLICITY, DataFactory.literal('single'))
+          const propertyOptions = new SemanticPropertyOptions(store, BOOK_TITLE.value, false)
+          expect(propertyOptions).to.have.property('multiplicity', 'single')
+        })
+        it('should return any multiplicity if not defined', () => {
+          const store = new Store<Quad>()
+          const propertyOptions = new SemanticPropertyOptions(store, BOOK_TITLE.value, false)
+          expect(propertyOptions).to.have.property('multiplicity', 'any')
         })
       })
       describe('SemanticMapperOptions', () => {
