@@ -13,7 +13,7 @@ import { FrontmatterParser } from './file-parser/frontmatter-parser.js'
 import { Parser, Read } from './file-parser/model.js'
 import { YamlParser } from './file-parser/yaml-parser.js'
 import { FileSource } from './file-source.js'
-import { DocumentGraphMapper, JSONLDMapping, Mapping } from './graph/mapper.js'
+import { DocumentGraphMapper, DynamicSemanticMapping, JSONLDMapping, Mapping } from './graph/mapper.js'
 import { GraphHandler } from './graph/server.js'
 import { GraphStore } from './graph/store.js'
 import { TocHandler } from './toc/server.js'
@@ -35,6 +35,9 @@ export const adbsModule = new ContainerModule((bind) => {
   bind(Mapping)
     .toDynamicValue((context) => JSONLDMapping('graph'))
     .inSingletonScope()
+    bind(Mapping)
+      .toDynamicValue((context) => DynamicSemanticMapping(context.container.get(GraphStore).observableStore))
+      .inSingletonScope()
   bind(DocumentSource).toFactory(() => documentSourceFactory)
   bind(GraphStore).toSelf().inSingletonScope()
   bind(GraphHandler).toDynamicValue(

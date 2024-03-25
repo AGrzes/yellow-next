@@ -1,10 +1,12 @@
+import { mapper } from '@agrzes/yellow-next-shared/dynamic/mapper'
+import { SemanticMapperOptions } from '@agrzes/yellow-next-shared/dynamic/semantic'
 import { randomBytes } from 'crypto'
 import debug from 'debug'
 import { injectable, interfaces, multiInject } from 'inversify'
 import jsonld, { JsonLdDocument } from 'jsonld'
 import _ from 'lodash'
-import { DataFactory, Quad_Graph, Term, Triple } from 'n3'
-import { OperatorFunction, concatMap } from 'rxjs'
+import { DataFactory, Quad_Graph, Store, Term, Triple } from 'n3'
+import { Observable, OperatorFunction, concatMap } from 'rxjs'
 import { ChangeEvent, DeleteEvent, MoveEvent, UpdateEvent } from '../model.js'
 
 const log = debug('yellow:adbs:graph:mapper')
@@ -34,6 +36,15 @@ export function JSONLDMapping(path?: string): Mapping {
   } else {
     return FunctionMapping((document) => document)
   }
+}
+
+export function DynamicSemanticMapping(storeSubject: Observable<Store>) {
+  let wrapped = (document: Record<string, any>) => ({})
+  const wrapper = (document: Record<string, any>) => wrapped(document)
+  storeSubject.subscribe((store) => {
+    wrapped = mapper(new SemanticMapperOptions(store))
+  })
+  return FunctionMapping(wrapper)
 }
 
 export function FunctionMapping(objectToJsonLd: (object: Record<string, any>) => JsonLdDocument): Mapping {

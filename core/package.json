@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@agrzes/yellow-next-web": "workspace:*",
+    "@agrzes/yellow-next-shared": "workspace:*",
     "@akebifiky/remark-simple-plantuml": "^1.0.2",
     "@mdx-js/loader": "3.0.1",
     "chokidar": "3.6.0",
