@@ -22,10 +22,17 @@ export class Model {
             : this.store
                 .getObjects(target.iri, DataFactory.namedNode(propertyOptions.predicate), null)
                 .map((iri: NamedNode | BlankNode) => this.proxy(iri))
-          if (values.length === 1) {
-            return values[0]
-          } else {
-            return values
+          switch (propertyOptions.multiplicity) {
+            case 'single':
+              return values[0]
+            case 'multiple':
+              return values
+            default:
+              if (values.length === 1) {
+                return values[0]
+              } else {
+                return values
+              }
           }
         }
       },

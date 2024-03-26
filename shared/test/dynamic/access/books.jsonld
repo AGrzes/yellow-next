@@ -41,7 +41,7 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "books": "http://agrzes.pl/books#",
     "authors": "http://agrzes.pl/authors#",
-    "series": "http://agrzes.pl/series#"
+    "s": "http://agrzes.pl/series#"
   },
   "@graph": [
     {
@@ -51,7 +51,7 @@
       "pages": 1,
       "released": "1993-10-01",
       "author": "authors:A1",
-      "series": "series:S1"
+      "series": "s:S1"
     },
     {
       "@id": "books:B2",
@@ -60,10 +60,10 @@
       "pages": 2,
       "released": "1993-10-01",
       "author": "authors:A1",
-      "series": "books:S1"
+      "series": "s:S1"
     },
     {
-      "@id": "series:S1",
+      "@id": "s:S1",
       "@type": "Series",
       "rdfs:label": "S1"
     },

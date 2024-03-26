@@ -32,6 +32,7 @@ const modelOptions: ModelOptions = {
           predicate: 'http://agrzes.pl/books#Book/author',
           name: 'author',
           type: 'Author',
+          multiplicity: 'single',
         },
         {
           iri: 'http://agrzes.pl/books#Book/series',
@@ -56,6 +57,7 @@ const modelOptions: ModelOptions = {
           predicate: 'http://agrzes.pl/books#Book/author',
           reverse: true,
           type: 'Book',
+          multiplicity: 'multiple',
         },
       ],
     },
@@ -98,10 +100,20 @@ describe('access', () => {
         const books = model.all('Book')
         expect(books[0].author.name).to.equal('A1')
       })
-      it('should navigate back book', () => {
+      it('should navigate back to book', () => {
         const model = new Model(store, modelOptions)
         const books = model.all('Book')
         expect(books[0].author.books[0].title).to.equal('B1')
+      })
+      it('should navigate to series', () => {
+        const model = new Model(store, modelOptions)
+        const books = model.all('Book')
+        expect(books[0].series.name).to.equal('S1')
+      })
+      it('should navigate back to book', () => {
+        const model = new Model(store, modelOptions)
+        const books = model.all('Book')
+        expect(books[0].series.books[0].title).to.equal('B1')
       })
       it('should fail on missing class', () => {
         const model = new Model(store, modelOptions)
