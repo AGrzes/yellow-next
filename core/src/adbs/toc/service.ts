@@ -1,9 +1,12 @@
 import debug from 'debug'
+import { readFile } from 'fs/promises'
+import matter from 'gray-matter'
 import { injectable } from 'inversify'
 import lodash from 'lodash'
 import { basename, dirname, extname, join, relative, sep } from 'path'
 import { PartialObserver } from 'rxjs'
 import { ChangeEvent, MoveEvent } from '../model.js'
+
 const { filter, groupBy, map, omit, startCase } = lodash
 
 const log = debug('yellow:adbs:toc:service')
@@ -53,13 +56,26 @@ export class TocService {
   private tocCache: TocNode[]
   private entries: Record<string, Entry> = {}
 
+  private async extractMetadata(path: string): Promise<Record<string, any>> {
+    log('extractMetadata', path)
+    const ext = extname(path)
+    if (['.mdx', '.md'].includes(ext)) {
+      const content = await readFile(join(this.documentDirectory, path), 'utf-8')
+      const metadata = matter(content).data
+      log('extractMetadata', metadata)
+      return metadata
+    }
+    return {}
+  }
+
   private async createEntry(path: string): Promise<Entry> {
     const dir = dirname(path)
     const ext = extname(path)
     const base = basename(path, ext)
+    const { title } = await this.extractMetadata(path)
     return {
       path: join(dir, base),
-      label: startCase(base),
+      label: title || startCase(base),
       skip: !['.mdx', '.md', '.tsx', '.jsx'].includes(ext),
     }
   }
