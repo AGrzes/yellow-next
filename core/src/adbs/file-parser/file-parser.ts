@@ -2,6 +2,7 @@ import debug from 'debug'
 import { injectable, multiInject } from 'inversify'
 import _ from 'lodash'
 import { OperatorFunction, concatMap, mergeMap, of } from 'rxjs'
+import { ContentSource } from '../file-source.js'
 import { ChangeEvent, DeleteEvent, MoveEvent, UpdateEvent } from '../model.js'
 import { Parsed, Parser } from './model.js'
 
@@ -9,12 +10,12 @@ const log = debug('yellow:adbs:file-parser')
 @injectable()
 export class FileParser {
   constructor(@multiInject(Parser) private parsers: Parser[]) {}
-  private async documentMapper(path: string): Promise<Parsed[]> {
+  private async documentMapper(path: string, source: ContentSource): Promise<Parsed[]> {
     return _.flatten(
       await Promise.all(
         this.parsers.map(async (p) => {
           try {
-            return await p.parse(path)
+            return await p.parse(path, source)
           } catch (e) {
             log('Error parsing file', e)
             return []
@@ -23,15 +24,15 @@ export class FileParser {
       )
     )
   }
-  public parse(): OperatorFunction<ChangeEvent<void, string>, ChangeEvent<Record<string, any>, string>> {
+  public parse(): OperatorFunction<ChangeEvent<ContentSource, string>, ChangeEvent<Record<string, any>, string>> {
     {
       return (source) =>
         source.pipe(
           concatMap(async (event) => {
             log(`FileParser: ${event.key} ${event.kind}`)
             if (event.kind === 'update') {
-              const { key, hint } = event as UpdateEvent<Record<string, any>, string>
-              const parsed = await this.documentMapper(key)
+              const { key, hint, content } = event as UpdateEvent<ContentSource, string>
+              const parsed = await this.documentMapper(key, content)
               return _.map(
                 parsed,
                 ({ document, id }) =>

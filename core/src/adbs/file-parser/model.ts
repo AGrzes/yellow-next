@@ -1,4 +1,5 @@
 import { interfaces } from 'inversify'
+import { ContentSource } from '../file-source.js'
 
 export interface Parsed {
   document: Record<string, any>
@@ -6,8 +7,6 @@ export interface Parsed {
 }
 
 export interface Parser {
-  parse(path: string): Promise<Parsed[]>
+  parse(path: string, source: ContentSource): Promise<Parsed[]>
 }
 export const Parser: interfaces.ServiceIdentifier<Parser> = Symbol('Parser')
-
-export const Read: interfaces.ServiceIdentifier<(path: string) => Promise<string>> = Symbol('Read')
