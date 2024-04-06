@@ -1,9 +1,12 @@
 import debug from 'debug'
+import matter from 'gray-matter'
 import { injectable } from 'inversify'
 import lodash from 'lodash'
 import { basename, dirname, extname, join, relative, sep } from 'path'
 import { PartialObserver } from 'rxjs'
-import { ChangeEvent, MoveEvent } from '../model.js'
+import { ContentSource } from '../file-source.js'
+import { ChangeEvent, MoveEvent, UpdateEvent } from '../model.js'
+
 const { filter, groupBy, map, omit, startCase } = lodash
 
 const log = debug('yellow:adbs:toc:service')
@@ -53,19 +56,32 @@ export class TocService {
   private tocCache: TocNode[]
   private entries: Record<string, Entry> = {}
 
-  private async createEntry(path: string): Promise<Entry> {
+  private async extractMetadata(path: string, source: ContentSource): Promise<Record<string, any>> {
+    log('extractMetadata', path)
+    const ext = extname(path)
+    if (['.mdx', '.md'].includes(ext)) {
+      const content = await source()
+      const metadata = matter(content).data
+      log('extractMetadata', metadata)
+      return metadata
+    }
+    return {}
+  }
+
+  private async createEntry(path: string, source: ContentSource): Promise<Entry> {
     const dir = dirname(path)
     const ext = extname(path)
     const base = basename(path, ext)
+    const { title } = await this.extractMetadata(path, source)
     return {
       path: join(dir, base),
-      label: startCase(base),
+      label: title || startCase(base),
       skip: !['.mdx', '.md', '.tsx', '.jsx'].includes(ext),
     }
   }
 
-  private async addEntry(path: string): Promise<void> {
-    this.entries[path] = await this.createEntry(path)
+  private async addEntry(path: string, source: ContentSource): Promise<void> {
+    this.entries[path] = await this.createEntry(path, source)
   }
   private async removeEntry(path: string): Promise<void> {
     delete this.entries[path]
@@ -79,14 +95,14 @@ export class TocService {
     delete this.entries[oldPath]
   }
 
-  public get observer(): PartialObserver<ChangeEvent<void, string>> {
+  public get observer(): PartialObserver<ChangeEvent<ContentSource, string>> {
     return {
       next: async (change) => {
         try {
           const path = relative(this.documentDirectory, change.key)
           switch (change.kind) {
             case 'update':
-              await this.addEntry(path)
+              await this.addEntry(path, (change as UpdateEvent<ContentSource, string>).content)
               break
             case 'delete':
               await this.removeEntry(path)

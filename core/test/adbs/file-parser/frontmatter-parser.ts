@@ -7,22 +7,22 @@ describe('adbs', () => {
     describe('FrontmatterParser', () => {
       it('should parse frontmatter', async () => {
         const read = async () => '---\nfoo: bar\n---\ncontent'
-        const parser = new FrontmatterParser(read)
-        const parsed = await parser.parse('path.mdx')
+        const parser = new FrontmatterParser()
+        const parsed = await parser.parse('path.mdx', read)
         expect(parsed).to.deep.equal([{ document: { foo: 'bar' }, id: 'frontmatter' }])
       })
 
       it('should skip based on extension files', async () => {
         const read = async () => '---\nfoo: bar\n---\ncontent'
-        const parser = new FrontmatterParser(read)
-        const parsed = await parser.parse('path.mxd')
+        const parser = new FrontmatterParser()
+        const parsed = await parser.parse('path.mxd', read)
         expect(parsed).to.deep.equal([])
       })
 
       it('should use custom extensions', async () => {
         const read = async () => '---\nfoo: bar\n---\ncontent'
-        const parser = new FrontmatterParser(read, ['.md'])
-        const parsed = await parser.parse('path.md')
+        const parser = new FrontmatterParser(['.md'])
+        const parsed = await parser.parse('path.md', read)
         expect(parsed).to.deep.equal([{ document: { foo: 'bar' }, id: 'frontmatter' }])
       })
     })

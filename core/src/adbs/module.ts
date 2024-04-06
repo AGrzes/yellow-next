@@ -10,7 +10,7 @@ import { DocumentSource, documentSourceFactory } from './documents/source.js'
 import { DocumentStore, documentStoreFactory } from './documents/store.js'
 import { FileParser } from './file-parser/file-parser.js'
 import { FrontmatterParser } from './file-parser/frontmatter-parser.js'
-import { Parser, Read } from './file-parser/model.js'
+import { Parser } from './file-parser/model.js'
 import { YamlParser } from './file-parser/yaml-parser.js'
 import { FileSource } from './file-source.js'
 import { DocumentGraphMapper, DynamicSemanticMapping, JSONLDMapping, Mapping } from './graph/mapper.js'
@@ -30,14 +30,14 @@ export const adbsModule = new ContainerModule((bind) => {
   bind(Parser).toService(YamlParser)
   bind(Parser).toService(FrontmatterParser)
   bind(ADBS).toSelf().inSingletonScope()
-  bind(Read).toConstantValue((path) => readFile(path, 'utf-8'))
+  bind(readFile).toConstantValue((path) => readFile(path, 'utf-8'))
   bind(DocumentGraphMapper).toSelf().inSingletonScope()
   bind(Mapping)
     .toDynamicValue((context) => JSONLDMapping('graph'))
     .inSingletonScope()
-    bind(Mapping)
-      .toDynamicValue((context) => DynamicSemanticMapping(context.container.get(GraphStore).observableStore))
-      .inSingletonScope()
+  bind(Mapping)
+    .toDynamicValue((context) => DynamicSemanticMapping(context.container.get(GraphStore).observableStore))
+    .inSingletonScope()
   bind(DocumentSource).toFactory(() => documentSourceFactory)
   bind(GraphStore).toSelf().inSingletonScope()
   bind(GraphHandler).toDynamicValue(
