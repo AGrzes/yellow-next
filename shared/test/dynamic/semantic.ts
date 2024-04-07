@@ -3,6 +3,7 @@ import { expect } from 'chai'
 import 'mocha'
 import { DataFactory, Quad, Store } from 'n3'
 import {
+  CLASS_DEFAULT_PROPERTY,
   CLASS_ID_PATTERN,
   CLASS_NAME,
   CLASS_TYPE,
@@ -74,6 +75,12 @@ describe('access', () => {
           store.addQuad(BOOK, CLASS_ID_PATTERN, DataFactory.literal('idPattern'))
           const classOptions = new SemanticClassOptions(store, BOOK.value)
           expect(classOptions).to.have.property('idPattern', 'idPattern')
+        })
+        it('should return default property', () => {
+          const store = new Store<Quad>()
+          store.addQuad(BOOK, CLASS_DEFAULT_PROPERTY, DataFactory.literal('title'))
+          const classOptions = new SemanticClassOptions(store, BOOK.value)
+          expect(classOptions).to.have.property('defaultProperty', 'title')
         })
       })
       describe('SemanticPropertyOptions', () => {
