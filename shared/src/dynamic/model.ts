@@ -4,6 +4,7 @@ export interface ClassOptions {
   readonly name: string
   readonly iri: string
   readonly properties: PropertyOptions[]
+  readonly idPattern?: string
 }
 
 export type Multiplicity = 'single' | 'multiple' | 'any'

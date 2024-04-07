@@ -1,3 +1,5 @@
+import Handlebars from '../../handlebars.js'
+
 import { MapperOptions } from '../model.js'
 
 export function mapper(options: MapperOptions): (document: Record<string, any>) => Record<string, any> {
@@ -20,14 +22,26 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
       },
     ])
   )
+  function idFromPattern(pattern: string, document: Record<string, any>) {
+    const template = Handlebars.compile(pattern)
+    return template(document)
+  }
   function mapDocument(document: Record<string, any>, className: string) {
     if (typeof document === 'object') {
       const clazz = options.classes.find((c) => c.name === className)
       if (clazz) {
-        return {
-          ...document,
-          '@type': className,
-          ...Object.fromEntries(
+        const id = document['@id'] || (clazz.idPattern && idFromPattern(clazz.idPattern, document))
+        const result = { ...document }
+        if (!document['@id'] && clazz.idPattern) {
+          const id = clazz.idPattern && idFromPattern(clazz.idPattern, document)
+          if (id) {
+            result['@id'] = id
+          }
+        }
+        result['@type'] = className
+        Object.assign(
+          result,
+          Object.fromEntries(
             clazz.properties.flatMap((property) => {
               const value = document[property.name]
               if (document[property.name]) {
@@ -41,8 +55,9 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
                 return []
               }
             })
-          ),
-        }
+          )
+        )
+        return result
       } else {
         throw new Error(`Class ${className} not found`)
       }

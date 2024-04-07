@@ -10,6 +10,7 @@ const options: MapperOptions = {
     {
       iri: 'http://agrzes.pl/books#Book',
       name: 'Book',
+      idPattern: 'http://agrzes.pl/books#Book/{{title}}',
       properties: [
         {
           iri: 'http://agrzes.pl/books#Book/pages',
@@ -206,6 +207,13 @@ describe('mapper', () => {
       it('should thro error on unknown class', () => {
         const document = { books: { author: ['a'] } }
         expect(() => mapper({ roots: { books: 'Book' }, classes: [] })(document)).to.throw('Class Book not found')
+      })
+      it('should handle id pattern', () => {
+        const document = { books: { title: 'a' } }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ '@id': 'http://agrzes.pl/books#Book/a', title: 'a' }],
+        })
       })
     })
   })

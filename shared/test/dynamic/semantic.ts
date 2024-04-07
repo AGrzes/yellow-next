@@ -3,6 +3,7 @@ import { expect } from 'chai'
 import 'mocha'
 import { DataFactory, Quad, Store } from 'n3'
 import {
+  CLASS_ID_PATTERN,
   CLASS_NAME,
   CLASS_TYPE,
   PROPERTY_MULTIPLICITY,
@@ -67,6 +68,12 @@ describe('access', () => {
           expect(classOptions.properties).to.have.length(1)
           expect(classOptions.properties[0].iri).to.equal(BOOK_TITLE.value)
           expect(classOptions.properties[0].reverse).to.be.true
+        })
+        it('should return id pattern', () => {
+          const store = new Store<Quad>()
+          store.addQuad(BOOK, CLASS_ID_PATTERN, DataFactory.literal('idPattern'))
+          const classOptions = new SemanticClassOptions(store, BOOK.value)
+          expect(classOptions).to.have.property('idPattern', 'idPattern')
         })
       })
       describe('SemanticPropertyOptions', () => {
