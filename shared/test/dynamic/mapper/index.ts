@@ -11,6 +11,7 @@ const options: MapperOptions = {
       iri: 'http://agrzes.pl/books#Book',
       name: 'Book',
       idPattern: 'http://agrzes.pl/books#Book/{{title}}',
+      defaultProperty: 'title',
       properties: [
         {
           iri: 'http://agrzes.pl/books#Book/pages',
@@ -202,6 +203,20 @@ describe('mapper', () => {
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
           '@graph': [{ author: ['a'] }],
+        })
+      })
+      it('should handle default property', () => {
+        const document = { books: 'a' }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ title: 'a' }],
+        })
+      })
+      it('should handle default property for array', () => {
+        const document = { books: ['a'] }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ title: 'a' }],
         })
       })
       it('should thro error on unknown class', () => {

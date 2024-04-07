@@ -27,10 +27,16 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
     return template(document)
   }
   function mapDocument(document: Record<string, any>, className: string) {
-    if (typeof document === 'object') {
+    if (className) {
       const clazz = options.classes.find((c) => c.name === className)
       if (clazz) {
-        const id = document['@id'] || (clazz.idPattern && idFromPattern(clazz.idPattern, document))
+        if (typeof document !== 'object') {
+          if (clazz.defaultProperty) {
+            document = { [clazz.defaultProperty]: document }
+          } else {
+            return document
+          }
+        }
         const result = { ...document }
         if (!document['@id'] && clazz.idPattern) {
           const id = clazz.idPattern && idFromPattern(clazz.idPattern, document)
@@ -47,10 +53,8 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
               if (document[property.name]) {
                 if (Array.isArray(value)) {
                   return [[property.name, value.map((item) => mapDocument(item, property.type))]]
-                } else if (typeof value === 'object') {
-                  return [[property.name, mapDocument(value, property.type)]]
                 }
-                return []
+                return [[property.name, mapDocument(value, property.type)]]
               } else {
                 return []
               }
