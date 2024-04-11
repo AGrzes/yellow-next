@@ -1,5 +1,7 @@
+import lodash from 'lodash'
 import { BlankNode, DataFactory, NamedNode, Store, Term } from 'n3'
 import { ModelOptions, TypedNode } from '../model.js'
+const { sortBy } = lodash
 
 export class Model {
   private handler: ProxyHandler<TypedNode>
@@ -26,6 +28,9 @@ export class Model {
             case 'single':
               return values[0]
             case 'multiple':
+              if (propertyOptions.orderBy) {
+                return sortBy(values, propertyOptions.orderBy)
+              }
               return values
             default:
               if (values.length === 1) {

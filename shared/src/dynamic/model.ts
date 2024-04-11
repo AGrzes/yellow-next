@@ -17,6 +17,7 @@ export interface PropertyOptions {
   readonly reverse?: boolean
   readonly type?: string
   readonly multiplicity?: Multiplicity
+  readonly orderBy?: string
 }
 
 export interface ModelOptions {

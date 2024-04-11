@@ -9,6 +9,7 @@ import {
   CLASS_TYPE,
   PROPERTY_MULTIPLICITY,
   PROPERTY_NAME,
+  PROPERTY_ORDER_BY,
   PROPERTY_PREDICATE,
   PROPERTY_REVERSE_NAME,
   ROOT_PREDICATE,
@@ -152,6 +153,12 @@ describe('access', () => {
           const store = new Store<Quad>()
           const propertyOptions = new SemanticPropertyOptions(store, BOOK_TITLE.value, false)
           expect(propertyOptions).to.have.property('multiplicity', 'any')
+        })
+        it('should return order by', () => {
+          const store = new Store<Quad>()
+          store.addQuad(BOOK_TITLE, PROPERTY_ORDER_BY, DataFactory.literal('title'))
+          const propertyOptions = new SemanticPropertyOptions(store, BOOK_TITLE.value, false)
+          expect(propertyOptions).to.have.property('orderBy', 'title')
         })
       })
       describe('SemanticMapperOptions', () => {

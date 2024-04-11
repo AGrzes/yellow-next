@@ -49,7 +49,7 @@
       "@type": "Book",
       "rdfs:label": "B1",
       "pages": 1,
-      "released": "1993-10-01",
+      "released": "1993-10-02",
       "author": "authors:A1",
       "series": "s:S1"
     },
@@ -59,7 +59,10 @@
       "rdfs:label": "B2",
       "pages": 2,
       "released": "1993-10-01",
-      "author": "authors:A1",
+      "author": [
+        "authors:A1",
+        "authors:A2"
+      ],
       "series": "s:S1"
     },
     {
@@ -71,6 +74,11 @@
       "@id": "authors:A1",
       "@type": "Author",
       "rdfs:label": "A1"
+    },
+    {
+      "@id": "authors:A2",
+      "@type": "Author",
+      "rdfs:label": "A2"
     }
   ]
 }

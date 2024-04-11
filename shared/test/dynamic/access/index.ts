@@ -32,13 +32,13 @@ const modelOptions: ModelOptions = {
           predicate: 'http://agrzes.pl/books#Book/author',
           name: 'author',
           type: 'Author',
-          multiplicity: 'single',
         },
         {
           iri: 'http://agrzes.pl/books#Book/series',
           predicate: 'http://agrzes.pl/books#Book/series',
           name: 'series',
           type: 'Series',
+          multiplicity: 'single',
         },
       ],
     },
@@ -58,6 +58,7 @@ const modelOptions: ModelOptions = {
           reverse: true,
           type: 'Book',
           multiplicity: 'multiple',
+          orderBy: 'released',
         },
       ],
     },
@@ -76,6 +77,7 @@ const modelOptions: ModelOptions = {
           predicate: 'http://agrzes.pl/books#Book/series',
           reverse: true,
           type: 'Book',
+          multiplicity: 'multiple',
         },
       ],
     },
@@ -99,11 +101,12 @@ describe('access', () => {
         const model = new Model(store, modelOptions)
         const books = model.all('Book')
         expect(books[0].author.name).to.equal('A1')
+        expect(books[1].author[0].name).to.equal('A1')
       })
       it('should navigate back to book', () => {
         const model = new Model(store, modelOptions)
         const books = model.all('Book')
-        expect(books[0].author.books[0].title).to.equal('B1')
+        expect(books[0].author.books[1].title).to.equal('B1')
       })
       it('should navigate to series', () => {
         const model = new Model(store, modelOptions)
