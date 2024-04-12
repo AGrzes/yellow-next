@@ -1,11 +1,11 @@
-import { List, SxProps, Theme } from '@mui/material'
+import { List } from '@mui/material'
 import React from 'react'
 import { TocItems } from './TocItems'
 import { TocNode } from './model'
 
-export function Toc({ toc, sx }: { toc: TocNode[]; sx?: SxProps<Theme> }) {
+export function Toc({ toc }: { toc: TocNode[] }) {
   return (
-    <List sx={sx}>
+    <List>
       <TocItems items={toc} />
     </List>
   )

@@ -70,12 +70,20 @@
   "types": "types",
   "exports": {
     ".": "./src/index.tsx",
-    "./documents": "./src/documents/index.ts"
+    "./documents": "./src/documents/index.ts",
+    "./model": "./src/model/index.ts",
+    "./store": "./src/store/index.ts"
   },
   "typesVersions": {
     "*": {
       "documents": [
         "types/documents/index.d.ts"
+      ],
+      "model": [
+        "types/model/index.d.ts"
+      ],
+      "store": [
+        "types/store/index.d.ts"
       ]
     }
   }
