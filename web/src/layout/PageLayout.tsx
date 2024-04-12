@@ -1,78 +1,9 @@
-import {
-  Box,
-  Container,
-  CssBaseline,
-  Divider,
-  Fab,
-  Icon,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Stack,
-  SxProps,
-  Theme,
-} from '@mui/material'
-import React, { Fragment } from 'react'
-import { Link, Outlet, useLoaderData, useMatch } from 'react-router-dom'
+import { Box, Container, CssBaseline, Divider, Fab, Icon, Stack } from '@mui/material'
+import React from 'react'
+import { Outlet, useLoaderData } from 'react-router-dom'
 import './PageLayout.scss'
-
-interface TocNode {
-  href: string
-  label: string
-  children: TocNode[]
-}
-
-export function TocItem({ item, level }: { item: TocNode; level: number }) {
-  const href = item.href ? `/documents/${item.href}` : null
-  const match = useMatch(href || '')
-  const icon = href ? 'description' : 'folder'
-  return (
-    <Fragment>
-      {href ? (
-        <ListItemButton
-          component={Link}
-          to={href}
-          sx={{ padding: 0.25, paddingLeft: level, paddingRight: 1 }}
-          selected={Boolean(match)}
-        >
-          <ListItemIcon sx={{ minWidth: '32px' }}>
-            <Icon>{icon}</Icon>
-          </ListItemIcon>
-          <ListItemText primary={item.label} />
-        </ListItemButton>
-      ) : (
-        <ListItem sx={{ padding: 0.25, paddingLeft: level, paddingRight: 1 }}>
-          <ListItemIcon sx={{ minWidth: '32px' }}>
-            <Icon>{icon}</Icon>
-          </ListItemIcon>
-          <ListItemText primary={item.label} />
-        </ListItem>
-      )}
-      {item.children && <TocItems items={item.children} level={level + 1} />}
-    </Fragment>
-  )
-}
-
-export function TocItems({ items, level }: { items: TocNode[]; level?: number }) {
-  level = level || 1
-  return (
-    <Fragment>
-      {items.map((item: TocNode, index) => (
-        <TocItem key={item.href || `${item.label}-${index}`} item={item} level={level}></TocItem>
-      ))}
-    </Fragment>
-  )
-}
-
-export function Toc({ toc, sx }: { toc: TocNode[]; sx?: SxProps<Theme> }) {
-  return (
-    <List sx={sx}>
-      <TocItems items={toc} />
-    </List>
-  )
-}
+import { Toc } from './toc/Toc'
+import { TocNode } from './toc/model'
 
 export function PageLayout() {
   const toc = useLoaderData() as TocNode[]
