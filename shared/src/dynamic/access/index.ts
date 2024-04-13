@@ -1,6 +1,6 @@
 import lodash from 'lodash'
 import { BlankNode, DataFactory, NamedNode, Store, Term } from 'n3'
-import { ModelOptions, TypedNode } from '../model.js'
+import { ClassOptions, ModelOptions, TypedNode } from '../model.js'
 const { sortBy } = lodash
 
 export class Model {
@@ -70,5 +70,9 @@ export class Model {
     } else {
       throw new Error(`Class ${name} not found`)
     }
+  }
+
+  get classes(): ClassOptions[] {
+    return this.options.classes
   }
 }

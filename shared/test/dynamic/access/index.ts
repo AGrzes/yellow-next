@@ -1,10 +1,12 @@
-import { expect } from 'chai'
+import chai from 'chai'
+import chaiSubset from 'chai-subset'
 import { readFile } from 'fs/promises'
 import jsonld from 'jsonld'
 import 'mocha'
 import { Quad, Store } from 'n3'
 import { Model } from '../../../src/dynamic/access/index.js'
 import { ModelOptions } from '../../../src/dynamic/model.js'
+const { expect } = chai.use(chaiSubset)
 
 const modelOptions: ModelOptions = {
   classes: [
@@ -126,6 +128,11 @@ describe('access', () => {
         const model = new Model(store, modelOptions)
         const books = model.all('Book')
         expect(books[0].iri).to.equal('http://agrzes.pl/books#B1')
+      })
+      it('should expose list of classes', () => {
+        const model = new Model(store, modelOptions)
+        expect(model.classes).to.have.lengthOf(3)
+        expect(model.classes).to.be.containSubset([{ name: 'Book' }, { name: 'Author' }, { name: 'Series' }])
       })
     })
   })
