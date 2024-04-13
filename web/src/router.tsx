@@ -2,6 +2,7 @@ import { Store } from 'n3'
 import * as React from 'react'
 import { Outlet, createBrowserRouter, useLoaderData } from 'react-router-dom'
 import documentsRoutes from './documents/routes'
+import entityRoutes from './entities/routes'
 import { ModelContext, createModel } from './model/index'
 import { StoreContext, loadGraph } from './store/index'
 
@@ -21,6 +22,6 @@ export const router: ReturnType<typeof createBrowserRouter> = createBrowserRoute
   {
     element: <StoreAndModel />,
     loader: loadGraph,
-    children: [...documentsRoutes],
+    children: [...documentsRoutes, ...entityRoutes],
   },
 ])
