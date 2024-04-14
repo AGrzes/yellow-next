@@ -5,6 +5,7 @@ import { DataFactory, Quad, Store } from 'n3'
 import {
   CLASS_DEFAULT_PROPERTY,
   CLASS_ID_PATTERN,
+  CLASS_INTERNAL,
   CLASS_NAME,
   CLASS_TYPE,
   PROPERTY_MULTIPLICITY,
@@ -83,6 +84,12 @@ describe('access', () => {
           store.addQuad(BOOK, CLASS_DEFAULT_PROPERTY, DataFactory.literal('title'))
           const classOptions = new SemanticClassOptions(store, BOOK.value)
           expect(classOptions).to.have.property('defaultProperty', 'title')
+        })
+        it('should return internal', () => {
+          const store = new Store<Quad>()
+          store.addQuad(BOOK, CLASS_INTERNAL, DataFactory.literal('true'))
+          const classOptions = new SemanticClassOptions(store, BOOK.value)
+          expect(classOptions).to.have.property('internal', true)
         })
       })
       describe('SemanticPropertyOptions', () => {

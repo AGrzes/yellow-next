@@ -5,6 +5,7 @@ import { ClassOptions, MapperOptions, ModelOptions, Multiplicity, PropertyOption
 export const CLASS_TYPE: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Class')
 export const CLASS_NAME: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Class:name')
 export const CLASS_ID_PATTERN: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Class:id_pattern')
+export const CLASS_INTERNAL: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Class:internal')
 export const CLASS_DEFAULT_PROPERTY: NamedNode = DataFactory.namedNode(
   'agrzes:yellow-next:dynamic:Class:default_property'
 )
@@ -116,6 +117,9 @@ export class SemanticClassOptions implements ClassOptions {
 
   get defaultProperty(): string {
     return this.store.getObjects(DataFactory.namedNode(this.iri), CLASS_DEFAULT_PROPERTY, null)[0]?.value
+  }
+  get internal(): boolean {
+    return this.store.getObjects(DataFactory.namedNode(this.iri), CLASS_INTERNAL, null)[0]?.value === 'true'
   }
 }
 
