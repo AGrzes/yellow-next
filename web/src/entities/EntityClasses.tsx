@@ -7,14 +7,16 @@ export function EntityClasses() {
   const model = useModel()
   return (
     <List>
-      {model.classes.map((clazz) => (
-        <ListItemButton component={Link} to={clazz.name} key={clazz.name}>
-          <ListItemIcon sx={{ minWidth: '32px' }}>
-            <Icon>category</Icon>
-          </ListItemIcon>
-          <ListItemText primary={clazz.name} />
-        </ListItemButton>
-      ))}
+      {model.classes
+        .filter(({ internal }) => !internal)
+        .map((clazz) => (
+          <ListItemButton component={Link} to={clazz.name} key={clazz.name}>
+            <ListItemIcon sx={{ minWidth: '32px' }}>
+              <Icon>category</Icon>
+            </ListItemIcon>
+            <ListItemText primary={clazz.name} />
+          </ListItemButton>
+        ))}
     </List>
   )
 }
