@@ -43,6 +43,7 @@ export class DocumentsHandler {
             alias: {
               '@documents': join(cwd(), documentDirectory),
               '@components': join(cwd(), 'components'),
+              '@config': join(cwd(), 'config'),
             },
             extensions: ['.js', '.json', '.wasm', '.mdx'],
           },
