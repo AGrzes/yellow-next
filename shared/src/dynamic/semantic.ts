@@ -13,6 +13,9 @@ export const PROPERTY_PREDICATE: NamedNode = DataFactory.namedNode('agrzes:yello
 export const PROPERTY_MULTIPLICITY: NamedNode = DataFactory.namedNode(
   'agrzes:yellow-next:dynamic:Property:multiplicity'
 )
+export const PROPERTY_REVERSE_MULTIPLICITY: NamedNode = DataFactory.namedNode(
+  'agrzes:yellow-next:dynamic:Property:reverse_multiplicity'
+)
 export const PROPERTY_REVERSE_NAME: NamedNode = DataFactory.namedNode(
   'agrzes:yellow-next:dynamic:Property:reverse_name'
 )
@@ -73,6 +76,12 @@ export class SemanticPropertyOptions implements PropertyOptions {
     return (
       (this.store.getObjects(DataFactory.namedNode(this.iri), PROPERTY_MULTIPLICITY, null)[0]?.value as Multiplicity) ||
       'any'
+    )
+  }
+  get reverseMultiplicity(): Multiplicity {
+    return (
+      (this.store.getObjects(DataFactory.namedNode(this.iri), PROPERTY_REVERSE_MULTIPLICITY, null)[0]
+        ?.value as Multiplicity) || 'any'
     )
   }
   get orderBy(): string {

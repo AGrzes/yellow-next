@@ -11,6 +11,7 @@ import {
   PROPERTY_NAME,
   PROPERTY_ORDER_BY,
   PROPERTY_PREDICATE,
+  PROPERTY_REVERSE_MULTIPLICITY,
   PROPERTY_REVERSE_NAME,
   ROOT_PREDICATE,
   SemanticClassOptions,
@@ -153,6 +154,17 @@ describe('access', () => {
           const store = new Store<Quad>()
           const propertyOptions = new SemanticPropertyOptions(store, BOOK_TITLE.value, false)
           expect(propertyOptions).to.have.property('multiplicity', 'any')
+        })
+        it('should return reverse multiplicity', () => {
+          const store = new Store<Quad>()
+          store.addQuad(BOOK_TITLE, PROPERTY_REVERSE_MULTIPLICITY, DataFactory.literal('single'))
+          const propertyOptions = new SemanticPropertyOptions(store, BOOK_TITLE.value, true)
+          expect(propertyOptions).to.have.property('reverseMultiplicity', 'single')
+        })
+        it('should return any reverse multiplicity if not defined', () => {
+          const store = new Store<Quad>()
+          const propertyOptions = new SemanticPropertyOptions(store, BOOK_TITLE.value, true)
+          expect(propertyOptions).to.have.property('reverseMultiplicity', 'any')
         })
         it('should return order by', () => {
           const store = new Store<Quad>()
