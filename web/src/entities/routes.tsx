@@ -1,9 +1,12 @@
 import React from 'react'
+import { useParams } from 'react-router-dom'
 import { PageLayout } from '../layout/PageLayout'
 import { EntityClasses } from './EntityClasses'
+import { EntityList } from './EntityList'
 
-export async function tocLoader() {
-  return await (await fetch('/toc')).json()
+function EntityListRoute() {
+  const { className } = useParams()
+  return <EntityList className={className} />
 }
 
 const routes = [
@@ -11,10 +14,7 @@ const routes = [
     path: 'entities',
     element: <PageLayout sidebar={<EntityClasses />} />,
     id: 'entities',
-    loader: tocLoader,
-    children: [
-      /*{ path: '*', element: <PathDocument /> }*/
-    ],
+    children: [{ path: ':className', element: <EntityListRoute /> }],
   },
 ]
 
