@@ -24,7 +24,7 @@ export class Model {
             : this.store
                 .getObjects(target.iri, DataFactory.namedNode(propertyOptions.predicate), null)
                 .map((iri: NamedNode | BlankNode) => this.proxy(iri))
-          switch (propertyOptions.multiplicity) {
+          switch (propertyOptions.reverse ? propertyOptions.reverseMultiplicity : propertyOptions.multiplicity) {
             case 'single':
               return values[0]
             case 'multiple':
