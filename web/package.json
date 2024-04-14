@@ -72,7 +72,8 @@
     ".": "./src/index.tsx",
     "./documents": "./src/documents/index.ts",
     "./model": "./src/model/index.ts",
-    "./store": "./src/store/index.ts"
+    "./store": "./src/store/index.ts",
+    "./entities": "./src/entities/index.ts"
   },
   "typesVersions": {
     "*": {
@@ -84,6 +85,9 @@
       ],
       "store": [
         "types/store/index.d.ts"
+      ],
+      "entities": [
+        "types/entities/index.d.ts"
       ]
     }
   }

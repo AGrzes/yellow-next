@@ -11,7 +11,7 @@ function EntityListRoute() {
 }
 function EntityDetailsRoute() {
   const { className, iri } = useParams()
-  return <EntityDetails className={className} iri={iri} />
+  return <EntityDetails className={className} iri={decodeURIComponent(iri)} />
 }
 
 const routes = [
