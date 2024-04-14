@@ -72,6 +72,14 @@ export class Model {
     }
   }
 
+  get(className: string, iri: string) {
+    const classOptions = this.options.classes.find((c) => c.name === className)
+    if (classOptions) {
+      const iriNode = DataFactory.namedNode(iri)
+      return this.proxy(iriNode)
+    }
+  }
+
   get classes(): ClassOptions[] {
     return this.options.classes
   }

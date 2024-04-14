@@ -134,6 +134,11 @@ describe('access', () => {
         expect(model.classes).to.have.lengthOf(3)
         expect(model.classes).to.be.containSubset([{ name: 'Book' }, { name: 'Author' }, { name: 'Series' }])
       })
+      it('should get by iri', () => {
+        const model = new Model(store, modelOptions)
+        const book = model.get('Book', 'http://agrzes.pl/books#B1')
+        expect(book.title).to.equal('B1')
+      })
     })
   })
 })
