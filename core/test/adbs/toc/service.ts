@@ -130,6 +130,21 @@ describe('adbs', () => {
         const toc = tocService.toc
         expect(toc).to.deep.equal([])
       })
+      it('should skip empty folders', async () => {
+        const tocService = new TocService()
+        await tocService.observer.next!({
+          key: 'documents/folder/',
+          kind: 'update',
+          content: async () => '',
+        } as UpdateEvent<ContentSource, string>)
+        await tocService.observer.next!({
+          key: 'documents/folder/subfolder/',
+          kind: 'update',
+          content: async () => '',
+        } as UpdateEvent<ContentSource, string>)
+        const toc = tocService.toc
+        expect(toc).to.deep.equal([])
+      })
     })
   })
 })

@@ -35,9 +35,13 @@ export class TocService {
           segments: child.segments.length > 1 ? child.segments.slice(1) : ['.'],
         }))
       )
-      return {
-        label: startCase(segment),
-        children: mappedChildren,
+      if (mappedChildren.length) {
+        return {
+          label: startCase(segment),
+          children: mappedChildren,
+        }
+      } else {
+        return null
       }
     }
     const collect = (items: Array<Entry & { segments: string[] }>): TocNode[] => {
