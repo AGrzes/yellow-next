@@ -16,7 +16,6 @@ const menu = [
 
 export function PageLayout({ sidebar }: { sidebar: React.ReactNode }) {
   const matches = useMatches()
-  console.log(matches)
   const [open, setOpen] = React.useState(true)
   const switchOpen = () => {
     setOpen(!open)
