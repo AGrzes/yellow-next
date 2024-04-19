@@ -30,6 +30,18 @@
         "@agrzes/yellow-next-*"
       ],
       "pinVersion": "workspace:*"
+    },
+    {
+      "packages": [
+        "**"
+      ],
+      "dependencyTypes": [
+        "!local"
+      ],
+      "dependencies": [
+        "chai"
+      ],
+      "pinVersion": "^4.4.1"
     }
   ]
 }
