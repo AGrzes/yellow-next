@@ -9,7 +9,7 @@ import { readFile } from 'fs/promises'
 import { firstValueFrom } from 'rxjs'
 import { mock, stub } from 'sinon'
 import sinonChai from 'sinon-chai'
-import { FileSource } from '../../src/adbs/file-source'
+import { FileSource, emptyContent } from '../../src/adbs/file-source'
 const expect = chai.use(sinonChai).use(chaiAsPromised).use(chaiSubset).expect
 describe('adbs', () => {
   describe('FileSource', () => {
@@ -74,6 +74,11 @@ describe('adbs', () => {
       on.getCall(5).args[1]('error')
       await expect(first).to.eventually.be.rejectedWith('error')
       expect(close).to.have.been.calledOnce
+    })
+  })
+  describe('emptyContent', () => {
+    it('should return null', () => {
+      expect(emptyContent()).to.be.null
     })
   })
 })

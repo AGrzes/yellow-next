@@ -7,6 +7,10 @@ import { ChangeEvent, UpdateEvent } from './model.js'
 
 export type ContentSource = () => Promise<string>
 
+export function emptyContent() {
+  return null
+}
+
 @injectable()
 export class FileSource {
   constructor(
@@ -39,7 +43,7 @@ export class FileSource {
         key: join(documentDirectory, path),
         kind: 'update',
         hint: 'add',
-        content: () => null,
+        content: emptyContent,
       } as UpdateEvent<ContentSource, string>)
     )
     watcher.on('unlink', (path) =>
