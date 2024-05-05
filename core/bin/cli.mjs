@@ -1,4 +1,5 @@
 #!/usr/bin/env node
 import { config } from 'dotenv'
-config()
+import findConfig from 'find-config'
+config({ path: findConfig('.env') })
 import '../target/index.js'
