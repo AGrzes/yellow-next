@@ -118,5 +118,16 @@
     "watch": "tsc --watch --preserveWatchOutput"
   },
   "type": "module",
-  "types": "types"
+  "types": "types",
+  "exports": {
+    ".": "./src/index.ts",
+    "./cli": "./src/cli/index.ts"
+  },
+  "typesVersions": {
+    "*": {
+      "cli": [
+        "types/cli/index.d.ts"
+      ]
+    }
+  }
 }

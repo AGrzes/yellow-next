@@ -1,5 +1,7 @@
 import { Command } from 'commander'
 import { Container, ContainerModule } from 'inversify'
+export { Command } from 'commander'
+export { Container } from 'inversify'
 
 export const cliModule = new ContainerModule((bind) => {
   bind(Command)
