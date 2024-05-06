@@ -32,7 +32,7 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
       },
     ])
   )
-  function idFromPattern(pattern: string, context: Context = {}) {
+  function idFromPattern(pattern: string, context: Context) {
     const template = Handlebars.compile(pattern)
     return template({
       ...context.document,
@@ -50,6 +50,7 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
         if (typeof document !== 'object') {
           if (clazz.defaultProperty) {
             document = { [clazz.defaultProperty]: document }
+            context.document = document
           } else {
             return document
           }
