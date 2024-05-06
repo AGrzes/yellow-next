@@ -2,6 +2,15 @@ import Handlebars from '../../handlebars.js'
 
 import { MapperOptions } from '../model.js'
 
+export type Document = Record<string, any>
+
+export interface Context {
+  parent?: Document
+  property?: string
+  parentContext?: Context
+  index?: number
+}
+
 export function mapper(options: MapperOptions): (document: Record<string, any>) => Record<string, any> {
   const context = Object.fromEntries(
     options.classes.map((clazz) => [
@@ -22,11 +31,11 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
       },
     ])
   )
-  function idFromPattern(pattern: string, document: Record<string, any>) {
+  function idFromPattern(pattern: string, document: Record<string, any>, context: Context = {}) {
     const template = Handlebars.compile(pattern)
-    return template(document)
+    return template({ ...document, $context: context })
   }
-  function mapDocument(document: Record<string, any>, className: string) {
+  function mapDocument(document: Record<string, any>, className: string, context: Context = {}) {
     if (className) {
       const clazz = options.classes.find((c) => c.name === className)
       if (clazz) {
@@ -39,7 +48,7 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
         }
         const result = { ...document }
         if (!document['@id'] && clazz.idPattern) {
-          const id = clazz.idPattern && idFromPattern(clazz.idPattern, document)
+          const id = clazz.idPattern && idFromPattern(clazz.idPattern, document, context)
           if (id) {
             result['@id'] = id
           }
@@ -52,9 +61,30 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
               const value = document[property.name]
               if (document[property.name]) {
                 if (Array.isArray(value)) {
-                  return [[property.name, value.map((item) => mapDocument(item, property.type))]]
+                  return [
+                    [
+                      property.name,
+                      value.map((item, index) =>
+                        mapDocument(item, property.type, {
+                          parent: document,
+                          property: property.name,
+                          parentContext: context,
+                          index,
+                        })
+                      ),
+                    ],
+                  ]
                 }
-                return [[property.name, mapDocument(value, property.type)]]
+                return [
+                  [
+                    property.name,
+                    mapDocument(value, property.type, {
+                      parent: document,
+                      property: property.name,
+                      parentContext: context,
+                    }),
+                  ],
+                ]
               } else {
                 return []
               }

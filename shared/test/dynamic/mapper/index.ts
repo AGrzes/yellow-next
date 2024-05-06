@@ -40,6 +40,25 @@ const options: MapperOptions = {
           name: 'series',
           type: 'Series',
         },
+        {
+          iri: 'http://agrzes.pl/books#Book/chapters',
+          predicate: 'http://agrzes.pl/books#Book/chapters',
+          name: 'chapters',
+          type: 'Chapter',
+        },
+      ],
+    },
+    {
+      name: 'Chapter',
+      iri: 'http://agrzes.pl/books#Chapter',
+      idPattern: 'http://agrzes.pl/books#Book/{{$context.parent.title}}/chapter/{{$context.index}}',
+      defaultProperty: 'title',
+      properties: [
+        {
+          iri: 'http://agrzes.pl/books#Chapter/title',
+          predicate: 'http://www.w3.org/2000/01/rdf-schema#label',
+          name: 'title',
+        },
       ],
     },
     {
@@ -228,6 +247,13 @@ describe('mapper', () => {
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
           '@graph': [{ '@id': 'http://agrzes.pl/books#Book/a', title: 'a' }],
+        })
+      })
+      it('should handle id pattern with context', () => {
+        const document = { books: { title: 'a', chapters: [{ title: 'b' }] } }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ chapters: [{ '@id': 'http://agrzes.pl/books#Book/a/chapter/0', title: 'b' }] }],
         })
       })
     })
