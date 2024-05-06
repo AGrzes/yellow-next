@@ -5,9 +5,10 @@ import { MapperOptions } from '../model.js'
 export type Document = Record<string, any>
 
 export interface Context {
-  parent?: Document
+  document?: Document
+  className?: string
   property?: string
-  parentContext?: Context
+  parent?: Context
   index?: number
 }
 
@@ -31,11 +32,18 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
       },
     ])
   )
-  function idFromPattern(pattern: string, document: Record<string, any>, context: Context = {}) {
+  function idFromPattern(pattern: string, context: Context = {}) {
     const template = Handlebars.compile(pattern)
-    return template({ ...document, $context: context })
+    return template({
+      ...context.document,
+      $parent: context.parent,
+      $index: context.index,
+      $property: context.property,
+    })
   }
-  function mapDocument(document: Record<string, any>, className: string, context: Context = {}) {
+  function mapDocument(context: Context) {
+    const className = context.className
+    let document = context.document
     if (className) {
       const clazz = options.classes.find((c) => c.name === className)
       if (clazz) {
@@ -48,7 +56,7 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
         }
         const result = { ...document }
         if (!document['@id'] && clazz.idPattern) {
-          const id = clazz.idPattern && idFromPattern(clazz.idPattern, document, context)
+          const id = clazz.idPattern && idFromPattern(clazz.idPattern, context)
           if (id) {
             result['@id'] = id
           }
@@ -65,10 +73,11 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
                     [
                       property.name,
                       value.map((item, index) =>
-                        mapDocument(item, property.type, {
-                          parent: document,
+                        mapDocument({
+                          document: item,
+                          className: property.type,
                           property: property.name,
-                          parentContext: context,
+                          parent: context,
                           index,
                         })
                       ),
@@ -78,10 +87,11 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
                 return [
                   [
                     property.name,
-                    mapDocument(value, property.type, {
-                      parent: document,
+                    mapDocument({
+                      document: value,
+                      className: property.type,
+                      parent: context,
                       property: property.name,
-                      parentContext: context,
                     }),
                   ],
                 ]
@@ -104,8 +114,8 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
     return Object.entries(options.roots).flatMap(([key, value]) =>
       document[key]
         ? Array.isArray(document[key])
-          ? document[key].map((item) => mapDocument(item, value))
-          : mapDocument(document[key], value)
+          ? document[key].map((item) => mapDocument({ document: item, className: value }))
+          : mapDocument({ document: document[key], className: value })
         : []
     )
   }

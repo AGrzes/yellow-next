@@ -51,7 +51,7 @@ const options: MapperOptions = {
     {
       name: 'Chapter',
       iri: 'http://agrzes.pl/books#Chapter',
-      idPattern: 'http://agrzes.pl/books#Book/{{$context.parent.title}}/chapter/{{$context.index}}',
+      idPattern: 'http://agrzes.pl/books#Book/{{$parent.document.title}}/chapter/{{$index}}',
       defaultProperty: 'title',
       properties: [
         {
