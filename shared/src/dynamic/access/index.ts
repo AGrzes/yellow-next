@@ -5,6 +5,7 @@ const { sortBy } = lodash
 
 export interface SemanticProxy {
   iri: string
+  [x: string]: any
 }
 
 export class Model {
