@@ -14,25 +14,27 @@ export function InlineState({ state }: { state: any[] }) {
 
   const currentState = last(state)
   return (
-    <>
-      <Badge badgeContent={state.length} color="primary" showZero>
-        <Chip size="small" variant="outlined" label={currentState.state} onClick={() => setShowDetails(true)} />
-      </Badge>
-      {showDetails && (
-        <Dialog open={showDetails} onClose={() => setShowDetails(false)}>
-          <Table>
-            <TableBody>
-              {state.map((s, key) => (
-                <TableRow key={key}>
-                  <TableCell>{s.state}</TableCell>
-                  <TableCell>{s.date}</TableCell>
-                  <TableCell>{s.comment}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Dialog>
-      )}
-    </>
+    currentState && (
+      <>
+        <Badge badgeContent={state.length} color="primary" showZero>
+          <Chip size="small" variant="outlined" label={currentState.state} onClick={() => setShowDetails(true)} />
+        </Badge>
+        {showDetails && (
+          <Dialog open={showDetails} onClose={() => setShowDetails(false)}>
+            <Table>
+              <TableBody>
+                {state.map((s, key) => (
+                  <TableRow key={key}>
+                    <TableCell>{s.state}</TableCell>
+                    <TableCell>{s.date}</TableCell>
+                    <TableCell>{s.comment}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Dialog>
+        )}
+      </>
+    )
   )
 }
