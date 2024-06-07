@@ -84,7 +84,8 @@
   "exports": {
     "./dynamic/access": "./target/dynamic/access/index.js",
     "./dynamic/mapper": "./target/dynamic/mapper/index.js",
-    "./dynamic/semantic": "./target/dynamic/semantic.js"
+    "./dynamic/semantic": "./target/dynamic/semantic.js",
+    "./dynamic/model": "./target/dynamic/model.js"
   },
   "typesVersions": {
     "*": {
@@ -96,6 +97,9 @@
       ],
       "dynamic/semantic": [
         "types/dynamic/semantic.d.ts"
+      ],
+      "dynamic/model": [
+        "types/dynamic/model.d.ts"
       ]
     }
   }
