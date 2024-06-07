@@ -3,6 +3,10 @@ import { BlankNode, DataFactory, NamedNode, Store, Term } from 'n3'
 import { ClassOptions, ModelOptions, TypedNode } from '../model.js'
 const { sortBy } = lodash
 
+export interface SemanticProxy {
+  iri: string
+}
+
 export class Model {
   private handler: ProxyHandler<TypedNode>
 
@@ -56,7 +60,7 @@ export class Model {
     }
   }
 
-  all(name: string) {
+  all(name: string): SemanticProxy[] {
     const classOptions = this.options.classes.find((c) => c.name === name)
 
     if (classOptions) {
@@ -72,7 +76,7 @@ export class Model {
     }
   }
 
-  get(className: string, iri: string) {
+  get(className: string, iri: string): SemanticProxy {
     const classOptions = this.options.classes.find((c) => c.name === className)
     if (classOptions) {
       const iriNode = DataFactory.namedNode(iri)
