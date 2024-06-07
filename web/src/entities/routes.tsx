@@ -2,12 +2,12 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { PageLayout } from '../layout/PageLayout'
 import { EntityClasses } from './EntityClasses'
+import { EntityCollection } from './EntityCollection'
 import { EntityDetails } from './EntityDetails'
-import { EntityList } from './EntityList'
 
-function EntityListRoute() {
+function EntityCollectionRoute() {
   const { className } = useParams()
-  return <EntityList className={className} />
+  return <EntityCollection className={className} />
 }
 function EntityDetailsRoute() {
   const { className, iri } = useParams()
@@ -20,7 +20,7 @@ const routes = [
     element: <PageLayout sidebar={<EntityClasses />} />,
     id: 'entities',
     children: [
-      { path: ':className', element: <EntityListRoute /> },
+      { path: ':className', element: <EntityCollectionRoute /> },
       { path: ':className/:iri', element: <EntityDetailsRoute /> },
     ],
   },
