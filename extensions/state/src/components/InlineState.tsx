@@ -7,12 +7,12 @@ import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import lodash from 'lodash'
 import React, { useState } from 'react'
-const { last } = lodash
+const { last, filter } = lodash
 
 export function InlineState({ state }: { state: any[] }) {
   const [showDetails, setShowDetails] = useState(false)
 
-  const currentState = last(state)
+  const currentState = last(filter(state, (s) => s.state))
   return (
     currentState && (
       <>
