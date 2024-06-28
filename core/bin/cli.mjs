@@ -2,4 +2,4 @@
 import { config } from 'dotenv'
 import findConfig from 'find-config'
 config({ path: findConfig('.env') })
-import '../target/index.js'
+await import('../target/index.js')
