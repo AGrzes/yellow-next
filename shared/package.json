@@ -82,10 +82,22 @@
   "type": "module",
   "types": "types",
   "exports": {
-    "./dynamic/access": "./target/dynamic/access/index.js",
-    "./dynamic/mapper": "./target/dynamic/mapper/index.js",
-    "./dynamic/semantic": "./target/dynamic/semantic.js",
-    "./dynamic/model": "./target/dynamic/model.js"
+    "./dynamic/access": {
+      "default": "./target/dynamic/access/index.js",
+      "types": "./types/dynamic/access/index.d.ts"
+    },
+    "./dynamic/mapper": {
+      "default": "./target/dynamic/mapper/index.js",
+      "types": "./types/dynamic/mapper/index.d.ts"
+    },
+    "./dynamic/semantic": {
+      "default": "./target/dynamic/semantic.js",
+      "types": "./types/dynamic/semantic.d.ts"
+    },
+    "./dynamic/model": {
+      "default": "./target/dynamic/model.js",
+      "types": "./types/dynamic/model.d.ts"
+    }
   },
   "typesVersions": {
     "*": {
