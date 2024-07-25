@@ -20,6 +20,9 @@ export class Model {
         if (property === 'iri') {
           return target.iri.value
         }
+        if (property === 'classes') {
+          return target.classes
+        }
         const propertyOptions = target.classes.flatMap((c) => c.properties).find((p) => p.name === property)
         if (propertyOptions) {
           const values = propertyOptions.reverse
