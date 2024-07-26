@@ -129,10 +129,16 @@ describe('access', () => {
         const books = model.all('Book')
         expect(books[0].iri).to.equal('http://agrzes.pl/books#B1')
       })
-      it('should expose list of classes', () => {
+      it('should expose list of instance classes', () => {
+        const model = new Model(store, modelOptions)
+        const books = model.all('Book')
+        expect(books[0].classes).to.have.lengthOf(1)
+        expect(books[0].classes).to.containSubset([{ name: 'Book' }])
+      })
+      it('should expose list of model classes', () => {
         const model = new Model(store, modelOptions)
         expect(model.classes).to.have.lengthOf(3)
-        expect(model.classes).to.be.containSubset([{ name: 'Book' }, { name: 'Author' }, { name: 'Series' }])
+        expect(model.classes).to.containSubset([{ name: 'Book' }, { name: 'Author' }, { name: 'Series' }])
       })
       it('should get by iri', () => {
         const model = new Model(store, modelOptions)
