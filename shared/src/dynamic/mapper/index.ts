@@ -32,7 +32,7 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
       },
     ])
   )
-  function idFromPattern(pattern: string, context: Context) {
+  function valueFromPattern(pattern: string, context: Context) {
     const template = Handlebars.compile(pattern)
     return template({
       ...context.document,
@@ -57,7 +57,7 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
         }
         const result = { ...document }
         if (!document['@id'] && clazz.idPattern) {
-          const id = clazz.idPattern && idFromPattern(clazz.idPattern, context)
+          const id = clazz.idPattern && valueFromPattern(clazz.idPattern, context)
           if (id) {
             result['@id'] = id
           }
