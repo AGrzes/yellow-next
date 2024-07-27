@@ -22,6 +22,8 @@ export const PROPERTY_REVERSE_NAME: NamedNode = DataFactory.namedNode(
 )
 export const PROPERTY_ORDER_BY: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Property:order_by')
 
+export const PROPERTY_PATTERN: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:Property:pattern')
+
 export const ROOT_PREDICATE: NamedNode = DataFactory.namedNode('agrzes:yellow-next:dynamic:root')
 
 function lookupClassName(store: Store, iri: string): string {
@@ -87,6 +89,10 @@ export class SemanticPropertyOptions implements PropertyOptions {
   }
   get orderBy(): string {
     return this.store.getObjects(DataFactory.namedNode(this.iri), PROPERTY_ORDER_BY, null)[0]?.value
+  }
+
+  get pattern(): string {
+    return this.store.getObjects(DataFactory.namedNode(this.iri), PROPERTY_PATTERN, null)[0]?.value
   }
 }
 
