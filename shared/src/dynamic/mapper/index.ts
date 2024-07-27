@@ -66,9 +66,9 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
         Object.assign(
           result,
           Object.fromEntries(
-            clazz.properties.flatMap((property) => {
+            clazz.properties.flatMap<[string, any]>((property) => {
               const value = document[property.name]
-              if (document[property.name]) {
+              if (value) {
                 if (Array.isArray(value)) {
                   return [
                     [
@@ -97,6 +97,16 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
                   ],
                 ]
               } else {
+                if (!property.reverse && property.pattern) {
+                  const v = valueFromPattern(property.pattern, context)
+                  if (v) {
+                    if (property.type) {
+                      return [[property.name, { '@id': v }]]
+                    } else {
+                      return [[property.name, v]]
+                    }
+                  }
+                }
                 return []
               }
             })
