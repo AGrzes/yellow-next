@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import { config } from 'dotenv'
-import findConfig from 'find-config'
-import { resolve, sep, join } from 'path'
+import { sep, join } from 'path'
 import { statSync } from 'fs'
 const path = []
 let cwd = process.cwd().split(sep)
