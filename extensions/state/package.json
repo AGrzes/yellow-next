@@ -26,11 +26,13 @@
     "@emotion/styled": "11.11.5",
     "@mui/material": "5.15.15",
     "lodash": "4.17.21",
+    "luxon": "^3.5.0",
     "react-dom": "18.2.0",
     "typescript": "5.4.2"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.202",
+    "@types/luxon": "^3.4.2",
     "@types/react": "^18.2.64"
   },
   "peerDependencies": {
@@ -66,12 +68,16 @@
   "types": "types",
   "exports": {
     ".": "./src/index.tsx",
-    "./components": "./src/components/index.ts"
+    "./components": "./src/components/index.ts",
+    "./utils": "./src/utils/index.ts"
   },
   "typesVersions": {
     "*": {
       "components": [
         "types/components/index.d.ts"
+      ],
+      "utils": [
+        "types/utils/index.d.ts"
       ]
     }
   }
