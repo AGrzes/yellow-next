@@ -5,44 +5,51 @@ import jsonld from 'jsonld'
 import 'mocha'
 import { Quad, Store } from 'n3'
 import { Model } from '../../../src/dynamic/access/index.js'
-import { ModelOptions } from '../../../src/dynamic/model.js'
+import { ClassOptions, ModelOptions } from '../../../src/dynamic/model.js'
 const { expect } = chai.use(chaiSubset)
-
+const Book: ClassOptions = {
+  iri: 'http://agrzes.pl/books#Book',
+  name: 'Book',
+  properties: [
+    {
+      iri: 'http://agrzes.pl/books#Book/pages',
+      predicate: 'http://agrzes.pl/books#Book/pages',
+      name: 'pages',
+    },
+    {
+      iri: 'http://agrzes.pl/books#Book/released',
+      predicate: 'http://agrzes.pl/books#Book/released',
+      name: 'released',
+    },
+    {
+      iri: 'http://agrzes.pl/books#Book/title',
+      predicate: 'http://www.w3.org/2000/01/rdf-schema#label',
+      name: 'title',
+    },
+    {
+      iri: 'http://agrzes.pl/books#Book/author',
+      predicate: 'http://agrzes.pl/books#Book/author',
+      name: 'author',
+      type: 'Author',
+    },
+    {
+      iri: 'http://agrzes.pl/books#Book/series',
+      predicate: 'http://agrzes.pl/books#Book/series',
+      name: 'series',
+      type: 'Series',
+      multiplicity: 'single',
+    },
+  ],
+}
 const modelOptions: ModelOptions = {
   classes: [
+    Book,
     {
-      iri: 'http://agrzes.pl/books#Book',
-      name: 'Book',
-      properties: [
-        {
-          iri: 'http://agrzes.pl/books#Book/pages',
-          predicate: 'http://agrzes.pl/books#Book/pages',
-          name: 'pages',
-        },
-        {
-          iri: 'http://agrzes.pl/books#Book/released',
-          predicate: 'http://agrzes.pl/books#Book/released',
-          name: 'released',
-        },
-        {
-          iri: 'http://agrzes.pl/books#Book/title',
-          predicate: 'http://www.w3.org/2000/01/rdf-schema#label',
-          name: 'title',
-        },
-        {
-          iri: 'http://agrzes.pl/books#Book/author',
-          predicate: 'http://agrzes.pl/books#Book/author',
-          name: 'author',
-          type: 'Author',
-        },
-        {
-          iri: 'http://agrzes.pl/books#Book/series',
-          predicate: 'http://agrzes.pl/books#Book/series',
-          name: 'series',
-          type: 'Series',
-          multiplicity: 'single',
-        },
-      ],
+      name: 'Hardcover',
+      iri: 'http://agrzes.pl/books#Hardcover',
+      properties: [],
+      bases: [Book],
+      ancestors: [Book],
     },
     {
       name: 'Author',
@@ -89,8 +96,8 @@ const modelOptions: ModelOptions = {
 const store = new Store(
   (await jsonld.toRDF(JSON.parse(await readFile('test/dynamic/access/books.jsonld', 'utf-8')))) as Quad[]
 )
-describe('access', () => {
-  describe('dynamic', () => {
+describe('dynamic', () => {
+  describe('access', () => {
     describe('Model', () => {
       it('should list all books', () => {
         const model = new Model(store, modelOptions)
@@ -137,9 +144,16 @@ describe('access', () => {
       })
       it('should expose list of model classes', () => {
         const model = new Model(store, modelOptions)
-        expect(model.classes).to.have.lengthOf(3)
+        expect(model.classes).to.have.lengthOf(4)
         expect(model.classes).to.containSubset([{ name: 'Book' }, { name: 'Author' }, { name: 'Series' }])
       })
+      it('should expose list of entity classes based on ancestors', () => {
+        const model = new Model(store, modelOptions)
+        const hardcover = model.get('Hardcover', 'http://agrzes.pl/books#H1')
+        expect(hardcover.classes).to.have.lengthOf(2)
+        expect(hardcover.classes).to.containSubset([{ name: 'Book' }, { name: 'Hardcover' }])
+      })
+
       it('should get by iri', () => {
         const model = new Model(store, modelOptions)
         const book = model.get('Book', 'http://agrzes.pl/books#B1')

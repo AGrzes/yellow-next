@@ -31,6 +31,9 @@
         }
       }
     },
+    "Hardcover": {
+      "@id": "http://agrzes.pl/books#Hardcover"
+    },
     "Series": {
       "@id": "http://agrzes.pl/books#Series"
     },
@@ -79,6 +82,10 @@
       "@id": "authors:A2",
       "@type": "Author",
       "rdfs:label": "A2"
+    },
+    {
+      "@id": "books:H1",
+      "@type": "Hardcover"
     }
   ]
 }

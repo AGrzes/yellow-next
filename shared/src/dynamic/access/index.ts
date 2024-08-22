@@ -60,6 +60,7 @@ export class Model {
         .getObjects(iri, DataFactory.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'), null)
         .map((iri: NamedNode | BlankNode) => this.options.classes.find((c) => c.iri === iri.value))
         .filter((c) => c)
+        .flatMap((c) => [c, ...(c.ancestors || [])])
       return new Proxy({ iri, classes }, this.handler)
     }
   }
@@ -82,6 +83,7 @@ export class Model {
 
   get(className: string, iri: string): SemanticProxy {
     const classOptions = this.options.classes.find((c) => c.name === className)
+    console.log('classOptions', classOptions, className, iri)
     if (classOptions) {
       const iriNode = DataFactory.namedNode(iri)
       return this.proxy(iriNode)
