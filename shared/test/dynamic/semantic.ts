@@ -23,6 +23,8 @@ import {
 } from '../../src/dynamic/semantic.js'
 
 const BOOK = DataFactory.namedNode('http://agrzes.pl/books#Book')
+const HARDCOVER = DataFactory.namedNode('http://agrzes.pl/books#Hardcover')
+const CLOTH_HARDCOVER = DataFactory.namedNode('http://agrzes.pl/books#ClothHardcover')
 const BOOK_TITLE = DataFactory.namedNode('http://agrzes.pl/books#Book:title')
 
 describe('access', () => {
@@ -91,6 +93,24 @@ describe('access', () => {
           store.addQuad(BOOK, CLASS_INTERNAL, DataFactory.literal('true'))
           const classOptions = new SemanticClassOptions(store, BOOK.value)
           expect(classOptions).to.have.property('internal', true)
+        })
+        it('should return bases', () => {
+          const store = new Store<Quad>()
+          store.addQuad(HARDCOVER, DataFactory.namedNode(RDFS.subClassOf), BOOK)
+          store.addQuad(HARDCOVER, CLASS_NAME, DataFactory.literal('Hardcover'))
+          const classOptions = new SemanticClassOptions(store, HARDCOVER.value)
+          expect(classOptions.bases).to.have.length(1)
+          expect(classOptions.bases[0].iri).to.equal(BOOK.value)
+        })
+        it('should return ancestors', () => {
+          const store = new Store<Quad>()
+          store.addQuad(HARDCOVER, DataFactory.namedNode(RDFS.subClassOf), BOOK)
+          store.addQuad(CLOTH_HARDCOVER, DataFactory.namedNode(RDFS.subClassOf), HARDCOVER)
+          store.addQuad(CLOTH_HARDCOVER, CLASS_NAME, DataFactory.literal('ClothHardcover'))
+          const classOptions = new SemanticClassOptions(store, CLOTH_HARDCOVER.value)
+          expect(classOptions.ancestors).to.have.length(2)
+          expect(classOptions.ancestors[0].iri).to.equal(HARDCOVER.value)
+          expect(classOptions.ancestors[1].iri).to.equal(BOOK.value)
         })
       })
       describe('SemanticPropertyOptions', () => {

@@ -7,6 +7,8 @@ export interface ClassOptions {
   readonly idPattern?: string
   readonly defaultProperty?: string
   readonly internal?: boolean
+  readonly bases?: ClassOptions[]
+  readonly ancestors?: ClassOptions[]
 }
 
 export type Multiplicity = 'single' | 'multiple' | 'any'

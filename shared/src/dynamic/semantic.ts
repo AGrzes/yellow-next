@@ -97,10 +97,13 @@ export class SemanticPropertyOptions implements PropertyOptions {
 }
 
 export class SemanticClassOptions implements ClassOptions {
+  private iriNode: NamedNode
   constructor(
     private store: Store,
     public iri: string
-  ) {}
+  ) {
+    this.iriNode = DataFactory.namedNode(this.iri)
+  }
 
   get name(): string {
     return lookupClassName(this.store, this.iri)
@@ -109,23 +112,33 @@ export class SemanticClassOptions implements ClassOptions {
   get properties(): PropertyOptions[] {
     return [
       ...this.store
-        .getSubjects(RDFS.domain, DataFactory.namedNode(this.iri), null)
+        .getSubjects(RDFS.domain, this.iriNode, null)
         .map((iri) => new SemanticPropertyOptions(this.store, iri.value, false)),
       ...this.store
-        .getSubjects(RDFS.range, DataFactory.namedNode(this.iri), null)
+        .getSubjects(RDFS.range, this.iriNode, null)
         .map((iri) => new SemanticPropertyOptions(this.store, iri.value, true)),
     ]
   }
 
   get idPattern(): string {
-    return this.store.getObjects(DataFactory.namedNode(this.iri), CLASS_ID_PATTERN, null)[0]?.value
+    return this.store.getObjects(this.iriNode, CLASS_ID_PATTERN, null)[0]?.value
   }
 
   get defaultProperty(): string {
-    return this.store.getObjects(DataFactory.namedNode(this.iri), CLASS_DEFAULT_PROPERTY, null)[0]?.value
+    return this.store.getObjects(this.iriNode, CLASS_DEFAULT_PROPERTY, null)[0]?.value
   }
   get internal(): boolean {
-    return this.store.getObjects(DataFactory.namedNode(this.iri), CLASS_INTERNAL, null)[0]?.value === 'true'
+    return this.store.getObjects(this.iriNode, CLASS_INTERNAL, null)[0]?.value === 'true'
+  }
+
+  get bases(): ClassOptions[] {
+    return this.store
+      .getObjects(this.iriNode, RDFS.subClassOf, null)
+      .map((iri) => new SemanticClassOptions(this.store, iri.value))
+  }
+
+  get ancestors(): ClassOptions[] {
+    return this.bases.flatMap((base) => [base, ...base.ancestors])
   }
 }
 
