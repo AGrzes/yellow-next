@@ -46,6 +46,19 @@ const options: MapperOptions = {
           name: 'chapters',
           type: 'Chapter',
         },
+        {
+          iri: 'http://agrzes.pl/books#Book/generated',
+          predicate: 'http://agrzes.pl/books#Book/generated',
+          name: 'generated',
+          pattern: '{{title}}',
+        },
+        {
+          iri: 'http://agrzes.pl/books#Book/generatedRelation',
+          predicate: 'http://agrzes.pl/books#Book/generatedRelation',
+          name: 'generatedRelation',
+          type: 'Author',
+          pattern: '{{author}}',
+        },
       ],
     },
     {
@@ -254,6 +267,20 @@ describe('mapper', () => {
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
           '@graph': [{ chapters: [{ '@id': 'http://agrzes.pl/books#Book/a/chapter/0', title: 'b' }] }],
+        })
+      })
+      it('should handle generated property', () => {
+        const document = { books: { title: 'a' } }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ generated: 'a' }],
+        })
+      })
+      it('should handle generated property with type', () => {
+        const document = { books: { author: ['a'] } }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ generatedRelation: { '@id': 'a' } }],
         })
       })
     })
