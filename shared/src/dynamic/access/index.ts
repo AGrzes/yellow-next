@@ -83,7 +83,6 @@ export class Model {
 
   get(className: string, iri: string): SemanticProxy {
     const classOptions = this.options.classes.find((c) => c.name === className)
-    console.log('classOptions', classOptions, className, iri)
     if (classOptions) {
       const iriNode = DataFactory.namedNode(iri)
       return this.proxy(iriNode)
