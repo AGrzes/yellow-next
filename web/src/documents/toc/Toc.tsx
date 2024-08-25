@@ -5,7 +5,7 @@ import { TocNode } from './model'
 
 export function Toc({ toc }: { toc: TocNode[] }) {
   return (
-    <List>
+    <List dense>
       <TocItems items={toc} />
     </List>
   )
