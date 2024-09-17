@@ -11,6 +11,7 @@ import { DocumentStore, documentStoreFactory } from './documents/store.js'
 import { FileParser } from './file-parser/file-parser.js'
 import { FrontmatterParser } from './file-parser/frontmatter-parser.js'
 import { Parser } from './file-parser/model.js'
+import { ScriptParser } from './file-parser/script-parser.js'
 import { YamlParser } from './file-parser/yaml-parser.js'
 import { FileSource } from './file-source.js'
 import { DocumentGraphMapper, DynamicSemanticMapping, JSONLDMapping, Mapping } from './graph/mapper.js'
@@ -26,9 +27,11 @@ export const adbsModule = new ContainerModule((bind) => {
   bind(DocumentLoader).toFactory(() => documentLoaderFactory)
   bind(FileParser).toSelf().inSingletonScope()
   bind(YamlParser).toSelf().inSingletonScope()
+  bind(ScriptParser).toSelf().inSingletonScope()
   bind(FrontmatterParser).toSelf().inSingletonScope()
   bind(Parser).toService(YamlParser)
   bind(Parser).toService(FrontmatterParser)
+  bind(Parser).toService(ScriptParser)
   bind(ADBS).toSelf().inSingletonScope()
   bind(readFile).toConstantValue((path) => readFile(path, 'utf-8'))
   bind(DocumentGraphMapper).toSelf().inSingletonScope()
