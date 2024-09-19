@@ -38,8 +38,20 @@ const context = {
 }
 
 class SchemaBuilder {
+  classes: Record<string, any> = {}
+
+  class(name: string, iri?: string) {
+    this.classes[name] = { name, iri }
+    return this
+  }
+
   build() {
-    return { graph: { '@context': context } }
+    return {
+      graph: {
+        '@context': context,
+        '@graph': Object.values(this.classes).map((c) => ({ label: c.name, '@id': c.iri })),
+      },
+    }
   }
 }
 

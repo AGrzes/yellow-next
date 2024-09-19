@@ -53,5 +53,12 @@ describe.only('dynamic', () => {
           },
         })
     })
+    it('should define class', () => {
+      const s = schema()
+      s.class('Book')
+      const g = s.build()
+      expect(g).to.have.nested.property('graph.@graph.0').containSubset({ label: 'Book' })
+    })
+
   })
 })
