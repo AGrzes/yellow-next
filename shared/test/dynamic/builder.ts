@@ -60,5 +60,13 @@ describe.only('dynamic', () => {
       expect(g).to.have.nested.property('graph.@graph.0').containSubset({ label: 'Book' })
     })
 
+    it('should define multiple classes in fluent way', () => {
+      const s = schema()
+      s.class('Book').class('Author')
+      const g = s.build()
+      expect(g).to.have.nested.property('graph.@graph.0').containSubset({ label: 'Book' })
+      expect(g).to.have.nested.property('graph.@graph.1').containSubset({ label: 'Author' })
+    })
+
   })
 })
