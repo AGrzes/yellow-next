@@ -37,6 +37,13 @@ const context = {
   },
 }
 
+class PropertyBuilder {
+  constructor(
+    private parent: ClassBuilder,
+    private options: any
+  ) {}
+}
+
 class ClassBuilder {
   constructor(
     private schema: SchemaBuilder,
@@ -75,6 +82,13 @@ class ClassBuilder {
     return this
   }
 
+  property(name: string) {
+    this.options.properties = this.options.properties || []
+    const property = { name }
+    this.options.properties.push(property)
+    return new PropertyBuilder(this, property)
+  }
+
   class(name: string, iri?: string) {
     return this.schema.class(name, iri)
   }
@@ -104,6 +118,9 @@ class SchemaBuilder {
           internal: c.internal,
           subClassOf: c.bases?.map((b) => this.classes[b].iri),
           root: c.root,
+          properties: c.properties?.map((p) => ({
+            name: p.name,
+          })),
         })),
       },
     }
