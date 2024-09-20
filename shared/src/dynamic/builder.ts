@@ -109,6 +109,14 @@ class PropertyBuilder {
     this.options.predicate = predicate
     return this
   }
+
+  class(name: string, iri?: string) {
+    return this.parent.class(name, iri)
+  }
+
+  subClass(name: string, iri?: string) {
+    return this.parent.subClass(name, iri)
+  }
 }
 
 class ClassBuilder {
