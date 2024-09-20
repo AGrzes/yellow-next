@@ -179,6 +179,14 @@ describe.only('dynamic', () => {
         .to.have.nested.property('graph.@graph.0.properties')
         .containSubset([{ name: 'title', predicate: 'http://example.com/Book:title' }])
     })
+    it('should define property multiplicity', () => {
+      const s = schema()
+      s.class('Book').property('title').multiplicity('single')
+      const g = s.build()
+      expect(g)
+        .to.have.nested.property('graph.@graph.0.properties')
+        .containSubset([{ name: 'title', multiplicity: 'single' }])
+    })
 
   })
 })

@@ -52,6 +52,11 @@ class PropertyBuilder {
     return this
   }
 
+  multiplicity(multiplicity: 'single' | 'multiple' | 'any') {
+    this.options.multiplicity = multiplicity
+    return this
+  }
+
   predicate(predicate: string) {
     this.options.predicate = predicate
     return this
@@ -136,6 +141,7 @@ class SchemaBuilder {
             name: p.name,
             '@id': p.iri,
             predicate: p.predicate,
+            multiplicity: p.multiplicity,
           })),
         })),
       },
