@@ -106,5 +106,14 @@ describe.only('dynamic', () => {
       const g = s.build()
       expect(g).to.have.nested.property('graph.@graph.0').containSubset({ label: 'Book', internal: true })
     })
+
+    it('should define subclass', () => {
+      const s = schema()
+      s.class('Book', 'http://example.com/Book').class('Hardcover').extends('Book')
+      const g = s.build()
+      expect(g)
+        .to.have.nested.property('graph.@graph.1')
+        .containSubset({ label: 'Hardcover', subClassOf: ['http://example.com/Book'] })
+    })
   })
 })

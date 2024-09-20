@@ -63,6 +63,12 @@ class ClassBuilder {
     return this
   }
 
+  extends(name: string) {
+    this.options.bases = this.options.bases || []
+    this.options.bases.push(name)
+    return this
+  }
+
   class(name: string, iri?: string) {
     return this.schema.class(name, iri)
   }
@@ -86,6 +92,7 @@ class SchemaBuilder {
           id_pattern: c.idPattern,
           default_property: c.defaultProperty,
           internal: c.internal,
+          subClassOf: c.bases?.map((b) => this.classes[b].iri),
         })),
       },
     }
