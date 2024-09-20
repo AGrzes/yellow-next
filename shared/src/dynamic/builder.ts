@@ -52,8 +52,11 @@ class PropertyBuilder {
     return this
   }
 
-  multiplicity(multiplicity: 'single' | 'multiple' | 'any') {
+  multiplicity(multiplicity: 'single' | 'multiple' | 'any', reverseMultiplicity?: 'single' | 'multiple' | 'any') {
     this.options.multiplicity = multiplicity
+    if (reverseMultiplicity) {
+      this.options.reverseMultiplicity = reverseMultiplicity
+    }
     return this
   }
 
@@ -142,6 +145,7 @@ class SchemaBuilder {
             '@id': p.iri,
             predicate: p.predicate,
             multiplicity: p.multiplicity,
+            reverseMultiplicity: p.reverseMultiplicity,
           })),
         })),
       },
