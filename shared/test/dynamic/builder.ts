@@ -92,5 +92,12 @@ describe.only('dynamic', () => {
         .to.have.nested.property('graph.@graph.0')
         .containSubset({ label: 'Book', id_pattern: 'http://example.com/Book/{{kebab title}}' })
     })
+
+    it('should define class with default property', () => {
+      const s = schema()
+      s.class('Book').defaultProperty('title')
+      const g = s.build()
+      expect(g).to.have.nested.property('graph.@graph.0').containSubset({ label: 'Book', default_property: 'title' })
+    })
   })
 })

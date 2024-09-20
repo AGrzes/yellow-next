@@ -53,6 +53,11 @@ class ClassBuilder {
     return this
   }
 
+  defaultProperty(name: string) {
+    this.options.defaultProperty = name
+    return this
+  }
+
   class(name: string, iri?: string) {
     return this.schema.class(name, iri)
   }
@@ -70,7 +75,12 @@ class SchemaBuilder {
     return {
       graph: {
         '@context': context,
-        '@graph': Object.values(this.classes).map((c) => ({ label: c.name, '@id': c.iri, id_pattern: c.idPattern })),
+        '@graph': Object.values(this.classes).map((c) => ({
+          label: c.name,
+          '@id': c.iri,
+          id_pattern: c.idPattern,
+          default_property: c.defaultProperty,
+        })),
       },
     }
   }
