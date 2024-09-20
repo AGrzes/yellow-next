@@ -70,7 +70,7 @@ class SchemaBuilder {
     return {
       graph: {
         '@context': context,
-        '@graph': Object.values(this.classes).map((c) => ({ label: c.name, '@id': c.iri, idPattern: c.idPattern })),
+        '@graph': Object.values(this.classes).map((c) => ({ label: c.name, '@id': c.iri, id_pattern: c.idPattern })),
       },
     }
   }

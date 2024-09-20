@@ -84,13 +84,13 @@ describe.only('dynamic', () => {
         .to.have.nested.property('graph.@graph.0')
         .containSubset({ label: 'Book', '@id': 'http://example.com/Book' })
     })
-    it('should define class with iri and id pattern', () => {
+    it('should define class with id pattern', () => {
       const s = schema()
-      s.class('Book', 'http://example.com/Book').idPattern('http://example.com/Book/{{kebab title}}')
+      s.class('Book').idPattern('http://example.com/Book/{{kebab title}}')
       const g = s.build()
       expect(g)
         .to.have.nested.property('graph.@graph.0')
-        .containSubset({ label: 'Book', '@id': 'http://example.com/Book' })
+        .containSubset({ label: 'Book', id_pattern: 'http://example.com/Book/{{kebab title}}' })
     })
   })
 })
