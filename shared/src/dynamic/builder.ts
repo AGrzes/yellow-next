@@ -74,6 +74,11 @@ class PropertyBuilder {
     return this
   }
 
+  reverse(reverseName: string) {
+    this.options.reverseName = reverseName
+    return this
+  }
+
   predicate(predicate: string) {
     this.options.predicate = predicate
     return this
@@ -162,6 +167,7 @@ class SchemaBuilder {
             reverseMultiplicity: p.reverseMultiplicity,
             orderBy: p.orderBy,
             pattern: p.pattern,
+            reverse_name: p.reverseName,
           })),
         })),
       },

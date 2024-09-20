@@ -219,6 +219,14 @@ describe.only('dynamic', () => {
         .to.have.nested.property('graph.@graph.0.properties')
         .containSubset([{ name: 'title', pattern: 'http://example.com/Book/{{kebab title}}' }])
     })
+    it('should define property reverse name', () => {
+      const s = schema()
+      s.class('Book').property('author').reverse('books')
+      const g = s.build()
+      expect(g)
+        .to.have.nested.property('graph.@graph.0.properties')
+        .containSubset([{ name: 'author', reverse_name: 'books' }])
+    })
 
   })
 })
