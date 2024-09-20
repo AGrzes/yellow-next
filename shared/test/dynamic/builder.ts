@@ -211,6 +211,14 @@ describe.only('dynamic', () => {
         .to.have.nested.property('graph.@graph.0.properties')
         .containSubset([{ name: 'title', orderBy: 'title' }])
     })
+    it('should define property pattern', () => {
+      const s = schema()
+      s.class('Book').property('title').pattern('http://example.com/Book/{{kebab title}}')
+      const g = s.build()
+      expect(g)
+        .to.have.nested.property('graph.@graph.0.properties')
+        .containSubset([{ name: 'title', pattern: 'http://example.com/Book/{{kebab title}}' }])
+    })
 
   })
 })

@@ -69,6 +69,11 @@ class PropertyBuilder {
     return this
   }
 
+  pattern(pattern: string) {
+    this.options.pattern = pattern
+    return this
+  }
+
   predicate(predicate: string) {
     this.options.predicate = predicate
     return this
@@ -156,6 +161,7 @@ class SchemaBuilder {
             multiplicity: p.multiplicity,
             reverseMultiplicity: p.reverseMultiplicity,
             orderBy: p.orderBy,
+            pattern: p.pattern,
           })),
         })),
       },
