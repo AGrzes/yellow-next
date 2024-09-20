@@ -42,6 +42,10 @@ class PropertyBuilder {
     private parent: ClassBuilder,
     private options: any
   ) {}
+
+  property(name: string, iri?: string) {
+    return this.parent.property(name, iri)
+  }
 }
 
 class ClassBuilder {
