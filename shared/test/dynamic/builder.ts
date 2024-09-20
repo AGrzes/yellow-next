@@ -227,6 +227,13 @@ describe.only('dynamic', () => {
         .to.have.nested.property('graph.@graph.0.properties')
         .containSubset([{ name: 'author', reverse_name: 'books' }])
     })
-
+    it('should define one to one relation', () => {
+      const s = schema()
+      s.class('Book').property('author').oneToOne()
+      const g = s.build()
+      expect(g)
+        .to.have.nested.property('graph.@graph.0.properties')
+        .containSubset([{ name: 'author', multiplicity: 'single', reverseMultiplicity: 'single' }])
+    })
   })
 })
