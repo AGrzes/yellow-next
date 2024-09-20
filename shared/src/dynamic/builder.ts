@@ -69,6 +69,12 @@ class ClassBuilder {
     return this
   }
 
+  root(...roots: string[]) {
+    this.options.root = this.options.root || []
+    this.options.root.push(...roots)
+    return this
+  }
+
   class(name: string, iri?: string) {
     return this.schema.class(name, iri)
   }
@@ -97,6 +103,7 @@ class SchemaBuilder {
           default_property: c.defaultProperty,
           internal: c.internal,
           subClassOf: c.bases?.map((b) => this.classes[b].iri),
+          root: c.root,
         })),
       },
     }

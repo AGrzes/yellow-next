@@ -123,5 +123,13 @@ describe.only('dynamic', () => {
         .to.have.nested.property('graph.@graph.1')
         .containSubset({ label: 'Hardcover', subClassOf: ['http://example.com/Book'] })
     })
+    it('should define roots', () => {
+      const s = schema()
+      s.class('Book').root('book')
+      const g = s.build()
+      expect(g)
+        .to.have.nested.property('graph.@graph.0')
+        .containSubset({ label: 'Book', root: ['book'] })
+    })
   })
 })
