@@ -51,6 +51,11 @@ class PropertyBuilder {
     this.options.iri = iri
     return this
   }
+
+  predicate(predicate: string) {
+    this.options.predicate = predicate
+    return this
+  }
 }
 
 class ClassBuilder {
@@ -130,6 +135,7 @@ class SchemaBuilder {
           properties: c.properties?.map((p) => ({
             name: p.name,
             '@id': p.iri,
+            predicate: p.predicate,
           })),
         })),
       },
