@@ -76,6 +76,14 @@ describe.only('dynamic', () => {
         .to.have.nested.property('graph.@graph.0')
         .containSubset({ label: 'Book', '@id': 'http://example.com/Book' })
     })
+    it('should define class with iri in fluent way', () => {
+      const s = schema()
+      s.class('Book').iri('http://example.com/Book')
+      const g = s.build()
+      expect(g)
+        .to.have.nested.property('graph.@graph.0')
+        .containSubset({ label: 'Book', '@id': 'http://example.com/Book' })
+    })
     it('should define class with iri and id pattern', () => {
       const s = schema()
       s.class('Book', 'http://example.com/Book').idPattern('http://example.com/Book/{{kebab title}}')

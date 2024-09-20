@@ -43,6 +43,11 @@ class ClassBuilder {
     private options: any
   ) {}
 
+  iri(iri: string) {
+    this.options.iri = iri
+    return this
+  }
+
   idPattern(pattern: string) {
     this.options.idPattern = pattern
     return this
