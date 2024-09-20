@@ -43,8 +43,8 @@ class PropertyBuilder {
     private options: any
   ) {}
 
-  property(name: string, iri?: string) {
-    return this.parent.property(name, iri)
+  property(name: string, predicate?: string, iri?: string) {
+    return this.parent.property(name, predicate, iri)
   }
 
   iri(iri: string) {
@@ -96,9 +96,9 @@ class ClassBuilder {
     return this
   }
 
-  property(name: string, iri?: string) {
+  property(name: string, predicate?: string, iri?: string) {
     this.options.properties = this.options.properties || []
-    const property = { name, iri }
+    const property = { name, predicate, iri }
     this.options.properties.push(property)
     return new PropertyBuilder(this, property)
   }

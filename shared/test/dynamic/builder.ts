@@ -141,7 +141,7 @@ describe.only('dynamic', () => {
     })
     it('should define properties with iri', () => {
       const s = schema()
-      s.class('Book').property('title', 'http://example.com/Book:title')
+      s.class('Book').property('title', undefined, 'http://example.com/Book:title')
       const g = s.build()
       expect(g)
         .to.have.nested.property('graph.@graph.0.properties')
@@ -166,6 +166,14 @@ describe.only('dynamic', () => {
     it('should define property predicate in fluent way', () => {
       const s = schema()
       s.class('Book').property('title').predicate('http://example.com/Book:title')
+      const g = s.build()
+      expect(g)
+        .to.have.nested.property('graph.@graph.0.properties')
+        .containSubset([{ name: 'title', predicate: 'http://example.com/Book:title' }])
+    })
+    it('should define property predicate', () => {
+      const s = schema()
+      s.class('Book').property('title', 'http://example.com/Book:title')
       const g = s.build()
       expect(g)
         .to.have.nested.property('graph.@graph.0.properties')
