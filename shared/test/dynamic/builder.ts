@@ -260,5 +260,14 @@ describe.only('dynamic', () => {
         .to.have.nested.property('graph.@graph.0.properties')
         .containSubset([{ name: 'author', multiplicity: 'multiple', reverseMultiplicity: 'multiple' }])
     })
+
+    it('should define property with type', () => {
+      const s = schema()
+      s.class('Book').property('author').type('http://example.com/Author')
+      const g = s.build()
+      expect(g)
+        .to.have.nested.property('graph.@graph.0.properties')
+        .containSubset([{ name: 'author', range: 'http://example.com/Author' }])
+    })
   })
 })
