@@ -203,6 +203,14 @@ describe.only('dynamic', () => {
         .to.have.nested.property('graph.@graph.0.properties')
         .containSubset([{ name: 'title', reverseMultiplicity: 'single' }])
     })
+    it('should define property order by', () => {
+      const s = schema()
+      s.class('Book').property('title').orderBy('title')
+      const g = s.build()
+      expect(g)
+        .to.have.nested.property('graph.@graph.0.properties')
+        .containSubset([{ name: 'title', orderBy: 'title' }])
+    })
 
   })
 })

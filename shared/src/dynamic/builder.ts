@@ -64,6 +64,11 @@ class PropertyBuilder {
     return this
   }
 
+  orderBy(orderBy: string) {
+    this.options.orderBy = orderBy
+    return this
+  }
+
   predicate(predicate: string) {
     this.options.predicate = predicate
     return this
@@ -150,6 +155,7 @@ class SchemaBuilder {
             predicate: p.predicate,
             multiplicity: p.multiplicity,
             reverseMultiplicity: p.reverseMultiplicity,
+            orderBy: p.orderBy,
           })),
         })),
       },
