@@ -58,6 +58,11 @@ class ClassBuilder {
     return this
   }
 
+  internal(internal = true) {
+    this.options.internal = internal
+    return this
+  }
+
   class(name: string, iri?: string) {
     return this.schema.class(name, iri)
   }
@@ -80,6 +85,7 @@ class SchemaBuilder {
           '@id': c.iri,
           id_pattern: c.idPattern,
           default_property: c.defaultProperty,
+          internal: c.internal,
         })),
       },
     }
