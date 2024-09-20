@@ -100,6 +100,11 @@ class PropertyBuilder {
     return this
   }
 
+  target(name: string) {
+    this.options.target = name
+    return this
+  }
+
   predicate(predicate: string) {
     this.options.predicate = predicate
     return this
@@ -189,7 +194,7 @@ class SchemaBuilder {
             orderBy: p.orderBy,
             pattern: p.pattern,
             reverse_name: p.reverseName,
-            range: p.type,
+            range: p.type || this.classes[p.target]?.iri,
           })),
         })),
       },
