@@ -37,19 +37,35 @@ const context = {
   },
 }
 
+class ClassBuilder {
+  constructor(
+    private schema: SchemaBuilder,
+    private options: any
+  ) {}
+
+  idPattern(pattern: string) {
+    this.options.idPattern = pattern
+    return this
+  }
+
+  class(name: string, iri?: string) {
+    return this.schema.class(name, iri)
+  }
+}
+
 class SchemaBuilder {
   classes: Record<string, any> = {}
 
   class(name: string, iri?: string) {
     this.classes[name] = { name, iri }
-    return this
+    return new ClassBuilder(this, this.classes[name])
   }
 
   build() {
     return {
       graph: {
         '@context': context,
-        '@graph': Object.values(this.classes).map((c) => ({ label: c.name, '@id': c.iri })),
+        '@graph': Object.values(this.classes).map((c) => ({ label: c.name, '@id': c.iri, idPattern: c.idPattern })),
       },
     }
   }
