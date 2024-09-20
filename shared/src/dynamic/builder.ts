@@ -72,6 +72,10 @@ class ClassBuilder {
   class(name: string, iri?: string) {
     return this.schema.class(name, iri)
   }
+
+  subClass(name: string, iri?: string) {
+    return this.schema.class(name, iri).extends(this.options.name)
+  }
 }
 
 class SchemaBuilder {
