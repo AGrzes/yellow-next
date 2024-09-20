@@ -139,5 +139,13 @@ describe.only('dynamic', () => {
         .to.have.nested.property('graph.@graph.0.properties')
         .containSubset([{ name: 'title' }])
     })
+    it('should define properties with iri', () => {
+      const s = schema()
+      s.class('Book').property('title', 'http://example.com/Book:title')
+      const g = s.build()
+      expect(g)
+        .to.have.nested.property('graph.@graph.0.properties')
+        .containSubset([{ name: 'title', '@id': 'http://example.com/Book:title' }])
+    })
   })
 })

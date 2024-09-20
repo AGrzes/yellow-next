@@ -82,9 +82,9 @@ class ClassBuilder {
     return this
   }
 
-  property(name: string) {
+  property(name: string, iri?: string) {
     this.options.properties = this.options.properties || []
-    const property = { name }
+    const property = { name, iri }
     this.options.properties.push(property)
     return new PropertyBuilder(this, property)
   }
@@ -120,6 +120,7 @@ class SchemaBuilder {
           root: c.root,
           properties: c.properties?.map((p) => ({
             name: p.name,
+            '@id': p.iri,
           })),
         })),
       },
