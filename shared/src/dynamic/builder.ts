@@ -68,6 +68,10 @@ class PropertyBuilder {
     return this.multiplicity('single', 'single')
   }
 
+  oneToMany() {
+    return this.multiplicity('multiple', 'single')
+  }
+
   orderBy(orderBy: string) {
     this.options.orderBy = orderBy
     return this
