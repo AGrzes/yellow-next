@@ -59,6 +59,10 @@ class PropertyBuilder {
     }
     return this
   }
+  reverseMultiplicity(multiplicity: 'single' | 'multiple' | 'any') {
+    this.options.reverseMultiplicity = multiplicity
+    return this
+  }
 
   predicate(predicate: string) {
     this.options.predicate = predicate

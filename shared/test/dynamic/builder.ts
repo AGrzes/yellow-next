@@ -195,6 +195,14 @@ describe.only('dynamic', () => {
         .to.have.nested.property('graph.@graph.0.properties')
         .containSubset([{ name: 'title', multiplicity: 'single', reverseMultiplicity: 'single' }])
     })
+    it('should define property reverse multiplicity', () => {
+      const s = schema()
+      s.class('Book').property('title').reverseMultiplicity('single')
+      const g = s.build()
+      expect(g)
+        .to.have.nested.property('graph.@graph.0.properties')
+        .containSubset([{ name: 'title', reverseMultiplicity: 'single' }])
+    })
 
   })
 })
