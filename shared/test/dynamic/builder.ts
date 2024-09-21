@@ -336,5 +336,13 @@ describe.only('dynamic', () => {
       const g = s.build()
       expect(g).to.have.nested.property('graph.@context.model').to.be.equal('http://example.com/model/')
     })
+    it('should accept action', () => {
+      const s = schema()
+      s.class('Book').accept((cb) => cb.property('title'))
+      const g = s.build()
+      expect(g)
+        .to.have.nested.property('graph.@graph.0.properties')
+        .containSubset([{ name: 'title' }])
+    })
   })
 })

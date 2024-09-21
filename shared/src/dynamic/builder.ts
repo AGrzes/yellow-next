@@ -164,6 +164,11 @@ class ClassBuilder {
     return new PropertyBuilder(this, property)
   }
 
+  accept(visitor: (builder: ClassBuilder) => void) {
+    visitor(this)
+    return this
+  }
+
   class(name: string, iri?: string) {
     return this.schema.class(name, iri)
   }
