@@ -239,6 +239,14 @@ class SchemaBuilder {
   }
 }
 
+export const label =
+  (name: string = 'label') =>
+  (b: ClassBuilder | PropertyBuilder) =>
+    b.property(name, 'rdfs:label')
+export const comment =
+  (name: string = 'comment') =>
+  (b: ClassBuilder | PropertyBuilder) =>
+    b.property(name, 'rdfs:comment')
 export function schema() {
   return new SchemaBuilder()
 }
