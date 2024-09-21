@@ -352,5 +352,17 @@ describe('dynamic', () => {
         .to.have.nested.property('graph.@graph.0.properties')
         .containSubset([{ name: 'title', predicate: 'http://example.com/Book:title' }])
     })
+    it('should expose build from class builder', () => {
+      const s = schema()
+      const g = s.class('Book').build()
+      expect(g).to.have.nested.property('graph.@graph.0').containSubset({ label: 'Book' })
+    })
+    it('should expose build from property builder', () => {
+      const s = schema()
+      const g = s.class('Book').property('title').build()
+      expect(g)
+        .to.have.nested.property('graph.@graph.0.properties')
+        .containSubset([{ name: 'title' }])
+    })
   })
 })

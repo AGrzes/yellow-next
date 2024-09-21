@@ -120,6 +120,10 @@ class PropertyBuilder {
   subClass(name: string, iri?: string) {
     return this.parent.subClass(name, iri)
   }
+
+  build() {
+    return this.parent.build()
+  }
 }
 
 class ClassBuilder {
@@ -178,6 +182,10 @@ class ClassBuilder {
 
   subClass(name: string, iri?: string) {
     return this.schema.class(name, iri).extends(this.options.name)
+  }
+
+  build() {
+    return this.schema.build()
   }
 }
 
