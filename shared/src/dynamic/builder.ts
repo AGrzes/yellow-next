@@ -182,16 +182,17 @@ class SchemaBuilder {
   }
 
   build() {
+    const resolveClassIri = (c) => (c ? c.iri || `model:${c.name}` : undefined)
     return {
       graph: {
         '@context': context,
         '@graph': Object.values(this.classes).map((c) => ({
           label: c.name,
-          '@id': c.iri || `model:${c.name}`,
+          '@id': resolveClassIri(c),
           id_pattern: c.idPattern,
           default_property: c.defaultProperty,
           internal: c.internal,
-          subClassOf: c.bases?.map((b) => this.classes[b].iri),
+          subClassOf: c.bases?.map((b) => resolveClassIri(this.classes[b])),
           root: c.root,
           properties: c.properties?.map((p) => ({
             name: p.name,
@@ -202,7 +203,7 @@ class SchemaBuilder {
             orderBy: p.orderBy,
             pattern: p.pattern,
             reverse_name: p.reverseName,
-            range: p.type || this.classes[p.target]?.iri,
+            range: p.type || resolveClassIri(this.classes[p.target]),
           })),
         })),
       },
