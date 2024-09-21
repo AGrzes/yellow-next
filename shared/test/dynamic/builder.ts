@@ -282,6 +282,7 @@ describe.only('dynamic', () => {
       s.class('Book', 'http://example.com/Book')
         .property('title')
         .subClass('Hardcover')
+        .property('publisher')
         .class('Author')
         .property('name')
       const g = s.build()
