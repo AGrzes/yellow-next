@@ -330,5 +330,11 @@ describe.only('dynamic', () => {
       const g = s.build()
       expect(g).to.have.nested.property('graph.@context.ex').to.be.equal('http://example.com/')
     })
+    it('should define model prefix', () => {
+      const s = schema()
+      s.model('http://example.com/model/')
+      const g = s.build()
+      expect(g).to.have.nested.property('graph.@context.model').to.be.equal('http://example.com/model/')
+    })
   })
 })

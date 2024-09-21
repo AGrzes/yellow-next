@@ -187,6 +187,10 @@ class SchemaBuilder {
     return this
   }
 
+  model(iri: string) {
+    return this.prefix('model', iri)
+  }
+
   build() {
     const resolveClassIri = (c) => (c ? c.iri || `model:${c.name}` : undefined)
     return {
