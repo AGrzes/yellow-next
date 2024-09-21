@@ -323,5 +323,12 @@ describe.only('dynamic', () => {
         .to.have.nested.property('graph.@graph.1')
         .containSubset({ label: 'Hardcover', subClassOf: ['model:Book'] })
     })
+
+    it('should define prefix', () => {
+      const s = schema()
+      s.prefix('ex', 'http://example.com/')
+      const g = s.build()
+      expect(g).to.have.nested.property('graph.@context.ex').to.be.equal('http://example.com/')
+    })
   })
 })

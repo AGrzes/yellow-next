@@ -175,17 +175,23 @@ class ClassBuilder {
 
 class SchemaBuilder {
   classes: Record<string, any> = {}
+  prefixes: Record<string, string> = {}
 
   class(name: string, iri?: string) {
     this.classes[name] = { name, iri }
     return new ClassBuilder(this, this.classes[name])
   }
 
+  prefix(name: string, iri: string) {
+    this.prefixes[name] = iri
+    return this
+  }
+
   build() {
     const resolveClassIri = (c) => (c ? c.iri || `model:${c.name}` : undefined)
     return {
       graph: {
-        '@context': context,
+        '@context': { ...context, ...this.prefixes },
         '@graph': Object.values(this.classes).map((c) => ({
           label: c.name,
           '@id': resolveClassIri(c),
