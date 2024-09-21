@@ -195,7 +195,7 @@ class SchemaBuilder {
           root: c.root,
           properties: c.properties?.map((p) => ({
             name: p.name,
-            '@id': p.iri,
+            '@id': p.iri || `model:${c.name}:${p.name}`,
             predicate: p.predicate,
             multiplicity: p.multiplicity,
             reverseMultiplicity: p.reverseMultiplicity,
