@@ -215,6 +215,7 @@ class SchemaBuilder {
         '@graph': Object.values(this.classes).map((c) => ({
           label: c.name,
           '@id': resolveClassIri(c),
+          '@type': 'yd:Class',
           id_pattern: c.idPattern,
           default_property: c.defaultProperty,
           internal: c.internal,
@@ -223,6 +224,7 @@ class SchemaBuilder {
           properties: c.properties?.map((p) => ({
             name: p.name,
             '@id': p.iri || `model:${c.name}:${p.name}`,
+            '@type': 'yd:Property',
             predicate: p.predicate,
             multiplicity: p.multiplicity,
             reverseMultiplicity: p.reverseMultiplicity,

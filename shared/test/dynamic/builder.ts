@@ -364,5 +364,15 @@ describe('dynamic', () => {
         .to.have.nested.property('graph.@graph.0.properties')
         .containSubset([{ name: 'title' }])
     })
+    it('should define class @type', () => {
+      const s = schema()
+      const g = s.class('Book').build()
+      expect(g).to.have.nested.property('graph.@graph.0.@type').to.be.equal('yd:Class')
+    })
+    it('should define property @type', () => {
+      const s = schema()
+      const g = s.class('Book').property('title').build()
+      expect(g).to.have.nested.property('graph.@graph.0.properties.0.@type').to.be.equal('yd:Property')
+    })
   })
 })
