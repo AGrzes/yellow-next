@@ -187,7 +187,7 @@ class SchemaBuilder {
         '@context': context,
         '@graph': Object.values(this.classes).map((c) => ({
           label: c.name,
-          '@id': c.iri,
+          '@id': c.iri || `model:${c.name}`,
           id_pattern: c.idPattern,
           default_property: c.defaultProperty,
           internal: c.internal,
