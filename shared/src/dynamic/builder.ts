@@ -257,8 +257,10 @@ export const comment =
   (b: ClassBuilder | PropertyBuilder) =>
     b.property(name, 'rdfs:comment')
 
-export const hierarchy = () => (b: ClassBuilder | PropertyBuilder) =>
-  b.property('child').reverse('parent').target(b.className).oneToMany()
+export const hierarchy =
+  (child: string = 'child', parent: string = 'parent') =>
+  (b: ClassBuilder | PropertyBuilder) =>
+    b.property(child).reverse(parent).target(b.className).oneToMany()
 
 export function schema() {
   return new SchemaBuilder()

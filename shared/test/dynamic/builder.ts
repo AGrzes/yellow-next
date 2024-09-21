@@ -440,6 +440,23 @@ describe('dynamic', () => {
             },
           ])
       })
+      it('should define hierarchy with custom names', () => {
+        const s = schema()
+        s.class('Folder').accept(hierarchy('subfolder', 'superfolder'))
+        const g = s.build()
+        expect(g)
+          .to.have.nested.property('graph.@graph.0.properties')
+          .containSubset([
+            {
+              name: 'subfolder',
+              '@id': 'model:Folder:subfolder',
+              reverse_name: 'superfolder',
+              reverseMultiplicity: 'single',
+              multiplicity: 'multiple',
+              range: 'model:Folder',
+            },
+          ])
+      })
     })
   })
 })
