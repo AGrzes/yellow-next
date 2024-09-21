@@ -124,6 +124,10 @@ class PropertyBuilder {
   build() {
     return this.parent.build()
   }
+
+  get className() {
+    return this.parent.className
+  }
 }
 
 class ClassBuilder {
@@ -187,6 +191,10 @@ class ClassBuilder {
   build() {
     return this.schema.build()
   }
+
+  get className() {
+    return this.options.name
+  }
 }
 
 class SchemaBuilder {
@@ -243,10 +251,15 @@ export const label =
   (name: string = 'label') =>
   (b: ClassBuilder | PropertyBuilder) =>
     b.property(name, 'rdfs:label')
+
 export const comment =
   (name: string = 'comment') =>
   (b: ClassBuilder | PropertyBuilder) =>
     b.property(name, 'rdfs:comment')
+
+export const hierarchy = () => (b: ClassBuilder | PropertyBuilder) =>
+  b.property('child').reverse('parent').target(b.className).oneToMany()
+
 export function schema() {
   return new SchemaBuilder()
 }

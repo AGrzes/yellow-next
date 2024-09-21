@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import 'mocha'
-import { comment, label, schema } from '../../src/dynamic/builder.js'
+import { comment, hierarchy, label, schema } from '../../src/dynamic/builder.js'
 
 describe('dynamic', () => {
   describe('builder', () => {
@@ -375,6 +375,16 @@ describe('dynamic', () => {
         const g = s.class('Book').property('title').build()
         expect(g).to.have.nested.property('graph.@graph.0.properties.0.@type').to.be.equal('yd:Property')
       })
+      it('should return class name', () => {
+        const s = schema()
+        const g = s.class('Book')
+        expect(g.className).to.be.equal('Book')
+      })
+      it('should return class name from property builder', () => {
+        const s = schema()
+        const g = s.class('Book').property('title')
+        expect(g.className).to.be.equal('Book')
+      })
     })
     describe('label', () => {
       it('should define label', () => {
@@ -410,6 +420,25 @@ describe('dynamic', () => {
         expect(g)
           .to.have.nested.property('graph.@graph.0.properties')
           .containSubset([{ name: 'description', predicate: 'rdfs:comment' }])
+      })
+    })
+    describe('hierarchy', () => {
+      it('should define hierarchy', () => {
+        const s = schema()
+        s.class('Folder').accept(hierarchy())
+        const g = s.build()
+        expect(g)
+          .to.have.nested.property('graph.@graph.0.properties')
+          .containSubset([
+            {
+              name: 'child',
+              '@id': 'model:Folder:child',
+              reverse_name: 'parent',
+              reverseMultiplicity: 'single',
+              multiplicity: 'multiple',
+              range: 'model:Folder',
+            },
+          ])
       })
     })
   })
