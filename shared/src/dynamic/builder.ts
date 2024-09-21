@@ -110,6 +110,11 @@ class PropertyBuilder {
     return this
   }
 
+  accept(visitor: (builder: PropertyBuilder) => void) {
+    visitor(this)
+    return this
+  }
+
   class(name: string, iri?: string) {
     return this.parent.class(name, iri)
   }
