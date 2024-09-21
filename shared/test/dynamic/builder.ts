@@ -373,7 +373,7 @@ describe('dynamic', () => {
       it('should define property @type', () => {
         const s = schema()
         const g = s.class('Book').property('title').build()
-        expect(g).to.have.nested.property('graph.@graph.0.properties.0.@type').to.be.equal('yd:Property')
+        expect(g).to.have.nested.property('graph.@graph.0.properties.0.@type').to.be.equal('Property')
       })
       it('should return class name', () => {
         const s = schema()

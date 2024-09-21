@@ -232,7 +232,7 @@ class SchemaBuilder {
           properties: c.properties?.map((p) => ({
             name: p.name,
             '@id': p.iri || `model:${c.name}:${p.name}`,
-            '@type': 'yd:Property',
+            '@type': 'Property',
             predicate: p.predicate,
             multiplicity: p.multiplicity,
             reverseMultiplicity: p.reverseMultiplicity,
