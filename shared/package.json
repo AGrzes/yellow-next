@@ -97,6 +97,10 @@
     "./dynamic/model": {
       "types": "./types/dynamic/model.d.ts",
       "default": "./target/dynamic/model.js"
+    },
+    "./dynamic/builder": {
+      "types": "./types/dynamic/builder.d.ts",
+      "default": "./target/dynamic/builder.js"
     }
   },
   "typesVersions": {
@@ -112,6 +116,9 @@
       ],
       "dynamic/model": [
         "types/dynamic/model.d.ts"
+      ],
+      "dynamic/builder": [
+        "types/dynamic/builder.d.ts"
       ]
     }
   }
