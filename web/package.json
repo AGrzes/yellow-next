@@ -74,7 +74,8 @@
     "./model": "./src/model/index.ts",
     "./store": "./src/store/index.ts",
     "./entities": "./src/entities/index.ts",
-    "./utils": "./src/utils/index.ts"
+    "./utils": "./src/utils/index.ts",
+    "./components": "./src/components/index.tsx"
   },
   "typesVersions": {
     "*": {
@@ -92,6 +93,9 @@
       ],
       "utils": [
         "types/utils/index.d.ts"
+      ],
+      "components": [
+        "types/components/index.d.ts"
       ]
     }
   }
