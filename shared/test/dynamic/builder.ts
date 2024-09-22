@@ -431,9 +431,9 @@ describe('dynamic', () => {
           .to.have.nested.property('graph.@graph.0.properties')
           .containSubset([
             {
-              name: 'child',
-              '@id': 'model:Folder:child',
-              reverse_name: 'parent',
+              name: 'parts',
+              '@id': 'model:Folder:parts',
+              reverse_name: 'partOf',
               reverseMultiplicity: 'single',
               multiplicity: 'multiple',
               range: 'model:Folder',

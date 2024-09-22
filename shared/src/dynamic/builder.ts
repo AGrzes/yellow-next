@@ -258,7 +258,7 @@ export const comment =
     b.property(name, 'rdfs:comment')
 
 export const hierarchy =
-  (child: string = 'child', parent: string = 'parent') =>
+  (child: string = 'parts', parent: string = 'partOf') =>
   (b: ClassBuilder | PropertyBuilder) =>
     b.property(child).reverse(parent).target(b.className).oneToMany()
 
