@@ -2,67 +2,71 @@ import chai from 'chai'
 import chaiSubset from 'chai-subset'
 import 'mocha'
 import { mapper } from '../../../src/dynamic/mapper/index.js'
-import { MapperOptions } from '../../../src/dynamic/model.js'
+import { ClassOptions, MapperOptions } from '../../../src/dynamic/model.js'
 const { expect } = chai.use(chaiSubset)
+
+const Book: ClassOptions = {
+  iri: 'http://agrzes.pl/books#Book',
+  name: 'Book',
+  idPattern: 'http://agrzes.pl/books#Book/{{title}}',
+  defaultProperty: 'title',
+  ancestors: [],
+  properties: [
+    {
+      iri: 'http://agrzes.pl/books#Book/pages',
+      predicate: 'http://agrzes.pl/books#Book/pages',
+      name: 'pages',
+    },
+    {
+      iri: 'http://agrzes.pl/books#Book/released',
+      predicate: 'http://agrzes.pl/books#Book/released',
+      name: 'released',
+    },
+    {
+      iri: 'http://agrzes.pl/books#Book/title',
+      predicate: 'http://www.w3.org/2000/01/rdf-schema#label',
+      name: 'title',
+    },
+    {
+      iri: 'http://agrzes.pl/books#Book/author',
+      predicate: 'http://agrzes.pl/books#Book/author',
+      name: 'author',
+      type: 'Author',
+    },
+    {
+      iri: 'http://agrzes.pl/books#Book/series',
+      predicate: 'http://agrzes.pl/books#Book/series',
+      name: 'series',
+      type: 'Series',
+    },
+    {
+      iri: 'http://agrzes.pl/books#Book/chapters',
+      predicate: 'http://agrzes.pl/books#Book/chapters',
+      name: 'chapters',
+      type: 'Chapter',
+    },
+    {
+      iri: 'http://agrzes.pl/books#Book/generated',
+      predicate: 'http://agrzes.pl/books#Book/generated',
+      name: 'generated',
+      pattern: '{{title}}',
+    },
+    {
+      iri: 'http://agrzes.pl/books#Book/generatedRelation',
+      predicate: 'http://agrzes.pl/books#Book/generatedRelation',
+      name: 'generatedRelation',
+      type: 'Author',
+      pattern: '{{author}}',
+    },
+  ],
+}
 
 const options: MapperOptions = {
   classes: [
-    {
-      iri: 'http://agrzes.pl/books#Book',
-      name: 'Book',
-      idPattern: 'http://agrzes.pl/books#Book/{{title}}',
-      defaultProperty: 'title',
-      properties: [
-        {
-          iri: 'http://agrzes.pl/books#Book/pages',
-          predicate: 'http://agrzes.pl/books#Book/pages',
-          name: 'pages',
-        },
-        {
-          iri: 'http://agrzes.pl/books#Book/released',
-          predicate: 'http://agrzes.pl/books#Book/released',
-          name: 'released',
-        },
-        {
-          iri: 'http://agrzes.pl/books#Book/title',
-          predicate: 'http://www.w3.org/2000/01/rdf-schema#label',
-          name: 'title',
-        },
-        {
-          iri: 'http://agrzes.pl/books#Book/author',
-          predicate: 'http://agrzes.pl/books#Book/author',
-          name: 'author',
-          type: 'Author',
-        },
-        {
-          iri: 'http://agrzes.pl/books#Book/series',
-          predicate: 'http://agrzes.pl/books#Book/series',
-          name: 'series',
-          type: 'Series',
-        },
-        {
-          iri: 'http://agrzes.pl/books#Book/chapters',
-          predicate: 'http://agrzes.pl/books#Book/chapters',
-          name: 'chapters',
-          type: 'Chapter',
-        },
-        {
-          iri: 'http://agrzes.pl/books#Book/generated',
-          predicate: 'http://agrzes.pl/books#Book/generated',
-          name: 'generated',
-          pattern: '{{title}}',
-        },
-        {
-          iri: 'http://agrzes.pl/books#Book/generatedRelation',
-          predicate: 'http://agrzes.pl/books#Book/generatedRelation',
-          name: 'generatedRelation',
-          type: 'Author',
-          pattern: '{{author}}',
-        },
-      ],
-    },
+    Book,
     {
       name: 'Chapter',
+      ancestors: [],
       iri: 'http://agrzes.pl/books#Chapter',
       idPattern: 'http://agrzes.pl/books#Book/{{$parent.document.title}}/chapter/{{$index}}',
       defaultProperty: 'title',
@@ -76,6 +80,7 @@ const options: MapperOptions = {
     },
     {
       name: 'Author',
+      ancestors: [],
       iri: 'http://agrzes.pl/books#Author',
       properties: [
         {
@@ -94,6 +99,7 @@ const options: MapperOptions = {
     },
     {
       name: 'Series',
+      ancestors: [],
       iri: 'http://agrzes.pl/books#Series',
       properties: [
         {
@@ -110,11 +116,19 @@ const options: MapperOptions = {
         },
       ],
     },
+    {
+      name: 'Hardcover',
+      ancestors: [Book],
+      bases: [Book],
+      iri: 'http://agrzes.pl/books#Hardcover',
+      properties: [],
+    },
   ],
   roots: {
     books: 'Book',
     authors: 'Author',
     series: 'Series',
+    hardcovers: 'Hardcover',
   },
 }
 
@@ -206,21 +220,21 @@ describe('mapper', () => {
         const document = { books: { a: 'b' } }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ a: 'b', '@type': 'Book' }],
+          '@graph': [{ a: 'b', '@type': ['Book'] }],
         })
       })
       it('should assign types to nested objects', () => {
         const document = { books: { author: { c: 'd' } } }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ author: { c: 'd', '@type': 'Author' } }],
+          '@graph': [{ author: { c: 'd', '@type': ['Author'] } }],
         })
       })
       it('should assign types to objects in arrays', () => {
         const document = { books: { author: [{ c: 'd' }] } }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ author: [{ c: 'd', '@type': 'Author' }] }],
+          '@graph': [{ author: [{ c: 'd', '@type': ['Author'] }] }],
         })
       })
       it('should ignore types for non-objects', () => {
@@ -281,6 +295,20 @@ describe('mapper', () => {
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
           '@graph': [{ generatedRelation: { '@id': 'a' } }],
+        })
+      })
+      it('should assign inherited types', () => {
+        const document = { hardcovers: {} }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ '@type': ['Book'] }],
+        })
+      })
+      it('should map inherited properties', () => {
+        const document = { hardcovers: { author: { a: 'b' } } }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ author: { a: 'b', '@type': ['Author'] } }],
         })
       })
     })

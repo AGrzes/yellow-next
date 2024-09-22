@@ -62,54 +62,56 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
             result['@id'] = id
           }
         }
-        result['@type'] = className
+        result['@type'] = [clazz, ...clazz.ancestors].map((c) => c.name)
         Object.assign(
           result,
           Object.fromEntries(
-            clazz.properties.flatMap<[string, any]>((property) => {
-              const value = document[property.name]
-              if (value) {
-                if (Array.isArray(value)) {
+            [clazz, ...clazz.ancestors].flatMap((c) =>
+              c.properties.flatMap<[string, any]>((property) => {
+                const value = document[property.name]
+                if (value) {
+                  if (Array.isArray(value)) {
+                    return [
+                      [
+                        property.name,
+                        value.map((item, index) =>
+                          mapDocument({
+                            document: item,
+                            className: property.type,
+                            property: property.name,
+                            parent: context,
+                            index,
+                          })
+                        ),
+                      ],
+                    ]
+                  }
                   return [
                     [
                       property.name,
-                      value.map((item, index) =>
-                        mapDocument({
-                          document: item,
-                          className: property.type,
-                          property: property.name,
-                          parent: context,
-                          index,
-                        })
-                      ),
+                      mapDocument({
+                        document: value,
+                        className: property.type,
+                        parent: context,
+                        property: property.name,
+                      }),
                     ],
                   ]
-                }
-                return [
-                  [
-                    property.name,
-                    mapDocument({
-                      document: value,
-                      className: property.type,
-                      parent: context,
-                      property: property.name,
-                    }),
-                  ],
-                ]
-              } else {
-                if (!property.reverse && property.pattern) {
-                  const v = valueFromPattern(property.pattern, context)
-                  if (v) {
-                    if (property.type) {
-                      return [[property.name, { '@id': v }]]
-                    } else {
-                      return [[property.name, v]]
+                } else {
+                  if (!property.reverse && property.pattern) {
+                    const v = valueFromPattern(property.pattern, context)
+                    if (v) {
+                      if (property.type) {
+                        return [[property.name, { '@id': v }]]
+                      } else {
+                        return [[property.name, v]]
+                      }
                     }
                   }
+                  return []
                 }
-                return []
-              }
-            })
+              })
+            )
           )
         )
         return result
