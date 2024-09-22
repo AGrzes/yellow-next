@@ -31,7 +31,10 @@ const context = {
       },
       name: 'yd:Property:name',
       reverse_name: 'yd:Property:reverse_name',
-      predicate: 'yd:Property:predicate',
+      predicate: {
+        '@id': 'yd:Property:predicate',
+        '@type': '@id',
+      },
       multiplicity: 'yd:Property:multiplicity',
       reverseMultiplicity: 'yd:Property:reverse_multiplicity',
       orderBy: 'yd:Property:order_by',
