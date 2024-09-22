@@ -18,6 +18,10 @@ const context = {
   internal: {
     '@id': 'yd:Class:internal',
   },
+  subClassOf: {
+    '@id': 'rdfs:subClassOf',
+    '@type': '@id',
+  },
   Property: {
     '@id': 'yd:Property',
     '@context': {
