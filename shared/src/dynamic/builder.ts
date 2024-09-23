@@ -272,9 +272,10 @@ export const hierarchy =
     b.property(child).reverse(parent).target(b.className).oneToMany()
 
 export const relation =
-  (target: string): Visitor =>
+  (target: string, outboundRelation: string = 'outboundRelation'): Visitor =>
   (b) => {
     const relationClass = `${b.className}${target}Relation`
+    b.property(outboundRelation).target(relationClass).oneToMany()
     b.class(relationClass)
   }
 
