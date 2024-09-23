@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import 'mocha'
-import { comment, hierarchy, label, schema } from '../../src/dynamic/builder.js'
+import { comment, hierarchy, label, relation, schema } from '../../src/dynamic/builder.js'
 
 describe('dynamic', () => {
   describe('builder', () => {
@@ -463,6 +463,14 @@ describe('dynamic', () => {
               range: 'model:Folder',
             },
           ])
+      })
+    })
+    describe('relation', () => {
+      it('should define relation class', () => {
+        const s = schema()
+        s.class('Author').class('Book').accept(relation('Author'))
+        const g = s.build()
+        expect(g).to.have.nested.property('graph.@graph.2').containSubset({ label: 'BookAuthorRelation' })
       })
     })
   })

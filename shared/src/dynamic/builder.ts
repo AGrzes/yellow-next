@@ -271,6 +271,14 @@ export const hierarchy =
   (b: ClassBuilder | PropertyBuilder) =>
     b.property(child).reverse(parent).target(b.className).oneToMany()
 
+export const relation =
+  (target: string): Visitor =>
+  (b) => {
+    const relationClass = `${b.className}${target}Relation`
+    b.class(relationClass)
+  }
+
+
 export function schema() {
   return new SchemaBuilder()
 }
