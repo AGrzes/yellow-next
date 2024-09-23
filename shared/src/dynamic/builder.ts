@@ -254,6 +254,8 @@ class SchemaBuilder {
   }
 }
 
+export type Visitor = (builder: ClassBuilder | PropertyBuilder) => void
+
 export const label =
   (name: string = 'label') =>
   (b: ClassBuilder | PropertyBuilder) =>

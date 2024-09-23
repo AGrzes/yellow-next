@@ -22,6 +22,7 @@
     ]
   },
   "dependencies": {
+    "@agrzes/yellow-next-shared": "workspace:*",
     "@emotion/react": "11.11.4",
     "@emotion/styled": "11.11.5",
     "@mui/material": "5.15.15",
@@ -67,7 +68,7 @@
   "type": "module",
   "types": "types",
   "exports": {
-    ".": "./src/index.tsx",
+    ".": "./src/index.ts",
     "./components": "./src/components/index.ts",
     "./utils": "./src/utils/index.ts"
   },

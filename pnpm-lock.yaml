@@ -201,6 +201,9 @@ importers:
 
   extensions/state:
     dependencies:
+      '@agrzes/yellow-next-shared':
+        specifier: workspace:*
+        version: link:../../shared
       '@emotion/react':
         specifier: 11.11.4
         version: 11.11.4(@types/react@18.2.64)(react@18.2.0)
