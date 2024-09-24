@@ -493,13 +493,21 @@ describe('dynamic', () => {
         const g = s.build()
         expect(g).to.have.nested.property('graph.@graph.2').containSubset({ label: 'BookAuthorRelation' })
       })
-      it('should define outbound property', () => {
+      it('should define forward property', () => {
         const s = schema()
         s.class('Author').class('Book').accept(relation('Author'))
         const g = s.build()
         expect(g)
           .to.have.nested.property('graph.@graph.1.properties')
-          .containSubset([{ name: 'author', range: 'model:BookAuthorRelation' }])
+          .containSubset([{ name: 'author', range: 'model:BookAuthorRelation', multiplicity: 'multiple' }])
+      })
+      it('should define backward outbound property', () => {
+        const s = schema()
+        s.class('Author').class('Book').accept(relation('Author'))
+        const g = s.build()
+        expect(g)
+          .to.have.nested.property('graph.@graph.0.properties')
+          .containSubset([{ name: 'book', range: 'model:BookAuthorRelation', multiplicity: 'multiple' }])
       })
     })
   })

@@ -274,12 +274,14 @@ export const hierarchy =
     b.property(child).reverse(parent).target(b.className).oneToMany()
 
 export const relation =
-  (target: string, outboundRelation?: string): Visitor =>
+  (target: string, forward?: string, backward?: string): Visitor =>
   (b) => {
     const relationClass = `${b.className}${target}Relation`
-    outboundRelation = outboundRelation || _.camelCase(target)
-    b.property(outboundRelation).target(relationClass).oneToMany()
+    forward = forward || _.camelCase(target)
+    backward = backward || _.camelCase(b.className)
+    b.property(forward).target(relationClass).oneToMany()
     b.class(relationClass)
+    b.class(target).property(backward).target(relationClass).oneToMany()
   }
 
 export function schema() {
