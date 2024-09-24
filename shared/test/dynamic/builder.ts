@@ -499,7 +499,7 @@ describe('dynamic', () => {
         const g = s.build()
         expect(g)
           .to.have.nested.property('graph.@graph.1.properties')
-          .containSubset([{ name: 'outboundRelation', range: 'model:BookAuthorRelation' }])
+          .containSubset([{ name: 'author', range: 'model:BookAuthorRelation' }])
       })
     })
   })

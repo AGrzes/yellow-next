@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 const context = {
   yd: 'agrzes:yellow-next:dynamic:',
   rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
@@ -272,13 +274,13 @@ export const hierarchy =
     b.property(child).reverse(parent).target(b.className).oneToMany()
 
 export const relation =
-  (target: string, outboundRelation: string = 'outboundRelation'): Visitor =>
+  (target: string, outboundRelation?: string): Visitor =>
   (b) => {
     const relationClass = `${b.className}${target}Relation`
+    outboundRelation = outboundRelation || _.camelCase(target)
     b.property(outboundRelation).target(relationClass).oneToMany()
     b.class(relationClass)
   }
-
 
 export function schema() {
   return new SchemaBuilder()
