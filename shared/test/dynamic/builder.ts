@@ -392,6 +392,15 @@ describe('dynamic', () => {
         const g = s.class('Book').property('title')
         expect(g.className).to.be.equal('Book')
       })
+      it('should allow to define class in multiple parts', () => {
+        const s = schema()
+        s.class('Book').property('title')
+        s.class('Book').property('author')
+        const g = s.build()
+        expect(g)
+          .to.have.nested.property('graph.@graph.0.properties')
+          .containSubset([{ name: 'title' }, { name: 'author' }])
+      })
     })
     describe('label', () => {
       it('should define label', () => {

@@ -209,7 +209,7 @@ class SchemaBuilder {
   prefixes: Record<string, string> = {}
 
   class(name: string, iri?: string) {
-    this.classes[name] = { name, iri }
+    this.classes[name] = this.classes[name] || { name, iri }
     return new ClassBuilder(this, this.classes[name])
   }
 
