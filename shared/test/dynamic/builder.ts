@@ -653,6 +653,16 @@ describe('dynamic', () => {
             },
           ])
       })
+      it('should accept visitor for relation class', () => {
+        const s = schema()
+        s.class('Author')
+          .class('Book')
+          .accept(relation('Author', null, null, (b) => b.property('name')))
+        const g = s.build()
+        expect(g)
+          .to.have.nested.property('graph.@graph.2.properties')
+          .containSubset([{ name: 'name' }])
+      })
     })
   })
 })
