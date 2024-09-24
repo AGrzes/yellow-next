@@ -177,7 +177,7 @@ class ClassBuilder {
 
   property(name: string, predicate?: string, iri?: string) {
     this.options.properties = this.options.properties || []
-    const property = { name, predicate, iri }
+    const property = this.options.properties.find((p) => p.name === name) || { name, predicate, iri }
     this.options.properties.push(property)
     return new PropertyBuilder(this, property)
   }

@@ -401,6 +401,18 @@ describe('dynamic', () => {
           .to.have.nested.property('graph.@graph.0.properties')
           .containSubset([{ name: 'title' }, { name: 'author' }])
       })
+      it('should allow to define property in multiple parts', () => {
+        const s = schema()
+        s.class('Book')
+          .property('title')
+          .multiplicity('single')
+          .property('title')
+          .predicate('http://example.com/Book:title')
+        const g = s.build()
+        expect(g)
+          .to.have.nested.property('graph.@graph.0.properties')
+          .containSubset([{ name: 'title', multiplicity: 'single', predicate: 'http://example.com/Book:title' }])
+      })
     })
     describe('label', () => {
       it('should define label', () => {
