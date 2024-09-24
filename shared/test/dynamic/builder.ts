@@ -509,7 +509,7 @@ describe('dynamic', () => {
             },
           ])
       })
-      it('should define backward outbound property', () => {
+      it('should define backward property', () => {
         const s = schema()
         s.class('Author').class('Book').accept(relation('Author'))
         const g = s.build()
@@ -518,6 +518,40 @@ describe('dynamic', () => {
           .containSubset([
             {
               name: 'book',
+              range: 'model:BookAuthorRelation',
+              multiplicity: 'multiple',
+              reverseMultiplicity: 'single',
+              reverse_name: 'author',
+            },
+          ])
+      })
+      it('should define custom forward property', () => {
+        const s = schema()
+        s.class('Author').class('Book').accept(relation('Author', 'writtenBy'))
+        const g = s.build()
+        expect(g)
+          .to.have.nested.property('graph.@graph.1.properties')
+          .containSubset([
+            {
+              name: 'writtenBy',
+              range: 'model:BookAuthorRelation',
+              multiplicity: 'multiple',
+              reverseMultiplicity: 'single',
+              reverse_name: 'book',
+            },
+          ])
+      })
+      it('should define custom backward property', () => {
+        const s = schema()
+        s.class('Author')
+          .class('Book')
+          .accept(relation('Author', null, 'writes'))
+        const g = s.build()
+        expect(g)
+          .to.have.nested.property('graph.@graph.0.properties')
+          .containSubset([
+            {
+              name: 'writes',
               range: 'model:BookAuthorRelation',
               multiplicity: 'multiple',
               reverseMultiplicity: 'single',
