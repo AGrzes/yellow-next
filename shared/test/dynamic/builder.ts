@@ -499,7 +499,15 @@ describe('dynamic', () => {
         const g = s.build()
         expect(g)
           .to.have.nested.property('graph.@graph.1.properties')
-          .containSubset([{ name: 'author', range: 'model:BookAuthorRelation', multiplicity: 'multiple' }])
+          .containSubset([
+            {
+              name: 'author',
+              range: 'model:BookAuthorRelation',
+              multiplicity: 'multiple',
+              reverseMultiplicity: 'single',
+              reverse_name: 'book',
+            },
+          ])
       })
       it('should define backward outbound property', () => {
         const s = schema()
@@ -507,7 +515,15 @@ describe('dynamic', () => {
         const g = s.build()
         expect(g)
           .to.have.nested.property('graph.@graph.0.properties')
-          .containSubset([{ name: 'book', range: 'model:BookAuthorRelation', multiplicity: 'multiple' }])
+          .containSubset([
+            {
+              name: 'book',
+              range: 'model:BookAuthorRelation',
+              multiplicity: 'multiple',
+              reverseMultiplicity: 'single',
+              reverse_name: 'author',
+            },
+          ])
       })
     })
   })

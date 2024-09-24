@@ -279,9 +279,9 @@ export const relation =
     const relationClass = `${b.className}${target}Relation`
     forward = forward || _.camelCase(target)
     backward = backward || _.camelCase(b.className)
-    b.property(forward).target(relationClass).oneToMany()
+    b.property(forward).target(relationClass).oneToMany().reverse(backward)
     b.class(relationClass)
-    b.class(target).property(backward).target(relationClass).oneToMany()
+    b.class(target).property(backward).target(relationClass).oneToMany().reverse(forward)
   }
 
 export function schema() {
