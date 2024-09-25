@@ -52,7 +52,7 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
             document = { [clazz.defaultProperty]: document }
             context.document = document
           } else {
-            return document
+            return { '@id': document }
           }
         }
         const result = { ...document }

@@ -237,18 +237,18 @@ describe('mapper', () => {
           '@graph': [{ author: [{ c: 'd', '@type': ['Author'] }] }],
         })
       })
-      it('should ignore types for non-objects', () => {
+      it('should handle straight ids', () => {
         const document = { books: { author: 'a' } }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ author: 'a' }],
+          '@graph': [{ author: { '@id': 'a' } }],
         })
       })
-      it('should ignore types for non-objects in arrays', () => {
+      it('should handle straight ids in arrays', () => {
         const document = { books: { author: ['a'] } }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ author: ['a'] }],
+          '@graph': [{ author: [{ '@id': 'a' }] }],
         })
       })
       it('should handle default property', () => {
@@ -265,6 +265,7 @@ describe('mapper', () => {
           '@graph': [{ title: 'a' }],
         })
       })
+
       it('should thro error on unknown class', () => {
         const document = { books: { author: ['a'] } }
         expect(() => mapper({ roots: { books: 'Book' }, classes: [] })(document)).to.throw('Class Book not found')
