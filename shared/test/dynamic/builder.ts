@@ -663,6 +663,12 @@ describe('dynamic', () => {
           .to.have.nested.property('graph.@graph.2.properties')
           .containSubset([{ name: 'name' }])
       })
+      it('should define relation class as internal', () => {
+        const s = schema()
+        s.class('Author').class('Book').accept(relation('Author')).internal()
+        const g = s.build()
+        expect(g).to.have.nested.property('graph.@graph.2').containSubset({ internal: true })
+      })
     })
   })
 })

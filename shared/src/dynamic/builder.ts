@@ -293,7 +293,9 @@ export const relation =
       backward = [backward || _.camelCase(b.className), _.camelCase(b.className)]
     }
     b.property(forward[0]).target(relationClass).oneToMany().reverse(backward[1])
-    b.class(relationClass).accept(relationClassVisitor || (() => {}))
+    b.class(relationClass)
+      .accept(relationClassVisitor || (() => {}))
+      .internal()
     b.class(target).property(backward[0]).target(relationClass).oneToMany().reverse(forward[1])
   }
 
