@@ -17,10 +17,16 @@ export function InlineState({ state }: { state: any[] }) {
     currentState && (
       <>
         <Badge badgeContent={state.length} color="primary" showZero>
-          <Chip size="small" variant="outlined" label={currentState.state} onClick={() => setShowDetails(true)} />
+          <Chip
+            size="small"
+            variant="outlined"
+            label={currentState.state}
+            onClickCapture={(e) => e.preventDefault()}
+            onClick={(e) => setShowDetails(true)}
+          />
         </Badge>
         {showDetails && (
-          <Dialog open={showDetails} onClose={() => setShowDetails(false)}>
+          <Dialog onClickCapture={(e) => e.preventDefault()} open={showDetails} onClose={() => setShowDetails(false)}>
             <Table>
               <TableBody>
                 {state.map((s, key) => (
