@@ -43,6 +43,8 @@ export class Model {
             default:
               if (values.length === 1) {
                 return values[0]
+              } else if (values.length === 0) {
+                return undefined
               } else {
                 return values
               }

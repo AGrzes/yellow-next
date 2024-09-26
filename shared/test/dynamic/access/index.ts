@@ -159,6 +159,11 @@ describe('dynamic', () => {
         const book = model.get('Book', 'http://agrzes.pl/books#B1')
         expect(book.title).to.equal('B1')
       })
+      it('should handle empty property gracefully', () => {
+        const model = new Model(store, modelOptions)
+        const book = model.get('Hardcover', 'http://agrzes.pl/books#H1')
+        expect(book.title).to.be.undefined
+      })
     })
   })
 })
