@@ -139,7 +139,10 @@ describe('mapper', () => {
         const document = {}
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@context': {},
+          '@context': {
+            iri: '@id',
+            a: '@type',
+          },
         })
       })
       it('should add type definitions to context', () => {

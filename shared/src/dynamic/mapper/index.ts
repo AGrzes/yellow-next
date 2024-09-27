@@ -13,25 +13,29 @@ export interface Context {
 }
 
 export function mapper(options: MapperOptions): (document: Record<string, any>) => Record<string, any> {
-  const context = Object.fromEntries(
-    options.classes.map((clazz) => [
-      clazz.name,
-      {
-        '@id': clazz.iri,
-        '@context': Object.fromEntries(
-          clazz.properties.map((property) => {
-            const p = {}
-            if (property.reverse) {
-              p['@reverse'] = property.predicate
-            } else {
-              p['@id'] = property.predicate
-            }
-            return [property.name, p]
-          })
-        ),
-      },
-    ])
-  )
+  const context = {
+    iri: '@id',
+    a: '@type',
+    ...Object.fromEntries(
+      options.classes.map((clazz) => [
+        clazz.name,
+        {
+          '@id': clazz.iri,
+          '@context': Object.fromEntries(
+            clazz.properties.map((property) => {
+              const p = {}
+              if (property.reverse) {
+                p['@reverse'] = property.predicate
+              } else {
+                p['@id'] = property.predicate
+              }
+              return [property.name, p]
+            })
+          ),
+        },
+      ])
+    ),
+  }
   function valueFromPattern(pattern: string, context: Context) {
     const template = Handlebars.compile(pattern)
     return template({
