@@ -336,6 +336,13 @@ describe('mapper', () => {
           '@graph': [{ a: ['Hardcover'], binding: 'BINDING' }],
         })
       })
+      it('should inherit id pattern', () => {
+        const document = { hardcovers: { title: 'a' } }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ iri: 'http://agrzes.pl/books#Book/a' }],
+        })
+      })
     })
   })
 })

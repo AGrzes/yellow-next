@@ -74,9 +74,9 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
           )
         }
         if (!document['iri']) {
-          const idPattern = classes.find((c) => c.idPattern)
+          const idPattern = classes.find((c) => c.idPattern)?.idPattern
           if (idPattern) {
-            const id = clazz.idPattern && valueFromPattern(clazz.idPattern, context)
+            const id = valueFromPattern(idPattern, context)
             if (id) {
               result['iri'] = id
             }
