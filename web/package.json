@@ -38,7 +38,7 @@
   "devDependencies": {
     "@types/jsonld": "^1.5.13",
     "@types/n3": "^1.16.4",
-    "@types/react": "^18.2.64"
+    "@types/react": "^18.3.1"
   },
   "files": [
     "target",
@@ -74,6 +74,7 @@
     "./model": "./src/model/index.ts",
     "./store": "./src/store/index.ts",
     "./entities": "./src/entities/index.ts",
+    "./entities/config": "./src/entities/config.ts",
     "./utils": "./src/utils/index.ts",
     "./components": "./src/components/index.tsx"
   },
@@ -90,6 +91,9 @@
       ],
       "entities": [
         "types/entities/index.d.ts"
+      ],
+      "entities/config": [
+        "types/entities/config.d.ts"
       ],
       "utils": [
         "types/utils/index.d.ts"
