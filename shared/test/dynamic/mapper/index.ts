@@ -121,7 +121,14 @@ const options: MapperOptions = {
       ancestors: [Book],
       bases: [Book],
       iri: 'http://agrzes.pl/books#Hardcover',
-      properties: [],
+      properties: [
+        {
+          iri: 'http://agrzes.pl/books#Hardcover/binding',
+          predicate: 'http://agrzes.pl/books#Book/binding',
+          name: 'binding',
+          pattern: 'BINDING',
+        },
+      ],
     },
   ],
   roots: {
@@ -206,52 +213,52 @@ describe('mapper', () => {
         })
       })
       it('should handle roots', () => {
-        const document = { books: { a: 'b' } }
+        const document = { books: { x: 'b' } }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ a: 'b' }],
+          '@graph': [{ x: 'b' }],
         })
       })
       it('should handle array roots', () => {
-        const document = { books: [{ a: 'b' }] }
+        const document = { books: [{ x: 'b' }] }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ a: 'b' }],
+          '@graph': [{ x: 'b' }],
         })
       })
       it('should assign types to roots', () => {
-        const document = { books: { a: 'b' } }
+        const document = { books: { x: 'b' } }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ a: 'b', '@type': ['Book'] }],
+          '@graph': [{ x: 'b', a: ['Book'] }],
         })
       })
       it('should assign types to nested objects', () => {
         const document = { books: { author: { c: 'd' } } }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ author: { c: 'd', '@type': ['Author'] } }],
+          '@graph': [{ author: { c: 'd', a: ['Author'] } }],
         })
       })
       it('should assign types to objects in arrays', () => {
         const document = { books: { author: [{ c: 'd' }] } }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ author: [{ c: 'd', '@type': ['Author'] }] }],
+          '@graph': [{ author: [{ c: 'd', a: ['Author'] }] }],
         })
       })
       it('should handle straight ids', () => {
         const document = { books: { author: 'a' } }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ author: { '@id': 'a' } }],
+          '@graph': [{ author: { iri: 'a' } }],
         })
       })
       it('should handle straight ids in arrays', () => {
         const document = { books: { author: ['a'] } }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ author: [{ '@id': 'a' }] }],
+          '@graph': [{ author: [{ iri: 'a' }] }],
         })
       })
       it('should handle default property', () => {
@@ -277,14 +284,14 @@ describe('mapper', () => {
         const document = { books: { title: 'a' } }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ '@id': 'http://agrzes.pl/books#Book/a', title: 'a' }],
+          '@graph': [{ iri: 'http://agrzes.pl/books#Book/a', title: 'a' }],
         })
       })
       it('should handle id pattern with context', () => {
         const document = { books: { title: 'a', chapters: [{ title: 'b' }] } }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ chapters: [{ '@id': 'http://agrzes.pl/books#Book/a/chapter/0', title: 'b' }] }],
+          '@graph': [{ chapters: [{ iri: 'http://agrzes.pl/books#Book/a/chapter/0', title: 'b' }] }],
         })
       })
       it('should handle generated property', () => {
@@ -298,21 +305,28 @@ describe('mapper', () => {
         const document = { books: { author: ['a'] } }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ generatedRelation: { '@id': 'a' } }],
+          '@graph': [{ generatedRelation: { iri: 'a' } }],
         })
       })
       it('should assign inherited types', () => {
         const document = { hardcovers: {} }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ '@type': ['Book'] }],
+          '@graph': [{ a: ['Book'] }],
         })
       })
       it('should map inherited properties', () => {
-        const document = { hardcovers: { author: { a: 'b' } } }
+        const document = { hardcovers: { author: { x: 'b' } } }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ author: { a: 'b', '@type': ['Author'] } }],
+          '@graph': [{ author: { x: 'b', a: ['Author'] } }],
+        })
+      })
+      it('should handle explicit type', () => {
+        const document = { books: { a: 'Hardcover' } }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ a: 'Hardcover', binding: 'BINDING' }],
         })
       })
     })

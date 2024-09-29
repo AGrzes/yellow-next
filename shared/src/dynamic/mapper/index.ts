@@ -56,17 +56,17 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
             document = { [clazz.defaultProperty]: document }
             context.document = document
           } else {
-            return { '@id': document }
+            return { iri: document }
           }
         }
         const result = { ...document }
-        if (!document['@id'] && clazz.idPattern) {
+        if (!document['iri'] && clazz.idPattern) {
           const id = clazz.idPattern && valueFromPattern(clazz.idPattern, context)
           if (id) {
-            result['@id'] = id
+            result['iri'] = id
           }
         }
-        result['@type'] = [clazz, ...clazz.ancestors].map((c) => c.name)
+        result['a'] = [clazz, ...clazz.ancestors].map((c) => c.name)
         Object.assign(
           result,
           Object.fromEntries(
@@ -106,7 +106,7 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
                     const v = valueFromPattern(property.pattern, context)
                     if (v) {
                       if (property.type) {
-                        return [[property.name, { '@id': v }]]
+                        return [[property.name, { iri: v }]]
                       } else {
                         return [[property.name, v]]
                       }
