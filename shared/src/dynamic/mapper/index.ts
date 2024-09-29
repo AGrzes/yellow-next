@@ -45,11 +45,14 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
       $property: context.property,
     })
   }
+  function lookupClass(name: string) {
+    return options.classes.find((c) => c.name === name)
+  }
   function mapDocument(context: Context) {
     const className = context.className
     let document = context.document
     if (className) {
-      const clazz = options.classes.find((c) => c.name === className)
+      const clazz = lookupClass(className)
       if (clazz) {
         if (typeof document !== 'object') {
           if (clazz.defaultProperty) {
@@ -60,17 +63,30 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
           }
         }
         const result = { ...document }
-        if (!document['iri'] && clazz.idPattern) {
-          const id = clazz.idPattern && valueFromPattern(clazz.idPattern, context)
-          if (id) {
-            result['iri'] = id
+        const classes = [clazz, ...clazz.ancestors]
+        if (document.a) {
+          const a = Array.isArray(document.a) ? document.a : [document.a]
+          classes.push(
+            ...a
+              .map(lookupClass)
+              .filter((c) => c)
+              .flatMap((c) => [c, ...c.ancestors])
+          )
+        }
+        if (!document['iri']) {
+          const idPattern = classes.find((c) => c.idPattern)
+          if (idPattern) {
+            const id = clazz.idPattern && valueFromPattern(clazz.idPattern, context)
+            if (id) {
+              result['iri'] = id
+            }
           }
         }
-        result['a'] = [clazz, ...clazz.ancestors].map((c) => c.name)
+        result['a'] = classes.map((c) => c.name)
         Object.assign(
           result,
           Object.fromEntries(
-            [clazz, ...clazz.ancestors].flatMap((c) =>
+            classes.flatMap((c) =>
               c.properties.flatMap<[string, any]>((property) => {
                 const value = document[property.name]
                 if (value) {

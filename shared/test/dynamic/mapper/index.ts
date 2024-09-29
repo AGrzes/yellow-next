@@ -326,7 +326,14 @@ describe('mapper', () => {
         const document = { books: { a: 'Hardcover' } }
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
-          '@graph': [{ a: 'Hardcover', binding: 'BINDING' }],
+          '@graph': [{ a: ['Hardcover'], binding: 'BINDING' }],
+        })
+      })
+      it('should handle explicit type array', () => {
+        const document = { books: { a: ['Hardcover'] } }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ a: ['Hardcover'], binding: 'BINDING' }],
         })
       })
     })
