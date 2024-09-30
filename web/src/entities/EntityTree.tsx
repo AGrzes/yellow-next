@@ -1,38 +1,9 @@
 import { SemanticProxy } from '@agrzes/yellow-next-shared/dynamic/access'
-import { List, SxProps, Theme } from '@mui/material'
+import { SxProps, Theme } from '@mui/material'
 import React from 'react'
 import { useModel } from '../model/index'
+import { EntityTree as ET, TreeComponentType } from './../components'
 import { resolveComponent } from './entityComponents'
-
-function EntitySubtree<T extends SemanticProxy>({
-  TreeComponent,
-  root,
-  depth,
-  children,
-}: {
-  TreeComponent: TreeComponentType
-  root: T
-  depth?: number
-  children: (parent: T) => T[]
-}) {
-  depth = depth || 0
-  return (
-    <>
-      <TreeComponent entity={root} sx={{ pl: depth * 4 + 2 }} />
-      {children(root).map((entity) => (
-        <EntitySubtree
-          key={entity.iri}
-          root={entity}
-          TreeComponent={TreeComponent}
-          children={children}
-          depth={depth + 1}
-        />
-      ))}
-    </>
-  )
-}
-
-export type TreeComponentType = React.ComponentType<{ entity: any; sx?: SxProps<Theme> }>
 
 export function EntityTree<T extends SemanticProxy>({
   className,
@@ -49,11 +20,5 @@ export function EntityTree<T extends SemanticProxy>({
     className,
     kind: 'treeItem',
   })
-  return (
-    <List>
-      {entities.map((entity) => (
-        <EntitySubtree key={entity.iri} root={entity} TreeComponent={TreeComponent} children={children} />
-      ))}
-    </List>
-  )
+  return <ET TreeComponent={TreeComponent} children={children} roots={entities} />
 }

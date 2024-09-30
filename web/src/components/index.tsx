@@ -1,4 +1,5 @@
-import { Icon, SxProps, Theme } from '@mui/material'
+import { SemanticProxy } from '@agrzes/yellow-next-shared/dynamic/access'
+import { Icon, List, SxProps, Theme } from '@mui/material'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardHeader from '@mui/material/CardHeader'
@@ -49,5 +50,53 @@ export function EntityDetailsTemplate({ title, content }: { title: any; content:
         <CardContent>{content}</CardContent>
       </Card>
     </Container>
+  )
+}
+
+function EntitySubtree<T extends SemanticProxy>({
+  TreeComponent,
+  root,
+  depth,
+  children,
+}: {
+  TreeComponent: TreeComponentType
+  root: T
+  depth?: number
+  children: (parent: T) => T[]
+}) {
+  depth = depth || 0
+  return (
+    <>
+      <TreeComponent entity={root} sx={{ pl: depth * 4 + 2 }} />
+      {children(root).map((entity) => (
+        <EntitySubtree
+          key={entity.iri}
+          root={entity}
+          TreeComponent={TreeComponent}
+          children={children}
+          depth={depth + 1}
+        />
+      ))}
+    </>
+  )
+}
+
+export type TreeComponentType = React.ComponentType<{ entity: any; sx?: SxProps<Theme> }>
+
+export function EntityTree<T extends SemanticProxy>({
+  children,
+  roots,
+  TreeComponent,
+}: {
+  children: (parent: T) => T[]
+  roots: T[]
+  TreeComponent: TreeComponentType
+}) {
+  return (
+    <List>
+      {roots.map((entity) => (
+        <EntitySubtree key={entity.iri} root={entity} TreeComponent={TreeComponent} children={children} />
+      ))}
+    </List>
   )
 }
