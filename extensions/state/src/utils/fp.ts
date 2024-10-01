@@ -14,3 +14,7 @@ export function stateAt(dateArg: string | DateTime) {
   return (stateful: { state: any[] }) =>
     stateful.state.findLast((state) => state.state && DateTime.fromISO(state.date) <= date).state
 }
+
+export function lastState() {
+  return (stateful: { state: any[] }) => stateful.state.findLast((state) => state.state)
+}
