@@ -25,7 +25,7 @@ export function PageLayout({ sidebar }: { sidebar: React.ReactNode }) {
       <CssBaseline />
       <Grid container spacing={2}>
         <Grid item xs={2}>
-          <Stack direction="row" spacing={0}>
+          <Stack direction="row" spacing={0} displayPrint="none">
             <Box sx={{ padding: 1 }}>
               <Stack direction="column" spacing={1}>
                 {menu.map((item) =>
