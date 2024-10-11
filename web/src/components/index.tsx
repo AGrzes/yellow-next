@@ -1,5 +1,5 @@
 import { SemanticProxy } from '@agrzes/yellow-next-shared/dynamic/access'
-import { Icon, List, SxProps, Theme } from '@mui/material'
+import { Box, Icon, List, SxProps, Theme, Typography } from '@mui/material'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardHeader from '@mui/material/CardHeader'
@@ -12,6 +12,7 @@ import Stack from '@mui/material/Stack'
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { entityDetailsLink } from '../entities'
+import { usePrint } from '../layout/index'
 
 export function EntityListItemTemplate({
   class: clazz,
@@ -43,7 +44,15 @@ export function EntityListItemTemplate({
 }
 
 export function EntityDetailsTemplate({ title, content }: { title: any; content: any }) {
-  return (
+  const print = usePrint()
+  return print ? (
+    <Box>
+      <Typography variant="h2" gutterBottom>
+        {title}
+      </Typography>
+      {content}
+    </Box>
+  ) : (
     <Container maxWidth={false}>
       <Card>
         <CardHeader title={title}></CardHeader>
