@@ -22,6 +22,15 @@ export function PageLayout({ sidebar }: { sidebar: React.ReactNode }) {
     setOpen(!open)
   }
   const print = searchParams.has('print')
+  const switchPrint = () => {
+    if (print) {
+      searchParams.delete('print')
+    } else {
+      searchParams.set('print', 'true')
+    }
+    setSearchParams(searchParams)
+  }
+
   return (
     <>
       <CssBaseline />
@@ -66,6 +75,11 @@ export function PageLayout({ sidebar }: { sidebar: React.ReactNode }) {
           </Grid>
         </Grid>
       )}
+      <Box sx={{ margin: 0, top: 'auto', right: 20, bottom: 20, left: 'auto', position: 'fixed' }} displayPrint="none">
+        <Fab color="primary" onClick={switchPrint}>
+          <Icon>print</Icon>
+        </Fab>
+      </Box>
     </>
   )
 }
