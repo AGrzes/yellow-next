@@ -71,6 +71,7 @@
   "exports": {
     ".": "./src/index.tsx",
     "./documents": "./src/documents/index.ts",
+    "./layout": "./src/layout/index.ts",
     "./model": "./src/model/index.ts",
     "./store": "./src/store/index.ts",
     "./entities": "./src/entities/index.ts",
@@ -82,6 +83,9 @@
     "*": {
       "documents": [
         "types/documents/index.d.ts"
+      ],
+      "layout": [
+        "types/layout/index.d.ts"
       ],
       "model": [
         "types/model/index.d.ts"

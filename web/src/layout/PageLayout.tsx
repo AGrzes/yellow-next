@@ -2,6 +2,7 @@ import { Box, CssBaseline, Divider, Fab, Grid, Icon, Stack } from '@mui/material
 import React from 'react'
 import { Link, Outlet, useMatches, useSearchParams } from 'react-router-dom'
 import './PageLayout.scss'
+import { PrintProvider } from './index'
 
 const menu = [
   {
@@ -32,7 +33,7 @@ export function PageLayout({ sidebar }: { sidebar: React.ReactNode }) {
   }
 
   return (
-    <>
+    <PrintProvider value={print}>
       <CssBaseline />
       {print ? (
         <Outlet />
@@ -80,6 +81,6 @@ export function PageLayout({ sidebar }: { sidebar: React.ReactNode }) {
           <Icon>print</Icon>
         </Fab>
       </Box>
-    </>
+    </PrintProvider>
   )
 }
