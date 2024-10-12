@@ -275,6 +275,8 @@ export const hierarchy =
 
 export const oneToOne =
   (target: string, name?: string, reverseName?: string) => (b: ClassBuilder | PropertyBuilder) => {
+    name = name || _.camelCase(target)
+    reverseName = reverseName || _.camelCase(b.className)
     return b.property(name).oneToOne().target(target).reverse(reverseName)
   }
 

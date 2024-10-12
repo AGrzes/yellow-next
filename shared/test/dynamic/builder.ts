@@ -673,11 +673,23 @@ describe('dynamic', () => {
     describe('oneToOne', () => {
       it('should define one to one relation', () => {
         const s = schema()
-        s.class('Author').accept(oneToOne('Book', 'book', 'author'))
+        s.class('Author').accept(oneToOne('Book', 'theBook', 'theAuthor'))
         const g = s.build()
         expect(g)
           .to.have.nested.property('graph.@graph.0.properties')
-          .containSubset([{ name: 'book', multiplicity: 'single', reverseMultiplicity: 'single' }])
+          .containSubset([
+            { name: 'theBook', reverse_name: 'theAuthor', multiplicity: 'single', reverseMultiplicity: 'single' },
+          ])
+      })
+      it('should define one to one relation with default names', () => {
+        const s = schema()
+        s.class('Author').accept(oneToOne('Book'))
+        const g = s.build()
+        expect(g)
+          .to.have.nested.property('graph.@graph.0.properties')
+          .containSubset([
+            { name: 'book', reverse_name: 'author', multiplicity: 'single', reverseMultiplicity: 'single' },
+          ])
       })
     })
   })
