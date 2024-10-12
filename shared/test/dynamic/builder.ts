@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import 'mocha'
-import { comment, hierarchy, label, relation, schema } from '../../src/dynamic/builder.js'
+import { comment, hierarchy, label, oneToOne, relation, schema } from '../../src/dynamic/builder.js'
 
 describe('dynamic', () => {
   describe('builder', () => {
@@ -668,6 +668,16 @@ describe('dynamic', () => {
         s.class('Author').class('Book').accept(relation('Author')).internal()
         const g = s.build()
         expect(g).to.have.nested.property('graph.@graph.2').containSubset({ internal: true })
+      })
+    })
+    describe('oneToOne', () => {
+      it('should define one to one relation', () => {
+        const s = schema()
+        s.class('Author').accept(oneToOne('Book', 'book', 'author'))
+        const g = s.build()
+        expect(g)
+          .to.have.nested.property('graph.@graph.0.properties')
+          .containSubset([{ name: 'book', multiplicity: 'single', reverseMultiplicity: 'single' }])
       })
     })
   })

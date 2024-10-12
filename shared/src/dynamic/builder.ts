@@ -273,6 +273,11 @@ export const hierarchy =
   (b: ClassBuilder | PropertyBuilder) =>
     b.property(child).reverse(parent).target(b.className).oneToMany()
 
+export const oneToOne =
+  (target: string, name?: string, reverseName?: string) => (b: ClassBuilder | PropertyBuilder) => {
+    return b.property(name).oneToOne().target(target).reverse(reverseName)
+  }
+
 export const relation =
   (
     target: string,
