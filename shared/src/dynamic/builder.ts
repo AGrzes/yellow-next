@@ -274,16 +274,16 @@ export const hierarchy =
     b.property(child).reverse(parent).target(b.className).oneToMany()
 
 export const oneToOne =
-  (target: string, name?: string, reverseName?: string) => (b: ClassBuilder | PropertyBuilder) => {
+  (target: string, name?: string, reverseName?: string, predicate?: string) => (b: ClassBuilder | PropertyBuilder) => {
     name = name || _.camelCase(target)
     reverseName = reverseName || _.camelCase(b.className)
-    return b.property(name).oneToOne().target(target).reverse(reverseName)
+    return b.property(name).oneToOne().target(target).reverse(reverseName).predicate(predicate)
   }
 export const oneToMany =
-  (target: string, name?: string, reverseName?: string) => (b: ClassBuilder | PropertyBuilder) => {
+  (target: string, name?: string, reverseName?: string, predicate?: string) => (b: ClassBuilder | PropertyBuilder) => {
     name = name || _.camelCase(target)
     reverseName = reverseName || _.camelCase(b.className)
-    return b.property(name).oneToMany().target(target).reverse(reverseName)
+    return b.property(name).oneToMany().target(target).reverse(reverseName).predicate(predicate)
   }
 export const manyToOne =
   (target: string, name?: string, reverseName?: string) => (b: ClassBuilder | PropertyBuilder) => {
@@ -291,6 +291,12 @@ export const manyToOne =
     reverseName = reverseName || _.camelCase(b.className)
     return b.property(name).manyToOne().target(target).reverse(reverseName)
   }
+export const manyToMany =
+  (target: string, name?: string, reverseName?: string) => (b: ClassBuilder | PropertyBuilder) => {
+    name = name || _.camelCase(target)
+    reverseName = reverseName || _.camelCase(b.className)
+    return b.property(name).manyToMany().target(target).reverse(reverseName)
+  }  
 
 export const relation =
   (

@@ -4,6 +4,7 @@ import {
   comment,
   hierarchy,
   label,
+  manyToMany,
   manyToOne,
   oneToMany,
   oneToOne,
@@ -700,6 +701,22 @@ describe('dynamic', () => {
             { name: 'book', reverse_name: 'author', multiplicity: 'single', reverseMultiplicity: 'single' },
           ])
       })
+      it('should define one to one relation with custom predicate', () => {
+        const s = schema()
+        s.class('Author').accept(oneToOne('Book', 'theBook', 'theAuthor', 'http://example.com/author_books'))
+        const g = s.build()
+        expect(g)
+          .to.have.nested.property('graph.@graph.0.properties')
+          .containSubset([
+            {
+              name: 'theBook',
+              reverse_name: 'theAuthor',
+              multiplicity: 'single',
+              reverseMultiplicity: 'single',
+              predicate: 'http://example.com/author_books',
+            },
+          ])
+      })
     })
     describe('oneToMany', () => {
       it('should define one to many relation', () => {
@@ -722,6 +739,22 @@ describe('dynamic', () => {
             { name: 'book', reverse_name: 'author', multiplicity: 'multiple', reverseMultiplicity: 'single' },
           ])
       })
+      it('should define one to many relation with custom predicate', () => {
+        const s = schema()
+        s.class('Author').accept(oneToMany('Book', 'theBook', 'theAuthor', 'http://example.com/author_books'))
+        const g = s.build()
+        expect(g)
+          .to.have.nested.property('graph.@graph.0.properties')
+          .containSubset([
+            {
+              name: 'theBook',
+              reverse_name: 'theAuthor',
+              multiplicity: 'multiple',
+              reverseMultiplicity: 'single',
+              predicate: 'http://example.com/author_books',
+            },
+          ])
+      })
     })
     describe('manyToOne', () => {
       it('should define many to one relation', () => {
@@ -742,6 +775,28 @@ describe('dynamic', () => {
           .to.have.nested.property('graph.@graph.0.properties')
           .containSubset([
             { name: 'book', reverse_name: 'author', multiplicity: 'single', reverseMultiplicity: 'multiple' },
+          ])
+      })
+    })
+    describe('manyToMany', () => {
+      it('should define many to many relation', () => {
+        const s = schema()
+        s.class('Author').accept(manyToMany('Book', 'theBook', 'theAuthor'))
+        const g = s.build()
+        expect(g)
+          .to.have.nested.property('graph.@graph.0.properties')
+          .containSubset([
+            { name: 'theBook', reverse_name: 'theAuthor', multiplicity: 'multiple', reverseMultiplicity: 'multiple' },
+          ])
+      })
+      it('should define many to many relation with default names', () => {
+        const s = schema()
+        s.class('Author').accept(manyToMany('Book'))
+        const g = s.build()
+        expect(g)
+          .to.have.nested.property('graph.@graph.0.properties')
+          .containSubset([
+            { name: 'book', reverse_name: 'author', multiplicity: 'multiple', reverseMultiplicity: 'multiple' },
           ])
       })
     })
