@@ -292,10 +292,10 @@ export const manyToOne =
     return b.property(name).manyToOne().target(target).reverse(reverseName).predicate(predicate)
   }
 export const manyToMany =
-  (target: string, name?: string, reverseName?: string) => (b: ClassBuilder | PropertyBuilder) => {
+  (target: string, name?: string, reverseName?: string, predicate?: string) => (b: ClassBuilder | PropertyBuilder) => {
     name = name || _.camelCase(target)
     reverseName = reverseName || _.camelCase(b.className)
-    return b.property(name).manyToMany().target(target).reverse(reverseName)
+    return b.property(name).manyToMany().target(target).reverse(reverseName).predicate(predicate)
   }  
 
 export const relation =

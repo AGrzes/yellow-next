@@ -815,6 +815,22 @@ describe('dynamic', () => {
             { name: 'book', reverse_name: 'author', multiplicity: 'multiple', reverseMultiplicity: 'multiple' },
           ])
       })
+      it('should define many to many relation with custom predicate', () => {
+        const s = schema()
+        s.class('Author').accept(manyToMany('Book', 'theBook', 'theAuthor', 'http://example.com/author_books'))
+        const g = s.build()
+        expect(g)
+          .to.have.nested.property('graph.@graph.0.properties')
+          .containSubset([
+            {
+              name: 'theBook',
+              reverse_name: 'theAuthor',
+              multiplicity: 'multiple',
+              reverseMultiplicity: 'multiple',
+              predicate: 'http://example.com/author_books',
+            },
+          ])
+      })
     })
   })
 })
