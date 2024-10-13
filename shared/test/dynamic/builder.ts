@@ -1,6 +1,15 @@
 import { expect } from 'chai'
 import 'mocha'
-import { comment, hierarchy, label, oneToMany, oneToOne, relation, schema } from '../../src/dynamic/builder.js'
+import {
+  comment,
+  hierarchy,
+  label,
+  manyToOne,
+  oneToMany,
+  oneToOne,
+  relation,
+  schema,
+} from '../../src/dynamic/builder.js'
 
 describe('dynamic', () => {
   describe('builder', () => {
@@ -711,6 +720,28 @@ describe('dynamic', () => {
           .to.have.nested.property('graph.@graph.0.properties')
           .containSubset([
             { name: 'book', reverse_name: 'author', multiplicity: 'multiple', reverseMultiplicity: 'single' },
+          ])
+      })
+    })
+    describe('manyToOne', () => {
+      it('should define many to one relation', () => {
+        const s = schema()
+        s.class('Author').accept(manyToOne('Book', 'theBook', 'theAuthor'))
+        const g = s.build()
+        expect(g)
+          .to.have.nested.property('graph.@graph.0.properties')
+          .containSubset([
+            { name: 'theBook', reverse_name: 'theAuthor', multiplicity: 'single', reverseMultiplicity: 'multiple' },
+          ])
+      })
+      it('should define many to one relation with default names', () => {
+        const s = schema()
+        s.class('Author').accept(manyToOne('Book'))
+        const g = s.build()
+        expect(g)
+          .to.have.nested.property('graph.@graph.0.properties')
+          .containSubset([
+            { name: 'book', reverse_name: 'author', multiplicity: 'single', reverseMultiplicity: 'multiple' },
           ])
       })
     })

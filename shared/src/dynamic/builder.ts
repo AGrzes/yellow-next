@@ -285,6 +285,12 @@ export const oneToMany =
     reverseName = reverseName || _.camelCase(b.className)
     return b.property(name).oneToMany().target(target).reverse(reverseName)
   }
+export const manyToOne =
+  (target: string, name?: string, reverseName?: string) => (b: ClassBuilder | PropertyBuilder) => {
+    name = name || _.camelCase(target)
+    reverseName = reverseName || _.camelCase(b.className)
+    return b.property(name).manyToOne().target(target).reverse(reverseName)
+  }
 
 export const relation =
   (
