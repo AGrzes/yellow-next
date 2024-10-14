@@ -126,3 +126,11 @@ export const CompositeEntityComponent: EntityComponentType = ({
     </Stack>
   )
 }
+
+export function inlineText(property: string): EntityComponentType {
+  return ({ entity, sx }) => (
+    <Box component="span" sx={sx}>
+      {entity[property]}
+    </Box>
+  )
+}
