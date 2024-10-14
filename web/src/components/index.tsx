@@ -10,6 +10,7 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import Stack from '@mui/material/Stack'
 import React from 'react'
+import Markdown from 'react-markdown'
 import { Link as RouterLink } from 'react-router-dom'
 import { entityDetailsLink } from '../entities'
 import { usePrint } from '../layout/index'
@@ -90,7 +91,6 @@ function EntitySubtree<T extends SemanticProxy>({
   )
 }
 
-
 export type EntityComponentType = React.ComponentType<{ entity: any; sx?: SxProps<Theme> }>
 export type EntityComponentProps = React.ComponentProps<EntityComponentType>
 export type TreeComponentType = EntityComponentType
@@ -140,5 +140,13 @@ export function simpleText(property: string): EntityComponentType {
     <Typography variant="body1" sx={sx}>
       {entity[property]}
     </Typography>
+  )
+}
+
+export function richText(property: string): EntityComponentType {
+  return ({ entity, sx }) => (
+    <Box sx={sx}>
+      <Markdown>{entity[property]}</Markdown>
+    </Box>
   )
 }
