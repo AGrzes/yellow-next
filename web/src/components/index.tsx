@@ -134,3 +134,11 @@ export function inlineText(property: string): EntityComponentType {
     </Box>
   )
 }
+
+export function simpleText(property: string): EntityComponentType {
+  return ({ entity, sx }) => (
+    <Typography variant="body1" sx={sx}>
+      {entity[property]}
+    </Typography>
+  )
+}
