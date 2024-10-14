@@ -90,7 +90,9 @@ function EntitySubtree<T extends SemanticProxy>({
   )
 }
 
-export type TreeComponentType = React.ComponentType<{ entity: any; sx?: SxProps<Theme> }>
+
+export type EntityComponentType = React.ComponentType<{ entity: any; sx?: SxProps<Theme> }>
+export type TreeComponentType = EntityComponentType
 
 export function EntityTree<T extends SemanticProxy>({
   children,
