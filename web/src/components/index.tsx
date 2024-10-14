@@ -92,6 +92,7 @@ function EntitySubtree<T extends SemanticProxy>({
 
 
 export type EntityComponentType = React.ComponentType<{ entity: any; sx?: SxProps<Theme> }>
+export type EntityComponentProps = React.ComponentProps<EntityComponentType>
 export type TreeComponentType = EntityComponentType
 
 export function EntityTree<T extends SemanticProxy>({
@@ -109,5 +110,19 @@ export function EntityTree<T extends SemanticProxy>({
         <EntitySubtree key={entity.iri} root={entity} TreeComponent={TreeComponent} children={children} />
       ))}
     </List>
+  )
+}
+
+export const CompositeEntityComponent: EntityComponentType = ({
+  entity,
+  sx,
+  items,
+}: EntityComponentProps & { items: EntityComponentType[] }) => {
+  return (
+    <Stack direction="row" sx={sx}>
+      {items.map((Item, index) => (
+        <Item key={index} entity={entity} />
+      ))}
+    </Stack>
   )
 }
