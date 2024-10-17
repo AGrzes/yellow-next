@@ -6,7 +6,7 @@ import { ContentSource } from '../file-source.js'
 import { Parser } from './model.js'
 @injectable()
 export class ScriptParser implements Parser {
-  constructor(private extensions: string[] = ['.js', '.mjs', '.ts', '.mts']) {}
+  constructor(private extensions: string[] = ['.js', '.mjs', '.ts', '.mts', '.cjs']) {}
   async parse(path: string, source: ContentSource) {
     if (this.extensions.includes(extname(path))) {
       const content = (await import(join(cwd(), path) + `?t=${_.now()}`)).default
