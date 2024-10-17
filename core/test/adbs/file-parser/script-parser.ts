@@ -24,6 +24,13 @@ describe('adbs', () => {
         expect(parsed).to.have.lengthOf(1)
         expect(parsed).to.deep.equal([{ document: 'f', id: 'js#0' }])
       })
+      it('should call async js function', async () => {
+        const read = async () => 'async () => ({ foo: "bar" })'
+        const parser = new ScriptParser()
+        const parsed = await parser.parse('test/adbs/file-parser/scripts/async-function.js', read)
+        expect(parsed).to.have.lengthOf(1)
+        expect(parsed).to.deep.equal([{ document: 'f', id: 'js#0' }])
+      })
     })
   })
 })
