@@ -31,6 +31,12 @@ describe('adbs', () => {
         expect(parsed).to.have.lengthOf(1)
         expect(parsed).to.deep.equal([{ document: 'f', id: 'js#0' }])
       })
+      it('should not parse other files', async () => {
+        const read = async () => ''
+        const parser = new ScriptParser()
+        const parsed = await parser.parse('test/adbs/file-parser/scripts/object.yaml', read)
+        expect(parsed).to.deep.equal([])
+      })
     })
   })
 })
