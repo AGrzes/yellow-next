@@ -11,6 +11,12 @@ describe('adbs', () => {
         const parsed = await parser.parse('test/adbs/file-parser/scripts/object.ts', read)
         expect(parsed).to.deep.equal([{ document: { foo: 'bar' }, id: 'js#0' }])
       })
+      it('should parse js array', async () => {
+        const read = async () => '[]'
+        const parser = new ScriptParser()
+        const parsed = await parser.parse('test/adbs/file-parser/scripts/array.js', read)
+        expect(parsed).to.deep.equal([{ document: { foo: 'bar' }, id: 'js#0' }])
+      })
     })
   })
 })
