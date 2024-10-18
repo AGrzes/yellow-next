@@ -145,6 +145,19 @@ describe('adbs', () => {
         const toc = tocService.toc
         expect(toc).to.deep.equal([])
       })
+      it('should handle index documents', async () => {
+        const tocService = new TocService()
+        await tocService.observer.next!({
+          key: 'documents/folder/index.md',
+          kind: 'update',
+          content: async () => `---
+index: true
+---
+          `,
+        } as UpdateEvent<ContentSource, string>)
+        const toc = tocService.toc
+        expect(toc).to.deep.equal([{ label: 'Folder', href: 'folder/index' }])
+      })
     })
   })
 })

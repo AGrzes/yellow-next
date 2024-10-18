@@ -21,6 +21,7 @@ interface Entry {
   path: string
   label?: string
   skip?: boolean
+  index?: boolean
 }
 @injectable()
 export class TocService {
@@ -35,10 +36,16 @@ export class TocService {
           segments: child.segments.length > 1 ? child.segments.slice(1) : ['.'],
         }))
       )
+      const index = children.find(({ index }) => index)
       if (mappedChildren.length) {
         return {
           label: startCase(segment),
           children: mappedChildren,
+        }
+      } else if (index) {
+        return {
+          label: startCase(segment),
+          href: index.path,
         }
       } else {
         return null
@@ -76,11 +83,12 @@ export class TocService {
     const dir = dirname(path)
     const ext = extname(path)
     const base = basename(path, ext)
-    const { title } = await this.extractMetadata(path, source)
+    const { title, index } = await this.extractMetadata(path, source)
     return {
       path: join(dir, base),
       label: title || startCase(base),
-      skip: !['.mdx', '.md', '.tsx', '.jsx'].includes(ext),
+      skip: !['.mdx', '.md', '.tsx', '.jsx'].includes(ext) || index,
+      index,
     }
   }
 
