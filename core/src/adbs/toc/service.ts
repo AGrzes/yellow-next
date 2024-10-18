@@ -41,6 +41,7 @@ export class TocService {
         return {
           label: startCase(segment),
           children: mappedChildren,
+          ...(index ? { href: index.path } : {}),
         }
       } else if (index) {
         return {

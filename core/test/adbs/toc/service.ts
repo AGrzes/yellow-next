@@ -158,6 +158,25 @@ index: true
         const toc = tocService.toc
         expect(toc).to.deep.equal([{ label: 'Folder', href: 'folder/index' }])
       })
+      it('should handle index documents with children', async () => {
+        const tocService = new TocService()
+        await tocService.observer.next!({
+          key: 'documents/folder/index.md',
+          kind: 'update',
+          content: async () => `---
+index: true
+---`,
+        } as UpdateEvent<ContentSource, string>)
+        await tocService.observer.next!({
+          key: 'documents/folder/file.md',
+          kind: 'update',
+          content: async () => '',
+        } as UpdateEvent<ContentSource, string>)
+        const toc = tocService.toc
+        expect(toc).to.deep.equal([
+          { label: 'Folder', href: 'folder/index', children: [{ label: 'File', href: 'folder/file' }] },
+        ])
+      })
     })
   })
 })
