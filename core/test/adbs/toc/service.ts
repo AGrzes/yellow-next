@@ -26,6 +26,7 @@ describe('adbs', () => {
           {
             label: 'File',
             href: 'file',
+            path: 'file',
           },
         ])
       })
@@ -40,10 +41,12 @@ describe('adbs', () => {
         expect(toc).to.deep.equal([
           {
             label: 'Folder',
+            path: 'folder',
             children: [
               {
                 label: 'File',
                 href: 'folder/file',
+                path: 'folder/file',
               },
             ],
           },
@@ -60,13 +63,16 @@ describe('adbs', () => {
         expect(toc).to.deep.equal([
           {
             label: 'Folder',
+            path: 'folder',
             children: [
               {
                 label: 'Subfolder',
+                path: 'folder/subfolder',
                 children: [
                   {
                     label: 'File',
                     href: 'folder/subfolder/file',
+                    path: 'folder/subfolder/file',
                   },
                 ],
               },
@@ -101,10 +107,12 @@ describe('adbs', () => {
         expect(toc).to.deep.equal([
           {
             label: 'Folder',
+            path: 'folder',
             children: [
               {
                 label: 'File',
                 href: 'folder/new',
+                path: 'folder/new',
               },
             ],
           },
@@ -156,7 +164,7 @@ index: true
           `,
         } as UpdateEvent<ContentSource, string>)
         const toc = tocService.toc
-        expect(toc).to.deep.equal([{ label: 'Folder', href: 'folder/index' }])
+        expect(toc).to.deep.equal([{ label: 'Folder', href: 'folder/index', path: 'folder' }])
       })
       it('should handle index documents with children', async () => {
         const tocService = new TocService()
@@ -174,7 +182,12 @@ index: true
         } as UpdateEvent<ContentSource, string>)
         const toc = tocService.toc
         expect(toc).to.deep.equal([
-          { label: 'Folder', href: 'folder/index', children: [{ label: 'File', href: 'folder/file' }] },
+          {
+            label: 'Folder',
+            href: 'folder/index',
+            path: 'folder',
+            children: [{ label: 'File', href: 'folder/file', path: 'folder/file' }],
+          },
         ])
       })
     })

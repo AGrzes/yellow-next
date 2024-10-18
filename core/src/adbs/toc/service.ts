@@ -12,6 +12,7 @@ const { filter, groupBy, map, omit, startCase } = lodash
 const log = debug('yellow:adbs:toc:service')
 
 export interface TocNode {
+  path: string
   href?: string
   label: string
   children?: TocNode[]
@@ -28,12 +29,16 @@ export class TocService {
   constructor(private documentDirectory: string = 'documents') {}
   private buildToc(): TocNode[] {
     log('buildToc', this.entries)
-    const mapLeafEntryToNode = ({ label, path, skip }: Entry): TocNode => (skip ? null : { label, href: path })
-    const createJunctionNode = (children: Array<Entry & { segments: string[] }>, segment: string): TocNode => {
+    const mapLeafEntryToNode = ({ label, path, skip }: Entry): TocNode => (skip ? null : { label, href: path, path })
+    const createJunctionNode = (
+      children: Array<Entry & { segments: string[]; ancestors: string[] }>,
+      segment: string
+    ): TocNode => {
       const mappedChildren = processTocLevel(
         map(children, (child) => ({
           ...child,
           segments: child.segments.length > 1 ? child.segments.slice(1) : ['.'],
+          ancestors: [...child.ancestors, segment],
         }))
       )
       const index = children.find(({ index }) => index)
@@ -42,17 +47,19 @@ export class TocService {
           label: startCase(segment),
           children: mappedChildren,
           ...(index ? { href: index.path } : {}),
+          path: [...children[0].ancestors, segment].join('/'),
         }
       } else if (index) {
         return {
           label: startCase(segment),
           href: index.path,
+          path: [...index.ancestors, segment].join('/'),
         }
       } else {
         return null
       }
     }
-    const processTocLevel = (items: Array<Entry & { segments: string[] }>): TocNode[] => {
+    const processTocLevel = (items: Array<Entry & { segments: string[]; ancestors: string[] }>): TocNode[] => {
       const groups = groupBy(items, ({ segments }) => segments[0])
       return filter([...map(groups['.'], mapLeafEntryToNode), ...map(omit(groups, '.'), createJunctionNode)])
     }
@@ -61,6 +68,7 @@ export class TocService {
       map(this.entries, (cache, path) => ({
         ...cache,
         segments: dirname(path).split(sep),
+        ancestors: [],
       }))
     )
   }
