@@ -27,9 +27,9 @@ export class TocService {
   constructor(private documentDirectory: string = 'documents') {}
   private buildToc(): TocNode[] {
     log('buildToc', this.entries)
-    const leaf = ({ label, path, skip }: Entry): TocNode => (skip ? null : { label, href: path })
-    const junction = (children: Array<Entry & { segments: string[] }>, segment: string): TocNode => {
-      const mappedChildren = collect(
+    const mapLeafEntryToNode = ({ label, path, skip }: Entry): TocNode => (skip ? null : { label, href: path })
+    const createJunctionNode = (children: Array<Entry & { segments: string[] }>, segment: string): TocNode => {
+      const mappedChildren = processTocLevel(
         map(children, (child) => ({
           ...child,
           segments: child.segments.length > 1 ? child.segments.slice(1) : ['.'],
@@ -44,12 +44,12 @@ export class TocService {
         return null
       }
     }
-    const collect = (items: Array<Entry & { segments: string[] }>): TocNode[] => {
+    const processTocLevel = (items: Array<Entry & { segments: string[] }>): TocNode[] => {
       const groups = groupBy(items, ({ segments }) => segments[0])
-      return filter([...map(groups['.'], leaf), ...map(omit(groups, '.'), junction)])
+      return filter([...map(groups['.'], mapLeafEntryToNode), ...map(omit(groups, '.'), createJunctionNode)])
     }
 
-    return collect(
+    return processTocLevel(
       map(this.entries, (cache, path) => ({
         ...cache,
         segments: dirname(path).split(sep),
