@@ -33,6 +33,7 @@ function createJunctionNode(
   children: Array<Entry & { segments: string[]; ancestors: string[] }>,
   segment: string
 ): TocNode {
+  const ancestors = children[0].ancestors
   const mappedChildren = processTocLevel(
     map(children, (child) => ({
       ...child,
@@ -40,19 +41,19 @@ function createJunctionNode(
       ancestors: [...child.ancestors, segment],
     }))
   )
-  const index = children.find(({ index }) => index)
+  const index = children.find(({ index, segments }) => index && segments.length === 1)
   if (mappedChildren.length) {
     return {
       label: index?.label || startCase(segment),
       children: mappedChildren,
       ...(index ? { href: index.path } : {}),
-      path: [...children[0].ancestors, segment].join('/'),
+      path: [...ancestors, segment].join('/'),
     }
   } else if (index) {
     return {
       label: index.label || startCase(segment),
       href: index.path,
-      path: [...index.ancestors, segment].join('/'),
+      path: [...ancestors, segment].join('/'),
     }
   } else {
     return null
