@@ -44,14 +44,14 @@ export class TocService {
       const index = children.find(({ index }) => index)
       if (mappedChildren.length) {
         return {
-          label: startCase(segment),
+          label: index?.label || startCase(segment),
           children: mappedChildren,
           ...(index ? { href: index.path } : {}),
           path: [...children[0].ancestors, segment].join('/'),
         }
       } else if (index) {
         return {
-          label: startCase(segment),
+          label: index.label || startCase(segment),
           href: index.path,
           path: [...index.ancestors, segment].join('/'),
         }
@@ -95,7 +95,7 @@ export class TocService {
     const { title, index } = await this.extractMetadata(path, source)
     return {
       path: join(dir, base),
-      label: title || startCase(base),
+      label: index ? title : title || startCase(base),
       skip: !['.mdx', '.md', '.tsx', '.jsx'].includes(ext) || index,
       index,
     }
