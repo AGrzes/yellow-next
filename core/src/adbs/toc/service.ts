@@ -42,17 +42,11 @@ function createJunctionNode(
     }))
   )
   const index = children.find(({ index, segments }) => index && segments.length === 1)
-  if (mappedChildren.length) {
+  if (mappedChildren.length || index) {
     return {
       label: index?.label || startCase(segment),
-      children: mappedChildren,
+      ...(mappedChildren.length ? { children: mappedChildren } : {}),
       ...(index ? { href: index.path } : {}),
-      path: [...ancestors, segment].join('/'),
-    }
-  } else if (index) {
-    return {
-      label: index.label || startCase(segment),
-      href: index.path,
       path: [...ancestors, segment].join('/'),
     }
   } else {
