@@ -228,7 +228,38 @@ index: true
           },
         ])
       })
-
+      it('should sort entries', async () => {
+        const tocService = new TocService()
+        await tocService.observer.next!({
+          key: 'documents/folder/2.md',
+          kind: 'update',
+          content: async () => '',
+        } as UpdateEvent<ContentSource, string>)
+        await tocService.observer.next!({
+          key: 'documents/folder/1.md',
+          kind: 'update',
+          content: async () => '',
+        } as UpdateEvent<ContentSource, string>)
+        const toc = tocService.toc
+        expect(toc).to.deep.equal([
+          {
+            label: 'Folder',
+            path: 'folder',
+            children: [
+              {
+                label: '1',
+                href: 'folder/1',
+                path: 'folder/1',
+              },
+              {
+                label: '2',
+                href: 'folder/2',
+                path: 'folder/2',
+              },
+            ],
+          },
+        ])
+      })
     })
   })
 })

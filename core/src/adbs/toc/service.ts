@@ -7,7 +7,7 @@ import { PartialObserver } from 'rxjs'
 import { ContentSource } from '../file-source.js'
 import { ChangeEvent, MoveEvent, UpdateEvent } from '../model.js'
 
-const { filter, groupBy, map, omit, startCase } = lodash
+const { filter, groupBy, map, omit, startCase, orderBy } = lodash
 
 const log = debug('yellow:adbs:toc:service')
 
@@ -34,12 +34,15 @@ function createJunctionNode(
   segment: string
 ): TocNode {
   const ancestors = children[0].ancestors
-  const mappedChildren = processTocLevel(
-    map(children, (child) => ({
-      ...child,
-      segments: child.segments.length > 1 ? child.segments.slice(1) : ['.'],
-      ancestors: [...child.ancestors, segment],
-    }))
+  const mappedChildren = orderBy(
+    processTocLevel(
+      map(children, (child) => ({
+        ...child,
+        segments: child.segments.length > 1 ? child.segments.slice(1) : ['.'],
+        ancestors: [...child.ancestors, segment],
+      }))
+    ),
+    'label'
   )
   const index = children.find(({ index, segments }) => index && segments.length === 1)
   if (mappedChildren.length || index) {
