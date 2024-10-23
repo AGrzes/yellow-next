@@ -8,6 +8,7 @@ const C = { name: 'C', iri: 'C', properties: [], ancestors: [B] }
 const D = { name: 'D', iri: 'D', properties: [], ancestors: [C, B] }
 const E = { name: 'E', iri: 'E', properties: [], ancestors: [A] }
 const F = { name: 'F', iri: 'F', properties: [], ancestors: [E, A] }
+const G = { name: 'G', iri: 'G', properties: [], ancestors: [A] }
 
 describe('dynamic', () => {
   describe('accass', () => {
@@ -38,6 +39,9 @@ describe('dynamic', () => {
         })
         it('should list ancestors breadth first', () => {
           expect(classHierarchy(D, F)).to.deep.equal([D, F, C, E, B, A])
+        })
+        it('should order ancestors in a single tree by depth and order of classes', () => {
+          expect(classHierarchy(G, F)).to.deep.equal([G, F, E, A])
         })
       })
     })
