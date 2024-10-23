@@ -32,6 +32,9 @@ describe('dynamic', () => {
         it('should return a class and its ancestors', () => {
           expect(classHierarchy(C)).to.deep.equal([C, B])
         })
+        it('should not place ancestors inside hierarchy', () => {
+          expect(classHierarchy(B, C)).to.deep.equal([C, B])
+        })
       })
     })
   })

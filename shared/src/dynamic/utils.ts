@@ -5,7 +5,11 @@ export function mostSpecificClass(...classes: ClassOptions[]): ClassOptions {
   return classes.find((clazz) => !ancestors.includes(clazz))
 }
 
+function leafClasses(classes: ClassOptions[]): ClassOptions[] {
+  return classes.filter((clazz) => !classes.some((other) => other.ancestors?.includes?.(clazz)))
+}
 
 export function classHierarchy(...classes: ClassOptions[]): ClassOptions[] {
-  return [...classes, ...classes.flatMap((clazz) => clazz.ancestors || [])]
+  const leafs = leafClasses(classes)
+  return [...leafs, ...leafs.flatMap((clazz) => clazz.ancestors || [])]
 }
