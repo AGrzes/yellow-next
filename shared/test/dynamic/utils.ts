@@ -5,6 +5,8 @@ import { mostSpecificClass } from '../../src/dynamic/utils.js'
 const A = { name: 'A', iri: 'A', properties: [] }
 const B = { name: 'B', iri: 'B', properties: [] }
 const C = { name: 'C', iri: 'C', properties: [], ancestors: [B] }
+const D = { name: 'D', iri: 'D', properties: [], ancestors: [C, B] }
+const E = { name: 'E', iri: 'E', properties: [], ancestors: [A] }
 
 describe('dynamic', () => {
   describe('accass', () => {
@@ -18,6 +20,9 @@ describe('dynamic', () => {
         })
         it('should return most specific of related classes', () => {
           expect(mostSpecificClass(B, C)).to.equal(C)
+        })
+        it('should return first of unrelated classes even if it have less ancestors', () => {
+          expect(mostSpecificClass(E, D)).to.equal(E)
         })
       })
     })
