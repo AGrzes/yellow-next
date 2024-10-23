@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import 'mocha'
-import { mostSpecificClass } from '../../src/dynamic/utils.js'
+import { classHierarchy, mostSpecificClass } from '../../src/dynamic/utils.js'
 
 const A = { name: 'A', iri: 'A', properties: [] }
 const B = { name: 'B', iri: 'B', properties: [] }
@@ -23,6 +23,11 @@ describe('dynamic', () => {
         })
         it('should return first of unrelated classes even if it have less ancestors', () => {
           expect(mostSpecificClass(E, D)).to.equal(E)
+        })
+      })
+      describe('classHierarchy', () => {
+        it('should return a class for a class without ancestors', () => {
+          expect(classHierarchy(A)).to.deep.equal([A])
         })
       })
     })
