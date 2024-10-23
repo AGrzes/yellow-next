@@ -1,5 +1,7 @@
 import { SemanticProxy } from '@agrzes/yellow-next-shared/dynamic/access'
+import { ClassOptions } from '@agrzes/yellow-next-shared/dynamic/model'
 import { classHierarchy } from '@agrzes/yellow-next-shared/dynamic/utils'
+import lodash from 'lodash'
 import React, { ComponentType, useMemo } from 'react'
 import {
   CompositeEntityComponent,
@@ -10,6 +12,7 @@ import {
 import { config } from '../config/index'
 import { useModel } from '../model/index'
 import { resolveConfig } from './config'
+const { get } = lodash
 
 declare module './config' {
   interface ClassConfig<T extends SemanticProxy> {
@@ -22,29 +25,32 @@ export interface ResolveParams {
   className: string | string[]
   kind: string
 }
-export type EntityComponentFactory = (className: string, kind: string) => EntityComponentType
+export type EntityComponentFactory = (clazz: ClassOptions, kind: string) => EntityComponentType
 
 const componentMap = (await config<{ componentMap: Record<string, ComponentType<any>> }>()).componentMap || {}
 const legacyComponentFactory: EntityComponentFactory = (className, kind) => componentMap[`entity:${className}:${kind}`]
 
-const directComponentFactory: EntityComponentFactory = (className, kind) => {
-  const config = resolveConfig(className)
+const directComponentFactory: EntityComponentFactory = (clazz, kind) => {
+  const config = resolveConfig(clazz.name)
   return config.components?.[kind]
 }
 
-const configurableComponentFactory: EntityComponentFactory = (className, kind) => {
-  const config = resolveConfig(className)
+const configurableComponentFactory: EntityComponentFactory = (clazz, kind) => {
+  const configs = [clazz, ...clazz.ancestors].map(({ name }) => resolveConfig(name))
+  const confgiProperty = (path) => configs.map((config) => get(config, path)).find((value) => value)
+  const icon = confgiProperty('icon')
   switch (kind) {
     case 'listItem':
     case 'treeItem':
-      if (config.sections?.summary) {
+      const summary = confgiProperty('sections.summary')
+      if (summary) {
         return ({ entity, sx }) => {
           return (
             <EntityListItemTemplate
-              class={className}
-              icon={config.icon || ''}
+              class={clazz.name}
+              icon={icon}
               iri={entity.iri}
-              primary={config.sections.summary.map((C) => (
+              primary={summary.map((C) => (
                 <C entity={entity} />
               ))}
               sx={sx}
@@ -54,12 +60,14 @@ const configurableComponentFactory: EntityComponentFactory = (className, kind) =
       }
       break
     case 'details':
-      if (config.sections?.header || config.sections?.details) {
+      const header = confgiProperty('sections.header')
+      const details = confgiProperty('sections.details')
+      if (header || details) {
         return ({ entity }) => {
           return (
             <EntityDetailsTemplate
-              title={<CompositeEntityComponent entity={entity} items={config.sections?.header} />}
-              content={<CompositeEntityComponent entity={entity} items={config.sections?.details} />}
+              title={<CompositeEntityComponent entity={entity} items={header} />}
+              content={<CompositeEntityComponent entity={entity} items={details} />}
             />
           )
         }
@@ -70,13 +78,9 @@ const configurableComponentFactory: EntityComponentFactory = (className, kind) =
 
 const componentFactories = [configurableComponentFactory, directComponentFactory, legacyComponentFactory]
 
-export function resolveComponent<P = {}>({ className, kind }: ResolveParams): ComponentType<P> {
-  if (!Array.isArray(className)) {
-    className = [className]
-  }
-
-  for (const clazz of className) {
-    const config = resolveConfig(clazz)
+export function resolveComponent<P = {}>(classes: ClassOptions[], kind: string): ComponentType<P> {
+  for (const clazz of classes) {
+    const config = resolveConfig(clazz.name)
     const component = componentFactories.reduce((component, factory) => component || factory(clazz, kind), null)
     if (component) {
       return component as ComponentType<P>
@@ -90,9 +94,9 @@ export function useComponent<P = {}>(className: string | string[], kind: string)
     className = [className]
   }
   const model = useModel()
-  className = useMemo(
-    () => classHierarchy(...model.classes.filter((clazz) => className.includes(clazz.name))).map((clazz) => clazz.name),
+  const classes = useMemo(
+    () => classHierarchy(...model.classes.filter((clazz) => className.includes(clazz.name))),
     [className, kind, model]
   )
-  return resolveComponent({ className, kind })
+  return resolveComponent(classes, kind)
 }
