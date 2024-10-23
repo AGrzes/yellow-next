@@ -12,8 +12,11 @@ function leafClasses(classes: ClassOptions[]): ClassOptions[] {
 
 export function classHierarchy(...classes: ClassOptions[]): ClassOptions[] {
   const leafs = leafClasses(classes)
-  const groups = groupBy(leafs, (clazz) => last(clazz.ancestors)?.name)
-  const groupAncestors = Object.values(groups).map((g) =>
+  const firstAncestors = leafs.flatMap((clazz) => clazz.ancestors?.[0])
+  const groups = orderBy(Object.values(groupBy(leafs, (clazz) => last(clazz.ancestors)?.name)), (g) =>
+    firstAncestors.indexOf(g[0])
+  )
+  const groupAncestors = groups.map((g) =>
     uniq(
       orderBy(
         flatMap(
@@ -25,6 +28,5 @@ export function classHierarchy(...classes: ClassOptions[]): ClassOptions[] {
       ).map((a) => a.class)
     )
   )
-
   return [...leafs, ...flattenDeep(zip(...groupAncestors))]
 }

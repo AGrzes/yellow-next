@@ -43,6 +43,9 @@ describe('dynamic', () => {
         it('should order ancestors in a single tree by depth and order of classes', () => {
           expect(classHierarchy(G, F)).to.deep.equal([G, F, E, A])
         })
+        it('should handle multiple trees', () => {
+          expect(classHierarchy(G, D, F)).to.deep.equal([G, D, F, E, C, A, B])
+        })
       })
     })
   })
