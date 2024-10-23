@@ -1,5 +1,6 @@
 import { SemanticProxy } from '@agrzes/yellow-next-shared/dynamic/access'
-import React, { ComponentType } from 'react'
+import { classHierarchy } from '@agrzes/yellow-next-shared/dynamic/utils'
+import React, { ComponentType, useMemo } from 'react'
 import {
   CompositeEntityComponent,
   EntityComponentType,
@@ -7,6 +8,7 @@ import {
   EntityListItemTemplate,
 } from '../components/index'
 import { config } from '../config/index'
+import { useModel } from '../model/index'
 import { resolveConfig } from './config'
 
 declare module './config' {
@@ -72,6 +74,7 @@ export function resolveComponent<P = {}>({ className, kind }: ResolveParams): Co
   if (!Array.isArray(className)) {
     className = [className]
   }
+
   for (const clazz of className) {
     const config = resolveConfig(clazz)
     const component = componentFactories.reduce((component, factory) => component || factory(clazz, kind), null)
@@ -80,4 +83,16 @@ export function resolveComponent<P = {}>({ className, kind }: ResolveParams): Co
     }
   }
   return (() => null) as ComponentType<P>
+}
+
+export function useComponent<P = {}>(className: string | string[], kind: string): EntityComponentType<P> {
+  if (!Array.isArray(className)) {
+    className = [className]
+  }
+  const model = useModel()
+  className = useMemo(
+    () => classHierarchy(...model.classes.filter((clazz) => className.includes(clazz.name))).map((clazz) => clazz.name),
+    [className, kind, model]
+  )
+  return resolveComponent({ className, kind })
 }
