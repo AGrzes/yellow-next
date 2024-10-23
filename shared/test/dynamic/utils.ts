@@ -7,6 +7,7 @@ const B = { name: 'B', iri: 'B', properties: [] }
 const C = { name: 'C', iri: 'C', properties: [], ancestors: [B] }
 const D = { name: 'D', iri: 'D', properties: [], ancestors: [C, B] }
 const E = { name: 'E', iri: 'E', properties: [], ancestors: [A] }
+const F = { name: 'F', iri: 'F', properties: [], ancestors: [E, A] }
 
 describe('dynamic', () => {
   describe('accass', () => {
@@ -34,6 +35,9 @@ describe('dynamic', () => {
         })
         it('should not place ancestors inside hierarchy', () => {
           expect(classHierarchy(B, C)).to.deep.equal([C, B])
+        })
+        it('should list ancestors breadth first', () => {
+          expect(classHierarchy(D, F)).to.deep.equal([D, F, C, E, B, A])
         })
       })
     })
