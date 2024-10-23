@@ -7,5 +7,5 @@ export function mostSpecificClass(...classes: ClassOptions[]): ClassOptions {
 
 
 export function classHierarchy(...classes: ClassOptions[]): ClassOptions[] {
-  return [...classes]
+  return [...classes, ...classes.flatMap((clazz) => clazz.ancestors || [])]
 }
