@@ -119,7 +119,7 @@ export const CompositeEntityComponent: EntityComponentType<{ items: EntityCompon
   items,
 }) => {
   return (
-    <Stack direction="row" sx={sx}>
+    <Stack direction="column" sx={sx}>
       {items.map((Item, index) => (
         <Item key={index} entity={entity} />
       ))}
