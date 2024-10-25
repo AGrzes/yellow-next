@@ -170,7 +170,17 @@ export function richTextList(property: string, label?: string): EntityComponentT
   }
 }
 
-export function simpleList(property: string, components: EntityComponentType[], label?: string): EntityComponentType {
+export function simpleList({
+  property,
+  primary,
+  secondary,
+  label,
+}: {
+  property: string
+  primary: EntityComponentType[]
+  secondary?: EntityComponentType[]
+  label?: string
+}): EntityComponentType {
   label = label || upperFirst(camelCase(property))
   return ({ entity, sx }) => {
     const values = useMemo((): any[] => entity[property] || [], [entity])
@@ -180,7 +190,10 @@ export function simpleList(property: string, components: EntityComponentType[], 
         <List subheader={<ListSubheader>Secrets</ListSubheader>} dense sx={sx}>
           {values.map((value: string, key: number) => (
             <ListItem key={key}>
-              <ListItemText primary={<CompositeEntityComponent entity={value} items={components} direction="row" />} />
+              <ListItemText
+                primary={<CompositeEntityComponent entity={value} items={primary} direction="row" />}
+                secondary={secondary && <CompositeEntityComponent entity={value} items={secondary} direction="row" />}
+              />
             </ListItem>
           ))}
         </List>
