@@ -37,12 +37,12 @@ const directComponentFactory: EntityComponentFactory = (clazz, kind) => {
 
 const configurableComponentFactory: EntityComponentFactory = (clazz, kind) => {
   const configs = [clazz, ...clazz.ancestors].map(({ name }) => resolveConfig(name))
-  const confgiProperty = (path) => configs.map((config) => get(config, path)).find((value) => value)
-  const icon = confgiProperty('icon')
+  const configProperty = (path) => configs.map((config) => get(config, path)).find((value) => value)
+  const icon = configProperty('icon')
   switch (kind) {
     case 'listItem':
     case 'treeItem':
-      const summary = confgiProperty('sections.summary')
+      const summary = configProperty('sections.summary')
       if (summary) {
         return ({ entity, sx }) => {
           return (
@@ -60,8 +60,8 @@ const configurableComponentFactory: EntityComponentFactory = (clazz, kind) => {
       }
       break
     case 'details':
-      const header = confgiProperty('sections.header')
-      const details = confgiProperty('sections.details')
+      const header = configProperty('sections.header')
+      const details = configProperty('sections.details')
       if (header || details) {
         return ({ entity }) => {
           return (
