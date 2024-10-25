@@ -76,7 +76,7 @@ const configurableComponentFactory: EntityComponentFactory = (clazz, kind) => {
   }
 }
 
-const componentFactories = [configurableComponentFactory, directComponentFactory, legacyComponentFactory]
+const componentFactories = [directComponentFactory, legacyComponentFactory, configurableComponentFactory]
 
 export function resolveComponent<P = {}>(classes: ClassOptions[], kind: string): ComponentType<P> {
   for (const clazz of classes) {
