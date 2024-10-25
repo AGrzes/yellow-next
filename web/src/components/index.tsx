@@ -167,7 +167,7 @@ export function richTextList(property: string, label?: string): EntityComponentT
 
     return (
       !!values.length && (
-        <List subheader={<ListSubheader>Secrets</ListSubheader>} dense sx={sx}>
+        <List subheader={<ListSubheader>{label}</ListSubheader>} dense sx={sx}>
           {values.map((value: string, key: number) => (
             <ListItem key={key}>
               <ListItemText primary={<Markdown>{value}</Markdown>} />
@@ -196,7 +196,7 @@ export function simpleList({
 
     return (
       !!values.length && (
-        <List subheader={<ListSubheader>Secrets</ListSubheader>} dense sx={sx}>
+        <List subheader={<ListSubheader>{label}</ListSubheader>} dense sx={sx}>
           {values.map((value: string, key: number) => (
             <ListItem key={key}>
               <ListItemText
