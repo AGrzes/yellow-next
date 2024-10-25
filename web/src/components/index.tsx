@@ -13,9 +13,13 @@ import { camelCase, upperFirst } from 'lodash'
 import React, { useMemo } from 'react'
 import Markdown from 'react-markdown'
 import { Link as RouterLink } from 'react-router-dom'
-import { entityDetailsLink } from '../entities'
-import { TreeOptions } from '../entities/EntityTree.js'
+import { entityDetailsLink } from '../entities/links'
 import { usePrint } from '../layout/index'
+
+export interface TreeOptions<T> {
+  children: (parent: T) => T[]
+  parent: (child: T) => T
+}
 
 export function EntityListItemTemplate({
   class: clazz,
