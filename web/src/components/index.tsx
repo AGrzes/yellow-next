@@ -1,5 +1,5 @@
 import { SemanticProxy } from '@agrzes/yellow-next-shared/dynamic/access'
-import { Box, Icon, List, SxProps, Theme, Typography } from '@mui/material'
+import { Box, Icon, List, ListItem, ListSubheader, SxProps, Theme, Typography } from '@mui/material'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardHeader from '@mui/material/CardHeader'
@@ -9,7 +9,8 @@ import ListItemAvatar from '@mui/material/ListItemAvatar'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import Stack from '@mui/material/Stack'
-import React from 'react'
+import { camelCase, upperFirst } from 'lodash'
+import React, { useMemo } from 'react'
 import Markdown from 'react-markdown'
 import { Link as RouterLink } from 'react-router-dom'
 import { entityDetailsLink } from '../entities'
@@ -113,13 +114,12 @@ export function EntityTree<T extends SemanticProxy>({
   )
 }
 
-export const CompositeEntityComponent: EntityComponentType<{ items: EntityComponentType[] }> = ({
-  entity,
-  sx,
-  items,
-}) => {
+export const CompositeEntityComponent: EntityComponentType<{
+  items: EntityComponentType[]
+  direction?: React.ComponentProps<typeof Stack>['direction']
+}> = ({ entity, sx, items, direction = 'column' }) => {
   return (
-    <Stack direction="column" sx={sx}>
+    <Stack direction={direction} sx={sx}>
       {items.map((Item, index) => (
         <Item key={index} entity={entity} />
       ))}
@@ -149,4 +149,42 @@ export function richText(property: string): EntityComponentType {
       <Markdown>{entity[property]}</Markdown>
     </Box>
   )
+}
+
+export function richTextList(property: string, label?: string): EntityComponentType {
+  label = label || upperFirst(camelCase(property))
+  return ({ entity, sx }) => {
+    const values = useMemo((): any[] => entity[property] || [], [entity])
+
+    return (
+      !!values.length && (
+        <List subheader={<ListSubheader>Secrets</ListSubheader>} dense sx={sx}>
+          {values.map((value: string, key: number) => (
+            <ListItem key={key}>
+              <ListItemText primary={<Markdown>{value}</Markdown>} />
+            </ListItem>
+          ))}
+        </List>
+      )
+    )
+  }
+}
+
+export function simpleList(property: string, components: EntityComponentType[], label?: string): EntityComponentType {
+  label = label || upperFirst(camelCase(property))
+  return ({ entity, sx }) => {
+    const values = useMemo((): any[] => entity[property] || [], [entity])
+
+    return (
+      !!values.length && (
+        <List subheader={<ListSubheader>Secrets</ListSubheader>} dense sx={sx}>
+          {values.map((value: string, key: number) => (
+            <ListItem key={key}>
+              <ListItemText primary={<CompositeEntityComponent entity={value} items={components} direction="row" />} />
+            </ListItem>
+          ))}
+        </List>
+      )
+    )
+  }
 }
