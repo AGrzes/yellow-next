@@ -14,6 +14,7 @@ import React, { useMemo } from 'react'
 import Markdown from 'react-markdown'
 import { Link as RouterLink } from 'react-router-dom'
 import { entityDetailsLink } from '../entities'
+import { TreeOptions } from '../entities/EntityTree.js'
 import { usePrint } from '../layout/index'
 
 export function EntityListItemTemplate({
@@ -209,5 +210,17 @@ export function simpleList({
         </List>
       )
     )
+  }
+}
+
+export function subTree<T extends SemanticProxy>({
+  treeOptions,
+  TreeComponent,
+}: {
+  treeOptions: TreeOptions<T>
+  TreeComponent: TreeComponentType
+}): EntityComponentType {
+  return ({ entity }) => {
+    return <EntityTree {...treeOptions} TreeComponent={TreeComponent} roots={treeOptions.children(entity)} />
   }
 }
