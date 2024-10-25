@@ -151,6 +151,15 @@ export function richText(property: string): EntityComponentType {
   )
 }
 
+export function header(Component: EntityComponentType, level: number = 3): EntityComponentType {
+  const Header = `h${level}` as keyof JSX.IntrinsicElements
+  return ({ entity }) => (
+    <Header>
+      <Component entity={entity} />
+    </Header>
+  )
+}
+
 export function richTextList(property: string, label?: string): EntityComponentType {
   label = label || upperFirst(camelCase(property))
   return ({ entity, sx }) => {
@@ -193,6 +202,7 @@ export function simpleList({
               <ListItemText
                 primary={<CompositeEntityComponent entity={value} items={primary} direction="row" />}
                 secondary={secondary && <CompositeEntityComponent entity={value} items={secondary} direction="row" />}
+                disableTypography
               />
             </ListItem>
           ))}
