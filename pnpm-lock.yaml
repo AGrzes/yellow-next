@@ -369,6 +369,9 @@ importers:
       '@types/jsonld':
         specifier: ^1.5.13
         version: 1.5.13
+      '@types/lodash':
+        specifier: ^4.14.202
+        version: 4.14.202
       '@types/n3':
         specifier: ^1.16.4
         version: 1.16.4
