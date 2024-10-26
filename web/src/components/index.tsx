@@ -9,13 +9,12 @@ import ListItemAvatar from '@mui/material/ListItemAvatar'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import Stack from '@mui/material/Stack'
-import { camelCase, mapValues, upperFirst } from 'lodash'
+import { camelCase, flatMap, groupBy, mapValues, upperFirst } from 'lodash'
 import React, { useMemo } from 'react'
 import Markdown from 'react-markdown'
 import { Link as RouterLink } from 'react-router-dom'
 import { entityDetailsLink } from '../entities/links'
 import { usePrint } from '../layout/index'
-
 
 export interface TreeOptions<T> {
   children: (parent: T) => T[]
@@ -203,7 +202,7 @@ export function simpleList({
     return (
       !!values.length && (
         <List subheader={<ListSubheader>{label}</ListSubheader>} dense sx={sx}>
-          {values.map((value: string, key: number) => (
+          {values.map((value: any, key: number) => (
             <ListItem key={key}>
               <ListItemText
                 primary={<CompositeEntityComponent entity={value} items={primary} direction="row" />}
@@ -238,5 +237,42 @@ export function switchComponent(
   return ({ entity }) => {
     const components = cases[entity[discriminator]] as EntityComponentType[]
     return components && <CompositeEntityComponent entity={entity} items={components} />
+  }
+}
+
+export function groupedList({
+  property,
+  groupProperty,
+  primary,
+  secondary,
+  label,
+}: {
+  property: string
+  groupProperty: string
+  primary: EntityComponentType[]
+  secondary?: EntityComponentType[]
+  label?: string
+}): EntityComponentType {
+  label = label || upperFirst(camelCase(property))
+  return ({ entity, sx }) => {
+    const values = useMemo((): any[] => entity[property] || [], [entity])
+    const groups = useMemo(() => groupBy(values, groupProperty), [values, groupProperty])
+    return (
+      !!values.length && (
+        <List subheader={<ListSubheader>{label}</ListSubheader>} dense sx={sx}>
+          {flatMap(groups, (group: any[], groupKey: string) => [
+            <ListSubheader key={groupKey}>{groupKey}</ListSubheader>,
+            ...group.map((value, key) => (
+              <ListItem key={key}>
+                <ListItemText
+                  primary={<CompositeEntityComponent entity={value} items={primary} direction="row" />}
+                  secondary={secondary && <CompositeEntityComponent entity={value} items={secondary} direction="row" />}
+                />
+              </ListItem>
+            )),
+          ])}
+        </List>
+      )
+    )
   }
 }
