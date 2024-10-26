@@ -9,12 +9,13 @@ import ListItemAvatar from '@mui/material/ListItemAvatar'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import Stack from '@mui/material/Stack'
-import { camelCase, upperFirst } from 'lodash'
+import { camelCase, mapValues, upperFirst } from 'lodash'
 import React, { useMemo } from 'react'
 import Markdown from 'react-markdown'
 import { Link as RouterLink } from 'react-router-dom'
 import { entityDetailsLink } from '../entities/links'
 import { usePrint } from '../layout/index'
+
 
 export interface TreeOptions<T> {
   children: (parent: T) => T[]
@@ -226,5 +227,16 @@ export function subTree<T extends SemanticProxy>({
 }): EntityComponentType {
   return ({ entity }) => {
     return <EntityTree {...treeOptions} TreeComponent={TreeComponent} roots={treeOptions.children(entity)} />
+  }
+}
+
+export function switchComponent(
+  discriminator: string,
+  cases: Record<string, EntityComponentType | EntityComponentType[]>
+) {
+  cases = mapValues(cases, (value) => (Array.isArray(value) ? value : [value]))
+  return ({ entity }) => {
+    const components = cases[entity[discriminator]] as EntityComponentType[]
+    return components && <CompositeEntityComponent entity={entity} items={components} />
   }
 }
