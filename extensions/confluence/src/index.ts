@@ -5,6 +5,7 @@ export interface Page {
   version: number
   title: string
   content?: Record<string, any>
+  status: string
 }
 
 export class Confluence {
@@ -33,6 +34,7 @@ export class Confluence {
         id: draftBody.results?.[0]?.id,
         title,
         version: draftBody.results?.[0]?.version?.number,
+        status: draftBody.results?.[0]?.status,
         ...(content ? { content: JSON.parse(content) } : {}),
       }
     }
@@ -44,25 +46,27 @@ export class Confluence {
         id: body.results?.[0]?.id,
         title,
         version: body.results?.[0]?.version?.number,
+        status: body.results?.[0]?.status,
         ...(content ? { content: JSON.parse(content) } : {}),
       }
     }
   }
-  async createPage(spaceKey: string, title: string, content: any): Promise<Page> {
+  async createPage(spaceKey: string, page: Omit<Page, 'id' | 'version'>): Promise<Page> {
     const { body } = await this.client.post('wiki/api/v2/pages', {
       spaceId: spaceKey,
-      status: 'draft',
-      title,
+      status: page.status,
+      title: page.title,
       body: {
-        value: JSON.stringify(content),
+        value: JSON.stringify(page.content),
         representation: 'atlas_doc_format',
       },
     })
     return {
       id: body.id,
       version: body.version.number,
-      title,
-      content,
+      title: page.title,
+      status: body.status,
+      content: JSON.parse(body.body.atlas_doc_format.value),
     }
   }
 }
