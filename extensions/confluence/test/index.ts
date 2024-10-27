@@ -220,5 +220,48 @@ describe('confluence', () => {
         })
       })
     })
+    describe('updatePage', () => {
+      it('should update page', async () => {
+        const client = sinon.createStubInstance(ConfluenceClient)
+        const confluence = new Confluence(client)
+        client.put.resolves({
+          body: {
+            id: 123,
+            version: { number: 2 },
+            status: 'draft',
+            title: 'test-title',
+            body: { atlas_doc_format: { value: JSON.stringify({ foo: 'bar' }) } },
+          },
+          status: 200,
+        })
+        const page = await confluence.updatePage({
+          id: 123,
+          version: 1,
+          title: 'test-title',
+          status: 'draft',
+          content: { foo: 'bar' },
+        })
+        expect(page).to.be.deep.equal({
+          id: 123,
+          version: 2,
+          title: 'test-title',
+          status: 'draft',
+          content: { foo: 'bar' },
+        })
+        expect(client.put).to.have.been.calledOnceWith('wiki/api/v2/pages/123', {
+          id: 123,
+          type: 'page',
+          status: 'draft',
+          title: 'test-title',
+          body: {
+            value: JSON.stringify({ foo: 'bar' }),
+            representation: 'atlas_doc_format',
+          },
+          version: {
+            number: 1,
+          },
+        })
+      })
+    })
   })
 })
