@@ -1,0 +1,65 @@
+{
+  "name": "@agrzes/yellow-next-extensions-confluence",
+  "description": "",
+  "version": "0.0.1",
+  "author": "Grzegorz Abramczyk <abramczykg@gmail.com>",
+  "c8": {
+    "all": true,
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "include": [
+      "src/**/*"
+    ],
+    "reporter": [
+      "html",
+      "text",
+      "lcov"
+    ]
+  },
+  "dependencies": {
+    "lodash": "4.17.21",
+    "typescript": "5.4.2"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.202"
+  },
+  "files": [
+    "target",
+    "types",
+    "LICENSE",
+    "package.json"
+  ],
+  "license": "MIT",
+  "main": "src/index.tsx",
+  "mocha": {
+    "require": [
+      "ts-node/esm",
+      "source-map-support/register"
+    ],
+    "node-option": [
+      "experimental-specifier-resolution=node",
+      "loader=ts-node/esm"
+    ]
+  },
+  "publishConfig": {
+    "registry": "http://npm.kubernetes.home.agrzes.pl/"
+  },
+  "scripts": {
+    "build": "rm -rf target types && tsc",
+    "start": "node target",
+    "watch": "tsc --watch --preserveWatchOutput"
+  },
+  "type": "module",
+  "types": "types",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "typesVersions": {
+    "*": {}
+  }
+}
