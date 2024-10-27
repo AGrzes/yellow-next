@@ -48,7 +48,7 @@ describe('confluence', () => {
           status: 200,
         })
         const page = await confluence.page('test-space', 'test-title')
-        expect(page).to.be.deep.equal({ id: 123, version: 1 })
+        expect(page).to.be.deep.equal({ id: 123, version: 1, title: 'test-title' })
         expect(client.get).to.have.been.calledOnceWith(
           matchRelativeUrl('wiki/rest/api/content/', {
             type: 'page',
@@ -71,7 +71,7 @@ describe('confluence', () => {
           status: 200,
         })
         const page = await confluence.page('test-space', 'test-title')
-        expect(page).to.be.deep.equal({ id: 123, version: 1 })
+        expect(page).to.be.deep.equal({ id: 123, version: 1, title: 'test-title' })
         expect(client.get).to.have.been.calledTwice
         expect(client.get).to.have.been.calledWith(
           matchRelativeUrl('wiki/rest/api/content/', {
@@ -118,7 +118,7 @@ describe('confluence', () => {
           status: 200,
         })
         const page = await confluence.page('test-space', 'test-title', true)
-        expect(page).to.be.deep.equal({ id: 123, version: 1, content: { foo: 'bar' } })
+        expect(page).to.be.deep.equal({ id: 123, version: 1, title: 'test-title', content: { foo: 'bar' } })
         expect(client.get).to.have.been.calledOnceWith(
           matchRelativeUrl('wiki/rest/api/content/', {
             type: 'page',
@@ -149,7 +149,7 @@ describe('confluence', () => {
           status: 200,
         })
         const page = await confluence.page('test-space', 'test-title', true)
-        expect(page).to.be.deep.equal({ id: 123, version: 1, content: { foo: 'bar' } })
+        expect(page).to.be.deep.equal({ id: 123, version: 1, title: 'test-title', content: { foo: 'bar' } })
         expect(client.get).to.have.been.calledTwice
         expect(client.get).to.have.been.calledWith(
           matchRelativeUrl('wiki/rest/api/content/', {

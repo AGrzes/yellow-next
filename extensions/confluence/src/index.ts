@@ -3,6 +3,7 @@ import { ConfluenceClient } from './client.js'
 export interface Page {
   id: number
   version: number
+  title: string
   content?: Record<string, any>
 }
 
@@ -30,6 +31,7 @@ export class Confluence {
       const content = draftBody.results?.[0]?.body?.atlas_doc_format?.value
       return {
         id: draftBody.results?.[0]?.id,
+        title,
         version: draftBody.results?.[0]?.version?.number,
         ...(content ? { content: JSON.parse(content) } : {}),
       }
@@ -40,6 +42,7 @@ export class Confluence {
       const content = body.results?.[0]?.body?.atlas_doc_format?.value
       return {
         id: body.results?.[0]?.id,
+        title,
         version: body.results?.[0]?.version?.number,
         ...(content ? { content: JSON.parse(content) } : {}),
       }
