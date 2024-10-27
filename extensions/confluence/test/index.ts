@@ -170,5 +170,26 @@ describe('confluence', () => {
         )
       })
     })
+    describe('createPage', () => {
+      it('should create page', async () => {
+        const client = sinon.createStubInstance(ConfluenceClient)
+        const confluence = new Confluence(client)
+        client.post.resolves({
+          body: { id: 123, version: { number: 1 } },
+          status: 200,
+        })
+        const page = await confluence.createPage('test-space', 'test-title', { foo: 'bar' })
+        expect(page).to.be.deep.equal({ id: 123, version: 1, title: 'test-title', content: { foo: 'bar' } })
+        expect(client.post).to.have.been.calledOnceWith('wiki/api/v2/pages', {
+          spaceId: 'test-space',
+          status: 'draft',
+          title: 'test-title',
+          body: {
+            value: JSON.stringify({ foo: 'bar' }),
+            representation: 'atlas_doc_format',
+          },
+        })
+      })
+    })
   })
 })

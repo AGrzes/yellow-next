@@ -48,4 +48,21 @@ export class Confluence {
       }
     }
   }
+  async createPage(spaceKey: string, title: string, content: any): Promise<Page> {
+    const { body } = await this.client.post('wiki/api/v2/pages', {
+      spaceId: spaceKey,
+      status: 'draft',
+      title,
+      body: {
+        value: JSON.stringify(content),
+        representation: 'atlas_doc_format',
+      },
+    })
+    return {
+      id: body.id,
+      version: body.version.number,
+      title,
+      content,
+    }
+  }
 }
