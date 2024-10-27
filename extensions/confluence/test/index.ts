@@ -58,6 +58,17 @@ describe('confluence', () => {
           'wiki/rest/api/content/?type=page&spaceKey=test-space&title=test-title&expand=version'
         )
       })
+      it('should return undefined for non existing page', async () => {
+        const client = Sinon.createStubInstance(ConfluenceClient)
+        const confluence = new Confluence(client)
+        client.get.resolves({
+          body: { results: [] },
+          status: 200,
+        })
+        const page = await confluence.page('test-space', 'test-title')
+        expect(page).to.be.undefined
+        expect(client.get).to.have.been.calledTwice
+      })
     })
   })
 })
