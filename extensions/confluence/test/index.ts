@@ -199,6 +199,7 @@ describe('confluence', () => {
             id: 123,
             version: { number: 1 },
             status: 'draft',
+            title: 'test-title',
             body: { atlas_doc_format: { value: JSON.stringify({ foo: 'bar' }) } },
           },
           status: 200,
@@ -222,6 +223,45 @@ describe('confluence', () => {
           body: {
             value: JSON.stringify({ foo: 'bar' }),
             representation: 'atlas_doc_format',
+          },
+        })
+      })
+      it('should create page with storage', async () => {
+        const client = sinon.createStubInstance(ConfluenceClient)
+        const confluence = new Confluence(client)
+        client.get.resolves({
+          body: { id: 321 },
+          status: 200,
+        })
+        client.post.resolves({
+          body: {
+            id: 123,
+            version: { number: 1 },
+            status: 'draft',
+            title: 'test-title',
+            body: { storage: { value: 'storage' } },
+          },
+          status: 200,
+        })
+        const page = await confluence.createPage('test-space', {
+          storage: 'storage',
+          title: 'test-title',
+          status: 'draft',
+        })
+        expect(page).to.be.deep.equal({
+          id: 123,
+          version: 1,
+          title: 'test-title',
+          status: 'draft',
+          storage: 'storage',
+        })
+        expect(client.post).to.have.been.calledOnceWith('wiki/api/v2/pages', {
+          spaceId: 321,
+          status: 'draft',
+          title: 'test-title',
+          body: {
+            value: 'storage',
+            representation: 'storage',
           },
         })
       })

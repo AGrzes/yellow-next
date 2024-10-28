@@ -59,21 +59,26 @@ export class Confluence {
     }
   }
   async createPage(spaceKey: string, page: Omit<Page, 'id' | 'version'>): Promise<Page> {
-    const { body } = await this.client.post('wiki/api/v2/pages', {
+    const body = page.content
+      ? { value: JSON.stringify(page.content), representation: 'atlas_doc_format' }
+      : {
+          value: page.storage,
+          representation: 'storage',
+        }
+
+    const { body: response } = await this.client.post('wiki/api/v2/pages', {
       spaceId: await this.spaceId(spaceKey),
       status: page.status,
       title: page.title,
-      body: {
-        value: JSON.stringify(page.content),
-        representation: 'atlas_doc_format',
-      },
+      body,
     })
     return {
-      id: body.id,
-      version: body.version.number,
-      title: page.title,
-      status: body.status,
-      content: JSON.parse(body.body.atlas_doc_format.value),
+      id: response.id,
+      version: response.version.number,
+      title: response.title,
+      status: response.status,
+      ...(page.content ? { content: page.content } : {}),
+      ...(page.storage ? { storage: page.storage } : {}),
     }
   }
   async updatePage(page: Page): Promise<Page> {
