@@ -308,6 +308,47 @@ describe('confluence', () => {
           },
         })
       })
+      it('should update page with storage', async () => {
+        const client = sinon.createStubInstance(ConfluenceClient)
+        const confluence = new Confluence(client)
+        client.put.resolves({
+          body: {
+            id: 123,
+            version: { number: 2 },
+            status: 'draft',
+            title: 'test-title',
+            body: { storage: { value: 'storage' } },
+          },
+          status: 200,
+        })
+        const page = await confluence.updatePage({
+          id: 123,
+          version: 1,
+          title: 'test-title',
+          status: 'draft',
+          storage: 'storage',
+        })
+        expect(page).to.be.deep.equal({
+          id: 123,
+          version: 2,
+          title: 'test-title',
+          status: 'draft',
+          storage: 'storage',
+        })
+        expect(client.put).to.have.been.calledOnceWith('wiki/api/v2/pages/123', {
+          id: 123,
+          type: 'page',
+          status: 'draft',
+          title: 'test-title',
+          body: {
+            value: 'storage',
+            representation: 'storage',
+          },
+          version: {
+            number: 1,
+          },
+        })
+      })
     })
     describe('search', () => {
       it('should search', async () => {

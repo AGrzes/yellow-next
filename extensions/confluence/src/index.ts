@@ -82,25 +82,29 @@ export class Confluence {
     }
   }
   async updatePage(page: Page): Promise<Page> {
-    const { body } = await this.client.put(`wiki/api/v2/pages/${page.id}`, {
+    const body = page.content
+      ? { value: JSON.stringify(page.content), representation: 'atlas_doc_format' }
+      : {
+          value: page.storage,
+          representation: 'storage',
+        }
+    const { body: response } = await this.client.put(`wiki/api/v2/pages/${page.id}`, {
       id: page.id,
       type: 'page',
       status: page.status,
       title: page.title,
-      body: {
-        value: JSON.stringify(page.content),
-        representation: 'atlas_doc_format',
-      },
+      body,
       version: {
         number: page.version,
       },
     })
     return {
-      id: body.id,
-      version: body.version.number,
-      title: body.title,
-      status: body.status,
-      content: page.content,
+      id: response.id,
+      version: response.version.number,
+      title: response.title,
+      status: response.status,
+      ...(page.content ? { content: page.content } : {}),
+      ...(page.storage ? { storage: page.storage } : {}),
     }
   }
   async search(query: string): Promise<Page[]> {
