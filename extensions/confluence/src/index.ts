@@ -5,6 +5,7 @@ export interface Page {
   version: number
   title: string
   content?: Record<string, any>
+  storage?: string
   status: string
 }
 
@@ -24,6 +25,7 @@ export class Confluence {
     baseSearch.append('title', title)
     if (fetchBody) {
       expand.push('body.atlas_doc_format')
+      expand.push('body.storage')
     }
     baseSearch.append('expand', expand.join(','))
     const draftSearch = new URLSearchParams(baseSearch)

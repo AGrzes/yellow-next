@@ -132,7 +132,7 @@ describe('confluence', () => {
             spaceKey: 'test-space',
             title: 'test-title',
             status: 'draft',
-            expand: 'version,body.atlas_doc_format',
+            expand: 'version,body.atlas_doc_format,body.storage',
           })
         )
       })
@@ -171,7 +171,7 @@ describe('confluence', () => {
             spaceKey: 'test-space',
             title: 'test-title',
             status: 'draft',
-            expand: 'version,body.atlas_doc_format',
+            expand: 'version,body.atlas_doc_format,body.storage',
           })
         )
         expect(client.get).to.have.been.calledWith(
@@ -179,7 +179,7 @@ describe('confluence', () => {
             type: 'page',
             spaceKey: 'test-space',
             title: 'test-title',
-            expand: 'version,body.atlas_doc_format',
+            expand: 'version,body.atlas_doc_format,body.storage',
           })
         )
       })
