@@ -112,7 +112,7 @@ describe('confluence', () => {
                 id: 123,
                 version: { number: 1 },
                 status: 'draft',
-                body: { atlas_doc_format: { value: JSON.stringify({ foo: 'bar' }) } },
+                body: { atlas_doc_format: { value: JSON.stringify({ foo: 'bar' }) }, storage: { value: 'storage' } },
               },
             ],
           },
@@ -125,6 +125,7 @@ describe('confluence', () => {
           title: 'test-title',
           status: 'draft',
           content: { foo: 'bar' },
+          storage: 'storage',
         })
         expect(client.get).to.have.been.calledOnceWith(
           matchRelativeUrl('wiki/rest/api/content/', {
@@ -150,7 +151,7 @@ describe('confluence', () => {
                 id: 123,
                 version: { number: 1 },
                 status: 'draft',
-                body: { atlas_doc_format: { value: JSON.stringify({ foo: 'bar' }) } },
+                body: { atlas_doc_format: { value: JSON.stringify({ foo: 'bar' }) }, storage: { value: 'storage' } },
               },
             ],
           },
@@ -163,6 +164,7 @@ describe('confluence', () => {
           title: 'test-title',
           status: 'draft',
           content: { foo: 'bar' },
+          storage: 'storage',
         })
         expect(client.get).to.have.been.calledTwice
         expect(client.get).to.have.been.calledWith(

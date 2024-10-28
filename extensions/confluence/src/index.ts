@@ -33,24 +33,28 @@ export class Confluence {
     const { body: draftBody } = await this.client.get('wiki/rest/api/content/?' + draftSearch.toString())
     if (draftBody.results.length) {
       const content = draftBody.results?.[0]?.body?.atlas_doc_format?.value
+      const storage = draftBody.results?.[0]?.body?.storage?.value
       return {
         id: draftBody.results?.[0]?.id,
         title,
         version: draftBody.results?.[0]?.version?.number,
         status: draftBody.results?.[0]?.status,
         ...(content ? { content: JSON.parse(content) } : {}),
+        ...(storage ? { storage } : {}),
       }
     }
     const publishedSearch = new URLSearchParams(baseSearch)
     const { body } = await this.client.get('wiki/rest/api/content/?' + publishedSearch.toString())
     if (body.results.length) {
       const content = body.results?.[0]?.body?.atlas_doc_format?.value
+      const storage = body.results?.[0]?.body?.storage?.value
       return {
         id: body.results?.[0]?.id,
         title,
         version: body.results?.[0]?.version?.number,
         status: body.results?.[0]?.status,
         ...(content ? { content: JSON.parse(content) } : {}),
+        ...(storage ? { storage } : {}),
       }
     }
   }
