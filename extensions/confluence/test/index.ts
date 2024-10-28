@@ -267,5 +267,23 @@ describe('confluence', () => {
         })
       })
     })
+    describe('search', () => {
+      it('should search', async () => {
+        const client = sinon.createStubInstance(ConfluenceClient)
+        const confluence = new Confluence(client)
+        client.get.resolves({
+          body: { results: [{ id: 123, title: 'test-title', version: { number: 123 }, status: 'draft' }] },
+          status: 200,
+        })
+        const pages = await confluence.search('cql')
+        expect(pages).to.be.deep.equal([{ id: 123, title: 'test-title', version: 123, status: 'draft' }])
+        expect(client.get).to.have.been.calledOnceWith(
+          matchRelativeUrl('wiki/rest/api/content/', {
+            cql: 'type=page and cql',
+            expand: 'version',
+          })
+        )
+      })
+    })
   })
 })

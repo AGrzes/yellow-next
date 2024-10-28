@@ -92,6 +92,18 @@ export class Confluence {
       content: page.content,
     }
   }
+  async search(query: string): Promise<Page[]> {
+    const search = new URLSearchParams()
+    search.append('cql', `type=page and ${query}`)
+    search.append('expand', 'version')
+    const { body } = await this.client.get('wiki/rest/api/content/search?' + search.toString())
+    return body.results.map((result: any) => ({
+      id: result.id,
+      title: result.title,
+      version: result.version.number,
+      status: result.status,
+    }))
+  }
 }
 
 export { ConfluenceClient } from './client.js'
