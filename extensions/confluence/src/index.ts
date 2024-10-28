@@ -54,7 +54,7 @@ export class Confluence {
   }
   async createPage(spaceKey: string, page: Omit<Page, 'id' | 'version'>): Promise<Page> {
     const { body } = await this.client.post('wiki/api/v2/pages', {
-      spaceId: spaceKey,
+      spaceId: await this.spaceId(spaceKey),
       status: page.status,
       title: page.title,
       body: {
@@ -89,7 +89,7 @@ export class Confluence {
       version: body.version.number,
       title: body.title,
       status: body.status,
-      content: JSON.parse(body.body.atlas_doc_format.value),
+      content: page.content,
     }
   }
 }

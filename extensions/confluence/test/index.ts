@@ -188,6 +188,10 @@ describe('confluence', () => {
       it('should create page', async () => {
         const client = sinon.createStubInstance(ConfluenceClient)
         const confluence = new Confluence(client)
+        client.get.resolves({
+          body: { id: 321 },
+          status: 200,
+        })
         client.post.resolves({
           body: {
             id: 123,
@@ -210,7 +214,7 @@ describe('confluence', () => {
           content: { foo: 'bar' },
         })
         expect(client.post).to.have.been.calledOnceWith('wiki/api/v2/pages', {
-          spaceId: 'test-space',
+          spaceId: 321,
           status: 'draft',
           title: 'test-title',
           body: {
