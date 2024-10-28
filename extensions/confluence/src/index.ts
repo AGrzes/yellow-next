@@ -18,13 +18,14 @@ export class Confluence {
 
   async page(spaceKey: string, title: string, fetchBody: boolean = false): Promise<Page> {
     const baseSearch = new URLSearchParams()
+    const expand = ['version']
     baseSearch.append('type', 'page')
     baseSearch.append('spaceKey', spaceKey)
     baseSearch.append('title', title)
-    baseSearch.append('expand', 'version')
     if (fetchBody) {
-      baseSearch.append('expand', 'body.atlas_doc_format')
+      expand.push('body.atlas_doc_format')
     }
+    baseSearch.append('expand', expand.join(','))
     const draftSearch = new URLSearchParams(baseSearch)
     draftSearch.append('status', 'draft')
     const { body: draftBody } = await this.client.get('wiki/rest/api/content/?' + draftSearch.toString())
@@ -92,3 +93,7 @@ export class Confluence {
     }
   }
 }
+
+export { ConfluenceClient } from './client.js'
+export { configurationFromEnv } from './configuration.js'
+
