@@ -44,12 +44,24 @@ describe('confluence', () => {
         const client = sinon.createStubInstance(ConfluenceClient)
         const confluence = new Confluence(client)
         client.get.onFirstCall().resolves({
+          body: { results: [] },
+          status: 200,
+        })
+        client.get.onSecondCall().resolves({
           body: { results: [{ id: 123, version: { number: 1 }, status: 'draft' }] },
           status: 200,
         })
         const page = await confluence.page('test-space', 'test-title')
         expect(page).to.be.deep.equal({ id: 123, version: 1, title: 'test-title', status: 'draft' })
-        expect(client.get).to.have.been.calledOnceWith(
+        expect(client.get).to.have.been.calledWith(
+          matchRelativeUrl('wiki/rest/api/content/', {
+            type: 'page',
+            spaceKey: 'test-space',
+            title: 'test-title',
+            expand: ['version'],
+          })
+        )
+        expect(client.get).to.have.been.calledWith(
           matchRelativeUrl('wiki/rest/api/content/', {
             type: 'page',
             spaceKey: 'test-space',
@@ -63,26 +75,12 @@ describe('confluence', () => {
         const client = sinon.createStubInstance(ConfluenceClient)
         const confluence = new Confluence(client)
         client.get.onFirstCall().resolves({
-          body: { results: [] },
-          status: 200,
-        })
-        client.get.onSecondCall().resolves({
-          body: { results: [{ id: 123, version: { number: 1 }, status: 'draft' }] },
+          body: { results: [{ id: 123, version: { number: 1 }, status: 'current' }] },
           status: 200,
         })
         const page = await confluence.page('test-space', 'test-title')
-        expect(page).to.be.deep.equal({ id: 123, version: 1, title: 'test-title', status: 'draft' })
-        expect(client.get).to.have.been.calledTwice
-        expect(client.get).to.have.been.calledWith(
-          matchRelativeUrl('wiki/rest/api/content/', {
-            type: 'page',
-            spaceKey: 'test-space',
-            title: 'test-title',
-            status: 'draft',
-            expand: ['version'],
-          })
-        )
-        expect(client.get).to.have.been.calledWith(
+        expect(page).to.be.deep.equal({ id: 123, version: 1, title: 'test-title', status: 'current' })
+        expect(client.get).to.have.been.calledOnceWith(
           matchRelativeUrl('wiki/rest/api/content/', {
             type: 'page',
             spaceKey: 'test-space',
@@ -111,7 +109,7 @@ describe('confluence', () => {
               {
                 id: 123,
                 version: { number: 1 },
-                status: 'draft',
+                status: 'current',
                 body: { atlas_doc_format: { value: JSON.stringify({ foo: 'bar' }) }, storage: { value: 'storage' } },
               },
             ],
@@ -123,7 +121,7 @@ describe('confluence', () => {
           id: 123,
           version: 1,
           title: 'test-title',
-          status: 'draft',
+          status: 'current',
           content: { foo: 'bar' },
           storage: 'storage',
         })
@@ -132,7 +130,6 @@ describe('confluence', () => {
             type: 'page',
             spaceKey: 'test-space',
             title: 'test-title',
-            status: 'draft',
             expand: 'version,body.atlas_doc_format,body.storage',
           })
         )

@@ -29,6 +29,20 @@ export class Confluence {
       expand.push('body.storage')
     }
     baseSearch.append('expand', expand.join(','))
+    const publishedSearch = new URLSearchParams(baseSearch)
+    const { body } = await this.client.get('wiki/rest/api/content/?' + publishedSearch.toString())
+    if (body.results.length) {
+      const content = body.results?.[0]?.body?.atlas_doc_format?.value
+      const storage = body.results?.[0]?.body?.storage?.value
+      return {
+        id: body.results?.[0]?.id,
+        title,
+        version: body.results?.[0]?.version?.number,
+        status: body.results?.[0]?.status,
+        ...(content ? { content: JSON.parse(content) } : {}),
+        ...(storage ? { storage } : {}),
+      }
+    }
     const draftSearch = new URLSearchParams(baseSearch)
     draftSearch.append('status', 'draft')
     const { body: draftBody } = await this.client.get('wiki/rest/api/content/?' + draftSearch.toString())
@@ -40,20 +54,6 @@ export class Confluence {
         title,
         version: draftBody.results?.[0]?.version?.number,
         status: draftBody.results?.[0]?.status,
-        ...(content ? { content: JSON.parse(content) } : {}),
-        ...(storage ? { storage } : {}),
-      }
-    }
-    const publishedSearch = new URLSearchParams(baseSearch)
-    const { body } = await this.client.get('wiki/rest/api/content/?' + publishedSearch.toString())
-    if (body.results.length) {
-      const content = body.results?.[0]?.body?.atlas_doc_format?.value
-      const storage = body.results?.[0]?.body?.storage?.value
-      return {
-        id: body.results?.[0]?.id,
-        title,
-        version: body.results?.[0]?.version?.number,
-        status: body.results?.[0]?.status,
         ...(content ? { content: JSON.parse(content) } : {}),
         ...(storage ? { storage } : {}),
       }
