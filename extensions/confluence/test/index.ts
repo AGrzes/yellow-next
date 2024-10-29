@@ -265,6 +265,53 @@ describe('confluence', () => {
           },
         })
       })
+      it('should set parent page', async () => {
+        const client = sinon.createStubInstance(ConfluenceClient)
+        const confluence = new Confluence(client)
+        client.get.onFirstCall().resolves({
+          body: { results: [{ id: 333 }] },
+          status: 200,
+        })
+        client.get.onSecondCall().resolves({
+          body: { id: 321 },
+          status: 200,
+        })
+        client.post.resolves({
+          body: {
+            id: 123,
+            version: { number: 1 },
+            status: 'draft',
+            title: 'test-title',
+            parentId: 333,
+            body: { atlas_doc_format: { value: JSON.stringify({ foo: 'bar' }) } },
+          },
+          status: 200,
+        })
+        const page = await confluence.createPage('test-space', {
+          content: { foo: 'bar' },
+          title: 'test-title',
+          status: 'draft',
+          parent: 'parent-title',
+        })
+        expect(page).to.be.deep.equal({
+          id: 123,
+          version: 1,
+          title: 'test-title',
+          status: 'draft',
+          parentId: 333,
+          content: { foo: 'bar' },
+        })
+        expect(client.post).to.have.been.calledOnceWith('wiki/api/v2/pages', {
+          spaceId: 321,
+          status: 'draft',
+          title: 'test-title',
+          parentId: 333,
+          body: {
+            value: JSON.stringify({ foo: 'bar' }),
+            representation: 'atlas_doc_format',
+          },
+        })
+      })
     })
     describe('updatePage', () => {
       it('should update page', async () => {

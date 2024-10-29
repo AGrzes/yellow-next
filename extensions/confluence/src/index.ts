@@ -7,6 +7,7 @@ export interface Page {
   content?: Record<string, any>
   storage?: string
   status: string
+  parent?: string
 }
 
 export class Confluence {
@@ -65,12 +66,13 @@ export class Confluence {
           value: page.storage,
           representation: 'storage',
         }
-
+    const parentId = page.parent ? { parentId: (await this.page(spaceKey, page.parent)).id } : {}
     const { body: response } = await this.client.post('wiki/api/v2/pages', {
       spaceId: await this.spaceId(spaceKey),
       status: page.status,
       title: page.title,
       body,
+      ...parentId,
     })
     return {
       id: response.id,
@@ -79,6 +81,7 @@ export class Confluence {
       status: response.status,
       ...(page.content ? { content: page.content } : {}),
       ...(page.storage ? { storage: page.storage } : {}),
+      ...parentId,
     }
   }
   async updatePage(page: Page): Promise<Page> {
