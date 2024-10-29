@@ -28,10 +28,11 @@ export const dynamicCliModule = (commandDirectory: string = join(cwd(), 'command
               parent,
               default: factory,
             } = (await import(join(commandDirectory, commandDefinition))) as CommandDefinition
+
             bind(Command)
-              .toDynamicValue((context) => {
+              .toDynamicValue(async (context) => {
                 const parentCommand = context.container.getNamed(Command, parent || 'root')
-                const command = factory(context.container)
+                const command = await factory(context.container)
                 parentCommand.addCommand(command)
                 return command
               })
