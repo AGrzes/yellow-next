@@ -327,7 +327,7 @@ describe('confluence', () => {
           },
           status: 200,
         })
-        const page = await confluence.updatePage({
+        const page = await confluence.updatePage('test-space', {
           id: 123,
           version: 1,
           title: 'test-title',
@@ -368,7 +368,7 @@ describe('confluence', () => {
           },
           status: 200,
         })
-        const page = await confluence.updatePage({
+        const page = await confluence.updatePage('test-space', {
           id: 123,
           version: 1,
           title: 'test-title',
@@ -390,6 +390,59 @@ describe('confluence', () => {
           body: {
             value: 'storage',
             representation: 'storage',
+          },
+          version: {
+            number: 1,
+          },
+        })
+      })
+      it('should set parent page', async () => {
+        const client = sinon.createStubInstance(ConfluenceClient)
+        const confluence = new Confluence(client)
+        client.get.onFirstCall().resolves({
+          body: { results: [{ id: 333 }] },
+          status: 200,
+        })
+        client.get.onSecondCall().resolves({
+          body: { id: 321 },
+          status: 200,
+        })
+        client.put.resolves({
+          body: {
+            id: 123,
+            version: { number: 2 },
+            status: 'draft',
+            title: 'test-title',
+            parentId: 333,
+            body: { atlas_doc_format: { value: JSON.stringify({ foo: 'bar' }) } },
+          },
+          status: 200,
+        })
+        const page = await confluence.updatePage('test-space', {
+          id: 123,
+          version: 1,
+          title: 'test-title',
+          status: 'draft',
+          content: { foo: 'bar' },
+          parent: 'parent-title',
+        })
+        expect(page).to.be.deep.equal({
+          id: 123,
+          version: 2,
+          title: 'test-title',
+          status: 'draft',
+          parentId: 333,
+          content: { foo: 'bar' },
+        })
+        expect(client.put).to.have.been.calledOnceWith('wiki/api/v2/pages/123', {
+          id: 123,
+          type: 'page',
+          status: 'draft',
+          title: 'test-title',
+          parentId: 333,
+          body: {
+            value: JSON.stringify({ foo: 'bar' }),
+            representation: 'atlas_doc_format',
           },
           version: {
             number: 1,

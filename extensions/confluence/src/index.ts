@@ -84,19 +84,22 @@ export class Confluence {
       ...parentId,
     }
   }
-  async updatePage(page: Page): Promise<Page> {
+  async updatePage(spaceKey: string, page: Page): Promise<Page> {
     const body = page.content
       ? { value: JSON.stringify(page.content), representation: 'atlas_doc_format' }
       : {
           value: page.storage,
           representation: 'storage',
         }
+
+    const parentId = page.parent ? { parentId: (await this.page(spaceKey, page.parent)).id } : {}
     const { body: response } = await this.client.put(`wiki/api/v2/pages/${page.id}`, {
       id: page.id,
       type: 'page',
       status: page.status,
       title: page.title,
       body,
+      ...parentId,
       version: {
         number: page.version,
       },
@@ -108,6 +111,7 @@ export class Confluence {
       status: response.status,
       ...(page.content ? { content: page.content } : {}),
       ...(page.storage ? { storage: page.storage } : {}),
+      ...parentId,
     }
   }
   async search(query: string): Promise<Page[]> {
