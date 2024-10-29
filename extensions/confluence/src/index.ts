@@ -101,7 +101,7 @@ export class Confluence {
       body,
       ...parentId,
       version: {
-        number: page.version,
+        number: page.status === 'draft' ? page.version : page.version + 1,
       },
     })
     return {
