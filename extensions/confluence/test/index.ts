@@ -506,5 +506,17 @@ describe('confluence', () => {
         )
       })
     })
+    describe('label', () => {
+      it('should label page', async () => {
+        const client = sinon.createStubInstance(ConfluenceClient)
+        const confluence = new Confluence(client)
+        client.post.resolves({ status: 200, body: {} })
+        await confluence.label(123, 'label')
+        expect(client.post).to.have.been.calledOnceWith('wiki/rest/api/content/123/label', {
+          name: 'label',
+          prefix: 'global',
+        })
+      })
+    })
   })
 })

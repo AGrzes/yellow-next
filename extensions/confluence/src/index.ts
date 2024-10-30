@@ -126,6 +126,13 @@ export class Confluence {
       status: result.status,
     }))
   }
+
+  async label(pageId: number, label: string) {
+    await this.client.post('wiki/rest/api/content/' + pageId + '/label', {
+      prefix: 'global',
+      name: label,
+    })
+  }
 }
 
 export { ConfluenceClient } from './client.js'
