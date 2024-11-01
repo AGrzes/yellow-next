@@ -80,7 +80,6 @@ const componentFactories = [directComponentFactory, legacyComponentFactory, conf
 
 export function resolveComponent<P = {}>(classes: ClassOptions[], kind: string): ComponentType<P> {
   for (const clazz of classes) {
-    const config = resolveConfig(clazz.name)
     const component = componentFactories.reduce((component, factory) => component || factory(clazz, kind), null)
     if (component) {
       return component as ComponentType<P>
