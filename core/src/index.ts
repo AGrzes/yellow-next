@@ -6,6 +6,6 @@ import createContainer from './container/index.js'
 
 import { register } from 'node:module'
 
-register('ts-node/esm', import.meta.url)
+register('ts-node-maintained/esm', import.meta.url)
 
 entrypoint(await createContainer(), process.argv)

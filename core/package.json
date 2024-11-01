@@ -56,10 +56,10 @@
     "source-map-loader": "5.0.0",
     "style-loader": "4.0.0",
     "ts-loader": "9.5.1",
-    "webpack": "5.91.0",
-    "ts-node": "^10.9.2",
+    "ts-node-maintained": "^10.9.4",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.2",
+    "webpack": "5.91.0",
     "webpack-dev-middleware": "7.2.1"
   },
   "devDependencies": {
@@ -99,12 +99,11 @@
   "main": "target",
   "mocha": {
     "require": [
-      "ts-node/esm",
       "source-map-support/register"
     ],
     "node-option": [
       "experimental-specifier-resolution=node",
-      "loader=ts-node/esm"
+      "import=ts-node-maintained/register/esm"
     ]
   },
   "publishConfig": {
