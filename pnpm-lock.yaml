@@ -323,6 +323,9 @@ importers:
       reflect-metadata:
         specifier: 0.2.2
         version: 0.2.2
+      ts-node-maintained:
+        specifier: ^10.9.4
+        version: 10.9.4(@types/node@20.11.25)(typescript@5.4.2)
     devDependencies:
       '@types/chai':
         specifier: ^4.3.12
@@ -381,9 +384,6 @@ importers:
       source-map-support:
         specifier: ^0.5.21
         version: 0.5.21
-      ts-node:
-        specifier: ^10.9.2
-        version: 10.9.2(@types/node@20.11.25)(typescript@5.4.2)
       typescript:
         specifier: ^5.4.2
         version: 5.4.2
