@@ -42,7 +42,7 @@
     "sinon": "^17.0.1",
     "sinon-chai": "^3.7.0",
     "source-map-support": "^0.5.21",
-    "ts-node": "^10.9.2",
+    "ts-node-maintained": "^10.9.4",
     "@types/lodash": "^4.14.202"
   },
   "files": [
@@ -55,12 +55,11 @@
   "main": "src/index.tsx",
   "mocha": {
     "require": [
-      "ts-node/esm",
       "source-map-support/register"
     ],
     "node-option": [
       "experimental-specifier-resolution=node",
-      "loader=ts-node/esm"
+      "import=ts-node-maintained/register/esm"
     ]
   },
   "publishConfig": {
