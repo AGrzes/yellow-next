@@ -1,5 +1,6 @@
 import React from 'react'
 import { RouterProvider, useParams } from 'react-router-dom'
+import { ConfigProvider } from './config/provider'
 import { Document } from './documents/Document'
 import { router } from './router'
 
@@ -9,5 +10,9 @@ function CustomPathDocument({ path }: { path: string }) {
 }
 
 export function App() {
-  return <RouterProvider router={router}></RouterProvider>
+  return (
+    <ConfigProvider>
+      <RouterProvider router={router}></RouterProvider>
+    </ConfigProvider>
+  )
 }

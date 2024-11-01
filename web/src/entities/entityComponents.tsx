@@ -9,12 +9,15 @@ import {
   EntityDetailsTemplate,
   EntityListItemTemplate,
 } from '../components/index'
-import { config } from '../config/index'
+import { Config, useConfig } from '../config/index'
 import { useModel } from '../model/index'
-import { resolveConfig } from './config'
+
 const { get } = lodash
 
-declare module './config' {
+declare module '../config' {
+  interface Config {
+    componentMap?: Record<string, EntityComponentType>
+  }
   interface ClassConfig<T extends SemanticProxy> {
     components?: Record<string, ComponentType<any>>
     sections?: Record<string, EntityComponentType[]>
@@ -25,17 +28,17 @@ export interface ResolveParams {
   className: string | string[]
   kind: string
 }
-export type EntityComponentFactory = (clazz: ClassOptions, kind: string) => EntityComponentType
+export type EntityComponentFactory = (config: Config, clazz: ClassOptions, kind: string) => EntityComponentType
 
-const componentMap = (await config<{ componentMap: Record<string, ComponentType<any>> }>()).componentMap || {}
-const legacyComponentFactory: EntityComponentFactory = (className, kind) => componentMap[`entity:${className}:${kind}`]
+const legacyComponentFactory: EntityComponentFactory = (config, clazz, kind) =>
+  config.componentMap?.[`entity:${clazz.name}:${kind}`]
 
-const directComponentFactory: EntityComponentFactory = (clazz, kind) => {
-  const config = resolveConfig(clazz.name)
-  return config.components?.[kind]
+const directComponentFactory: EntityComponentFactory = (config, clazz, kind) => {
+  return config.classConfig?.[clazz.name].components?.[kind]
 }
 
-const configurableComponentFactory: EntityComponentFactory = (clazz, kind) => {
+const configurableComponentFactory: EntityComponentFactory = (config, clazz, kind) => {
+  const resolveConfig = (className) => config.classConfig?.[className] || {}
   const configs = [clazz, ...clazz.ancestors].map(({ name }) => resolveConfig(name))
   const configProperty = (path) => configs.map((config) => get(config, path)).find((value) => value)
   const icon = configProperty('icon')
@@ -78,16 +81,6 @@ const configurableComponentFactory: EntityComponentFactory = (clazz, kind) => {
 
 const componentFactories = [directComponentFactory, legacyComponentFactory, configurableComponentFactory]
 
-export function resolveComponent<P = {}>(classes: ClassOptions[], kind: string): ComponentType<P> {
-  for (const clazz of classes) {
-    const component = componentFactories.reduce((component, factory) => component || factory(clazz, kind), null)
-    if (component) {
-      return component as ComponentType<P>
-    }
-  }
-  return (() => null) as ComponentType<P>
-}
-
 export function useComponent<P = {}>(className: string | string[], kind: string): EntityComponentType<P> {
   if (!Array.isArray(className)) {
     className = [className]
@@ -97,5 +90,12 @@ export function useComponent<P = {}>(className: string | string[], kind: string)
     () => classHierarchy(...model.classes.filter((clazz) => className.includes(clazz.name))),
     [className, kind, model]
   )
-  return resolveComponent(classes, kind)
+  const config = useConfig()
+  for (const clazz of classes) {
+    const component = componentFactories.reduce((component, factory) => component || factory(config, clazz, kind), null)
+    if (component) {
+      return component as EntityComponentType<P>
+    }
+  }
+  return (() => null) as EntityComponentType<P>
 }
