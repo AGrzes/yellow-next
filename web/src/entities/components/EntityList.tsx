@@ -1,7 +1,7 @@
 import { List } from '@mui/material'
 import React from 'react'
-import { useModel } from '../model/index'
-import { useComponent } from './entityComponents'
+import { useModel } from '../../model/index'
+import { useComponent } from '../entityComponents'
 
 export function EntityList({ className }: { className?: string }) {
   const model = useModel()

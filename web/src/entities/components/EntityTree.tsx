@@ -1,8 +1,8 @@
 import { SemanticProxy } from '@agrzes/yellow-next-shared/dynamic/access'
 import React from 'react'
-import { useModel } from '../model/index'
-import { EntityTree as ET, TreeComponentType, TreeOptions } from './../components'
-import { useComponent } from './entityComponents'
+import { EntityTree as ET, TreeComponentType, TreeOptions } from '../../components'
+import { useModel } from '../../model/index'
+import { useComponent } from '../entityComponents'
 
 export function EntityTree<T extends SemanticProxy>({
   className,

@@ -1,6 +1,6 @@
 import { SemanticProxy } from '@agrzes/yellow-next-shared/dynamic/access'
 import React from 'react'
-import { useClassConfig } from '../config'
+import { useClassConfig } from '../../config'
 import { EntityList } from './EntityList'
 import { EntityTree } from './EntityTree'
 
