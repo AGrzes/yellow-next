@@ -166,7 +166,7 @@ export function relationList(className: string, property: string, label?: string
     const EntityListItem = useComponent(className, 'listItem')
     let entities = entity[property]
     if (!Array.isArray(entities)) {
-      entities = [entities]
+      entities = entities ? [entities] : []
     }
     return (
       !!entities.length && (
@@ -182,12 +182,18 @@ export function relationList(className: string, property: string, label?: string
 
 export function entitySubTree<T extends SemanticProxy>(
   className: string,
-  treeOptions: TreeOptions<T>
+  treeOptions: TreeOptions<T>,
+  label?: string
 ): EntityComponentType {
   return ({ entity }) => {
     const TreeComponent = useComponent(className, 'treeItem')
     return (
-      <EntityTree TreeComponent={TreeComponent} children={treeOptions.children} roots={treeOptions.children(entity)} />
+      <EntityTree
+        TreeComponent={TreeComponent}
+        children={treeOptions.children}
+        roots={treeOptions.children(entity)}
+        label={label}
+      />
     )
   }
 }
