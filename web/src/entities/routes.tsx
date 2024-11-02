@@ -1,9 +1,9 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import { EntityDetails } from '../components'
 import { PageLayout } from '../layout/PageLayout'
 import { EntityClasses } from './EntityClasses'
 import { EntityCollection } from './EntityCollection'
-import { EntityDetails } from './EntityDetails'
 
 function EntityCollectionRoute() {
   const { className } = useParams()

@@ -5,6 +5,7 @@ import { camelCase, flatMap, groupBy, mapValues, upperFirst } from 'lodash'
 import React, { useMemo } from 'react'
 import Markdown from 'react-markdown'
 import { EntityComponentType, TreeComponentType } from '..'
+import { useComponent } from '../../entities/entityComponents'
 import { CompositeEntityComponent } from '../CompositeEntityComponent'
 import { EntityTree } from '../EntityTree'
 
@@ -154,6 +155,39 @@ export function groupedList({
           ])}
         </List>
       )
+    )
+  }
+}
+
+export function relationList(className: string, property: string, label?: string): EntityComponentType {
+  label = label || upperFirst(camelCase(property))
+
+  return ({ entity }) => {
+    const EntityListItem = useComponent(className, 'listItem')
+    let entities = entity[property]
+    if (!Array.isArray(entities)) {
+      entities = [entities]
+    }
+    return (
+      !!entities.length && (
+        <List subheader={<ListSubheader>{label}</ListSubheader>}>
+          {entities.map((entity) => (
+            <EntityListItem key={entity.iri} entity={entity} />
+          ))}
+        </List>
+      )
+    )
+  }
+}
+
+export function entitySubTree<T extends SemanticProxy>(
+  className: string,
+  treeOptions: TreeOptions<T>
+): EntityComponentType {
+  return ({ entity }) => {
+    const TreeComponent = useComponent(className, 'treeItem')
+    return (
+      <EntityTree TreeComponent={TreeComponent} children={treeOptions.children} roots={treeOptions.children(entity)} />
     )
   }
 }
