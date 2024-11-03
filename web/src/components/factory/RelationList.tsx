@@ -13,6 +13,7 @@ export interface RelationListConfig {
   target: string
   source: string
   kind?: string
+  label?: string
 }
 
 interface RelationListItemConfig {
@@ -37,7 +38,7 @@ function relationListItem({ relation }: RelationListItemConfig) {
   }
 }
 
-export function complexRelationList({ forward, reverse, target, source, kind }: RelationListConfig) {
+export function complexRelationList({ forward, reverse, target, source, kind, label }: RelationListConfig) {
   return ({ entity }: { entity: any }) => {
     const forwardItems = useMemo(() => {
       if (kind) {
@@ -56,7 +57,7 @@ export function complexRelationList({ forward, reverse, target, source, kind }: 
     const ForwardRelationListItem = relationListItem({ relation: target })
     const ReverseRelationListItem = relationListItem({ relation: source })
     return (
-      <List subheader={<ListSubheader>Relations</ListSubheader>}>
+      <List subheader={label && <ListSubheader>{label}</ListSubheader>}>
         {forwardItems.map((relation: any) => (
           <ForwardRelationListItem entity={relation} key={relation.iri} />
         ))}
