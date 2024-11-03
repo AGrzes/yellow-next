@@ -1,9 +1,9 @@
 import lodash from 'lodash'
 import { ClassOptions } from './model.js'
-const { flatMap, zip, flattenDeep, groupBy, last, orderBy, uniq } = lodash
+const { flatMap, zip, flattenDeep, groupBy, last, orderBy, uniq, intersectionBy } = lodash
 export function mostSpecificClass(...classes: ClassOptions[]): ClassOptions {
   const ancestors = classes.flatMap((clazz) => clazz.ancestors)
-  return classes.find((clazz) => !ancestors.includes(clazz))
+  return classes.find((clazz) => intersectionBy(ancestors, [clazz], 'name').length === 0)
 }
 
 function leafClasses(classes: ClassOptions[]): ClassOptions[] {
