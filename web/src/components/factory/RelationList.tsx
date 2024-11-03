@@ -1,8 +1,8 @@
 import { mostSpecificClass } from '@agrzes/yellow-next-shared/dynamic/utils'
 import { List, ListSubheader } from '@mui/material'
 import { SxProps, Theme } from '@mui/material/styles'
-import Typography from '@mui/material/Typography'
 import React, { useMemo } from 'react'
+import { EntityComponentType } from '..'
 import { useClassConfig } from '../../config'
 import { useComponent } from '../../entities'
 import { EntityListItemTemplate } from '../EntityListItemTemplate'
@@ -14,13 +14,16 @@ export interface RelationListConfig {
   source: string
   kind?: string
   label?: string
+  ForwardComponent: EntityComponentType
+  ReverseComponent: EntityComponentType
 }
 
 interface RelationListItemConfig {
   relation: string
+  RelationComponent: EntityComponentType
 }
 
-function relationListItem({ relation }: RelationListItemConfig) {
+function relationListItem({ relation, RelationComponent }: RelationListItemConfig) {
   return ({ entity, sx }: { entity: any; sx?: SxProps<Theme> }) => {
     const related = entity[relation]
     const clazz = useMemo(() => mostSpecificClass(...related.classes)?.name, [entity])
@@ -31,14 +34,23 @@ function relationListItem({ relation }: RelationListItemConfig) {
         class={clazz}
         icon={config.icon}
         iri={entity.source.iri}
-        primary={[<Typography>{entity.reverse || entity.name}</Typography>, <RelatedComponent entity={related} />]}
+        primary={[<RelationComponent entity={entity} />, <RelatedComponent entity={related} />]}
         sx={sx}
       />
     )
   }
 }
 
-export function complexRelationList({ forward, reverse, target, source, kind, label }: RelationListConfig) {
+export function complexRelationList({
+  forward,
+  reverse,
+  target,
+  source,
+  kind,
+  label,
+  ForwardComponent,
+  ReverseComponent,
+}: RelationListConfig) {
   return ({ entity }: { entity: any }) => {
     const forwardItems = useMemo(() => {
       if (kind) {
@@ -54,8 +66,8 @@ export function complexRelationList({ forward, reverse, target, source, kind, la
         return entity[reverse]
       }
     }, [entity, kind])
-    const ForwardRelationListItem = relationListItem({ relation: target })
-    const ReverseRelationListItem = relationListItem({ relation: source })
+    const ForwardRelationListItem = relationListItem({ relation: target, RelationComponent: ForwardComponent })
+    const ReverseRelationListItem = relationListItem({ relation: source, RelationComponent: ReverseComponent })
     return (
       <List subheader={label && <ListSubheader>{label}</ListSubheader>}>
         {forwardItems.map((relation: any) => (
