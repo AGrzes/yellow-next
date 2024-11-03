@@ -62,6 +62,14 @@ const configurableComponentFactory: EntityComponentFactory = (config, clazz, kin
         }
       }
       break
+    case 'summary':
+      const summaryComponents = configProperty('sections.summary')
+      if (summaryComponents) {
+        return ({ entity }) => {
+          return <CompositeEntityComponent entity={entity} items={summaryComponents} />
+        }
+      }
+      break
     case 'details':
       const header = configProperty('sections.header')
       const details = configProperty('sections.details')

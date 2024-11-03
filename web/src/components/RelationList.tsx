@@ -4,20 +4,19 @@ import { SxProps, Theme } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 import React, { useMemo } from 'react'
 import { useClassConfig } from '../config'
+import { useComponent } from '../entities'
 import { EntityListItemTemplate } from './EntityListItemTemplate'
 
 export function ForwardRelationListItem({ entity, sx }: { entity: any; sx?: SxProps<Theme> }) {
   const clazz = useMemo(() => mostSpecificClass(...entity.target.classes)?.name, [entity])
   const config = useClassConfig(clazz)
+  const RelatedComponent = useComponent(clazz, 'summary')
   return (
     <EntityListItemTemplate
       class={clazz}
       icon={config.icon}
       iri={entity.target.iri}
-      primary={[
-        <Typography>{entity.forward || entity.name}</Typography>,
-        <Typography>{entity.target.name}</Typography>,
-      ]}
+      primary={[<Typography>{entity.forward || entity.name}</Typography>, <RelatedComponent entity={entity.target} />]}
       sx={sx}
     />
   )
@@ -25,15 +24,13 @@ export function ForwardRelationListItem({ entity, sx }: { entity: any; sx?: SxPr
 export function ReverseRelationListItem({ entity, sx }: { entity: any; sx?: SxProps<Theme> }) {
   const clazz = useMemo(() => mostSpecificClass(...entity.source.classes)?.name, [entity])
   const config = useClassConfig(clazz)
+  const RelatedComponent = useComponent(clazz, 'summary')
   return (
     <EntityListItemTemplate
       class={clazz}
       icon={config.icon}
       iri={entity.source.iri}
-      primary={[
-        <Typography>{entity.reverse || entity.name}</Typography>,
-        <Typography>{entity.source.name}</Typography>,
-      ]}
+      primary={[<Typography>{entity.reverse || entity.name}</Typography>, <RelatedComponent entity={entity.source} />]}
       sx={sx}
     />
   )
