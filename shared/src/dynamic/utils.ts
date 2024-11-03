@@ -7,7 +7,9 @@ export function mostSpecificClass(...classes: ClassOptions[]): ClassOptions {
 }
 
 function leafClasses(classes: ClassOptions[]): ClassOptions[] {
-  return classes.filter((clazz) => !classes.some((other) => other.ancestors?.includes?.(clazz)))
+  return classes.filter(
+    (clazz) => !classes.some((other) => intersectionBy(other.ancestors, [clazz], 'name').length > 0)
+  )
 }
 
 export function classHierarchy(...classes: ClassOptions[]): ClassOptions[] {
