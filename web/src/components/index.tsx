@@ -7,7 +7,6 @@ export { EntityDetailsTemplate } from './EntityDetailsTemplate'
 export { EntityListItemTemplate } from './EntityListItemTemplate'
 export { EntityTree } from './EntityTree'
 export * from './factory'
-export { RelationList } from './RelationList'
 
 export type EntityComponentType<T = {}> = React.ComponentType<{ entity: any; sx?: SxProps<Theme> } & T>
 export type EntityComponentProps = React.ComponentProps<EntityComponentType>

@@ -9,6 +9,8 @@ import { useComponent } from '../../entities/entityComponents'
 import { CompositeEntityComponent } from '../CompositeEntityComponent'
 import { EntityTree } from '../EntityTree'
 
+export { complexRelationList, RelationListConfig } from './RelationList'
+
 export interface TreeOptions<T> {
   children: (parent: T) => T[]
   parent: (child: T) => T
