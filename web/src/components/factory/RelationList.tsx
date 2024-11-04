@@ -33,7 +33,7 @@ function relationListItem({ relation, RelationComponent }: RelationListItemConfi
       <EntityListItemTemplate
         class={clazz}
         icon={config.icon}
-        iri={entity.source.iri}
+        iri={related.iri}
         primary={[<RelationComponent entity={entity} />, <RelatedComponent entity={related} />]}
         sx={sx}
       />
