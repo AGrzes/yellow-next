@@ -1,5 +1,5 @@
 import React from 'react'
-import { useComponent } from '../entities/entityComponents.js'
+import { useComponent } from '../entities/entityComponents'
 import { useModel } from '../model/index'
 
 export function EntityComponent({ className, iri, kind }: { className: string; iri: string; kind: string }) {
