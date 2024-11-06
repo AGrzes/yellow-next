@@ -2,6 +2,7 @@ import { SxProps, Theme } from '@mui/material'
 import React from 'react'
 
 export { CompositeEntityComponent } from './CompositeEntityComponent'
+export { EntityComponent } from './EntityComponent'
 export { EntityDetails } from './EntityDetails'
 export { EntityDetailsTemplate } from './EntityDetailsTemplate'
 export { EntityListItemTemplate } from './EntityListItemTemplate'
