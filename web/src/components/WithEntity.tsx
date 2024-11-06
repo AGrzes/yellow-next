@@ -13,6 +13,5 @@ export function WithEntity({
 }) {
   const model = useModel()
   const entity = model.get(className, iri)
-  console.log('WithEntity', { className, iri, entity }, entity.name)
   return <Content entity={entity} />
 }
