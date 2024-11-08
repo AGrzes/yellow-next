@@ -9,6 +9,7 @@ import { DocumentsHandler } from '../../src/adbs/documents/server.js'
 import { GraphHandler } from '../../src/adbs/graph/server.js'
 import { TocHandler } from '../../src/adbs/toc/server.js'
 import { serverCliModule } from '../../src/cli/server.js'
+import { EmsHandler } from '../../src/ems/server.js'
 import { HttpServer } from '../../src/server/server.js'
 
 const expect = chai.use(sinonChai).expect
@@ -22,6 +23,8 @@ describe('cli', () => {
       const graphHandler = sinon.stub()
       const tocHandler = sinon.stub()
       const documentsHandler = sinon.stub()
+      const emsHandler = sinon.stub()
+
       container.load(
         serverCliModule,
         new ContainerModule((bind) => {
@@ -31,6 +34,7 @@ describe('cli', () => {
           bind(GraphHandler).toConstantValue({ handler: graphHandler } as unknown as GraphHandler)
           bind(TocHandler).toConstantValue({ handler: tocHandler } as unknown as TocHandler)
           bind(DocumentsHandler).toConstantValue({ handler: documentsHandler } as unknown as DocumentsHandler)
+          bind(EmsHandler).toConstantValue({ handler: emsHandler } as unknown as EmsHandler)
         })
       )
       const serverCommand = container.getNamed(Command, 'server')
@@ -40,6 +44,7 @@ describe('cli', () => {
       expect(server.register).to.have.been.calledWith({ handler: graphHandler, path: '/graph' })
       expect(server.register).to.have.been.calledWith({ handler: tocHandler, path: '/toc' })
       expect(server.register).to.have.been.calledWith({ handler: documentsHandler, path: '/', priority: 1000 })
+      expect(server.register).to.have.been.calledWith({ handler: emsHandler, path: '/ems' })
       expect(server.start).to.have.been.calledOnce
     })
   })
