@@ -6,6 +6,7 @@ import { GraphHandler } from '../adbs/graph/server.js'
 import { TocHandler } from '../adbs/toc/server.js'
 import { EmsHandler } from '../ems/server.js'
 import { HttpServer } from '../server/server.js'
+import { StateHandler } from '../state/server.js'
 
 export const serverCliModule = new ContainerModule((bind) => {
   bind(Command)
@@ -21,6 +22,7 @@ export const serverCliModule = new ContainerModule((bind) => {
         server.register({ handler: context.container.get(TocHandler).handler, path: '/toc' })
         server.register({ handler: context.container.get(DocumentsHandler).handler, path: '/', priority: 1000 })
         server.register({ handler: context.container.get(EmsHandler).handler, path: '/ems' })
+        server.register({ handler: context.container.get(StateHandler).handler, path: '/state' })
         await server.start()
       })
       parent.addCommand(command)
