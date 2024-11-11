@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { ContainerModule } from 'inversify'
-import { StateHandler } from './server'
-import { StateService } from './service'
+import { StateHandler } from './server.js'
+import { StateService } from './service.js'
 
 export const stateModule = new ContainerModule((bind) => {
   bind(StateService).toSelf()
