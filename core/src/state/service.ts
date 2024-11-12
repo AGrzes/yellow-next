@@ -1,3 +1,6 @@
+interface StateRecord {}
+
+// Inject Store instance into constructor
 export class StateService {
   async getAll(model: string, entity: string) {
     return [
