@@ -1,5 +1,6 @@
 import chai, { expect } from 'chai'
 import yaml from 'js-yaml'
+import 'mocha'
 import path from 'path'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
