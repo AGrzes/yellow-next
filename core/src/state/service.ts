@@ -29,7 +29,7 @@ export class StateService<T = any> {
   async getAll(model: string, entity: string) {
     const key = this.getKey(model, entity)
     const record = await this.store.get(key)
-    return record.graph['@graph'].state
+    return record?.graph?.['@graph']?.state || []
   }
 
   async get(model: string, entity: string, id: string) {

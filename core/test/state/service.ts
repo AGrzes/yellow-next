@@ -36,6 +36,12 @@ describe('StateService', () => {
     ])
   })
 
+  it('should return empty array when no record exists for getAll', async () => {
+    mockStore.get.resolves(null)
+    const result = await service.getAll('testModel', 'testEntity')
+    expect(result).to.deep.equal([])
+  })
+
   it('should get specific state', async () => {
     mockStore.get.resolves({
       graph: {
@@ -48,6 +54,12 @@ describe('StateService', () => {
     })
     const result = await service.get('testModel', 'testEntity', 'testId')
     expect(result).to.deep.equal({ iri: 'testId', state: 'state' })
+  })
+
+  it('should work when no state exists for get', async () => {
+    mockStore.get.resolves(null)
+    const result = await service.get('testModel', 'testEntity', 'testId')
+    expect(result).not.to.exist
   })
 
   it('should save new state', async () => {
