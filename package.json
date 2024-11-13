@@ -8,5 +8,10 @@
     "syncpack:format": "syncpack format",
     "syncpack:lint": "syncpack lint",
     "syncpack:update": "syncpack update"
+  },
+  "pnpm": {
+    "overrides": {
+      "whatwg-url": "^14.0.0"
+    }
   }
 }
