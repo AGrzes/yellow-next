@@ -65,6 +65,13 @@ describe('StateService', () => {
     expect(result).to.deep.equal({ iri: 'newId', state: 'newState' })
   })
 
+  it('should save new state when no existing item in store', async () => {
+    mockStore.get.resolves(null)
+    mockStore.put.resolves()
+    const result = await service.save('testModel', 'testEntity', { state: 'newState' })
+    expect(result).to.deep.equal({ iri: 'newId', state: 'newState' })
+  })
+
   it('should update specific state', async () => {
     mockStore.get.resolves({
       graph: {
@@ -93,5 +100,25 @@ describe('StateService', () => {
     mockStore.put.resolves()
     const result = await service.delete('testModel', 'testEntity', 'testId')
     expect(result).to.deep.equal({ id: 'testId', deleted: true })
+  })
+
+  it('should return false when deleting non-existing state', async () => {
+    mockStore.get.resolves(null)
+    const result = await service.delete('testModel', 'testEntity', 'testId')
+    expect(result).to.deep.equal({ id: 'testId', deleted: false })
+  })
+
+  it('should return false when deleting state that does not exist in record', async () => {
+    mockStore.get.resolves({
+      graph: {
+        '@context': {},
+        '@graph': {
+          iri: 'rootIri',
+          state: [{ iri: 'existingId', state: 'state' }],
+        },
+      },
+    })
+    const result = await service.delete('testModel', 'testEntity', 'nonExistingId')
+    expect(result).to.deep.equal({ id: 'nonExistingId', deleted: false })
   })
 })
