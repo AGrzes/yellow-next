@@ -107,10 +107,24 @@ describe('StateService', () => {
 
   it('should save new state when no existing item in store', async () => {
     mockModelService.has.returns(true)
+    mockModelService.get.returns({
+      stateClass: { iri: 'stateClassIri' },
+      linkProperty: {},
+      orderProperty: {},
+      stateProperty: {},
+    })
     mockStore.get.resolves(null)
     mockStore.put.resolves()
     const result = await service.save('testModel', 'testEntity', { state: 'newState' })
     expect(result).to.deep.equal({ iri: 'newId', state: 'newState' })
+    const record = mockStore.put.firstCall.args[1]
+    expect(record.graph['@context']).to.deep.equal({
+      iri: '@id',
+      a: '@type',
+      State: {
+        '@id': 'stateClassIri',
+      },
+    })
   })
 
   it('should throw error when model is not known for save', async () => {

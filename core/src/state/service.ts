@@ -1,3 +1,4 @@
+import { ClassOptions, PropertyOptions } from '@agrzes/yellow-next-shared/dynamic/model'
 import { Store } from './store.js'
 
 interface State {
@@ -17,6 +18,10 @@ interface StateRecord<T> {
 
 interface StateModel {
   name: string
+  stateClass: ClassOptions
+  linkProperty: PropertyOptions
+  orderProperty: PropertyOptions
+  stateProperty: PropertyOptions
 }
 
 export interface StateModelService {
@@ -34,8 +39,20 @@ export class StateService<T = any> {
     return [model, entity]
   }
 
-  private initializeRecord(model: string): StateRecord<T> {
-    return { graph: { '@context': {}, '@graph': { iri: model, state: [] } } }
+  private initializeRecord(modelName: string, iri: string): StateRecord<T> {
+    const model = this.modelService.get(modelName)
+    return {
+      graph: {
+        '@context': {
+          iri: '@id',
+          a: '@type',
+          State: {
+            '@id': model.stateClass.iri,
+          },
+        },
+        '@graph': { iri, state: [] },
+      },
+    }
   }
 
   private validateModel(model: string) {
@@ -60,7 +77,7 @@ export class StateService<T = any> {
   async save(model: string, entity: string, data: any) {
     this.validateModel(model)
     const key = this.getKey(model, entity)
-    const record = (await this.store.get(key)) || this.initializeRecord(model)
+    const record = (await this.store.get(key)) || this.initializeRecord(model, entity)
     const newState = { iri: `newId`, ...data }
     record.graph['@graph'].state.push(newState)
     await this.store.put(key, record)
