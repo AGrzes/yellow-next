@@ -15,8 +15,20 @@ interface StateRecord<T> {
   }
 }
 
+interface StateModel {
+  name: string
+}
+
+export interface StateModelService {
+  has(name: string): boolean
+  get(name: string): StateModel
+}
+
 export class StateService<T = any> {
-  constructor(private store: Store<StateRecord<T>>) {}
+  constructor(
+    private store: Store<StateRecord<T>>,
+    private modelService: StateModelService
+  ) {}
 
   private getKey(model: string, entity: string): string[] {
     return [model, entity]
@@ -26,18 +38,27 @@ export class StateService<T = any> {
     return { graph: { '@context': {}, '@graph': { iri: model, state: [] } } }
   }
 
+  private validateModel(model: string) {
+    if (!this.modelService.has(model)) {
+      throw new Error(`Model ${model} is not known to the model service`)
+    }
+  }
+
   async getAll(model: string, entity: string) {
+    this.validateModel(model)
     const key = this.getKey(model, entity)
     const record = await this.store.get(key)
     return record?.graph?.['@graph']?.state || []
   }
 
   async get(model: string, entity: string, id: string) {
+    this.validateModel(model)
     const states = await this.getAll(model, entity)
     return states.find((state) => state.iri === id)
   }
 
   async save(model: string, entity: string, data: any) {
+    this.validateModel(model)
     const key = this.getKey(model, entity)
     const record = (await this.store.get(key)) || this.initializeRecord(model)
     const newState = { iri: `newId`, ...data }
@@ -47,6 +68,7 @@ export class StateService<T = any> {
   }
 
   async update(model: string, entity: string, id: string, data: any) {
+    this.validateModel(model)
     const key = this.getKey(model, entity)
     const record = await this.store.get(key)
     const state = record.graph['@graph'].state.find((state) => state.iri === id)
@@ -56,6 +78,7 @@ export class StateService<T = any> {
   }
 
   async delete(model: string, entity: string, id: string) {
+    this.validateModel(model)
     const key = this.getKey(model, entity)
     const record = await this.store.get(key)
     if (!record) {
