@@ -1,5 +1,7 @@
 import { randomUUID } from 'crypto'
+import { injectable } from 'inversify'
 
+@injectable()
 export class EmsService {
   async get(kind: string, iri: string) {
     return { kind, iri }

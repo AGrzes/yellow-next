@@ -1,4 +1,5 @@
 import { ClassOptions, PropertyOptions } from '@agrzes/yellow-next-shared/dynamic/model'
+import { injectable } from 'inversify'
 import { Store } from './store.js'
 
 interface State {
@@ -29,6 +30,7 @@ export interface StateModelService {
   get(name: string): StateModel
 }
 
+@injectable()
 export class StateService<T = any> {
   constructor(
     private store: Store<StateRecord<T>>,

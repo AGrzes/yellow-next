@@ -1,4 +1,5 @@
 import fs from 'fs/promises'
+import { injectable } from 'inversify'
 import yaml from 'js-yaml'
 import path from 'path'
 
@@ -9,6 +10,7 @@ export interface Store<T> {
 
 type FsForStore = Pick<typeof fs, 'readFile' | 'writeFile' | 'mkdir'>
 
+@injectable()
 export class FileStore<T> implements Store<T> {
   constructor(
     private baseDir: string,
