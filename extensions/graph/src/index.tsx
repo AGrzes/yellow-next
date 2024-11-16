@@ -1,24 +1,33 @@
 import { Paper } from '@mui/material'
-import React from 'react'
-import { GraphCanvas } from 'reagraph'
+import React, { useMemo } from 'react'
+import { GraphCanvas, GraphEdge, GraphNode } from 'reagraph'
 
-export function entityGraph() {
-  return () => {
+interface UnifiedGraphSource {
+  graph(entity): { nodes: GraphNode[]; edges: GraphEdge[] }
+}
+
+interface GraphSource {
+  nodes(entity): GraphNode[]
+  edges(entity): GraphEdge[]
+}
+
+type GraphConfig = UnifiedGraphSource | GraphSource
+
+export function entityGraph(source: GraphConfig) {
+  return ({ entity }) => {
+    const { nodes, edges } = useMemo(() => {
+      if ('graph' in source) {
+        return source.graph(entity)
+      } else {
+        return {
+          nodes: source.nodes(entity),
+          edges: source.edges(entity),
+        }
+      }
+    }, [entity])
     return (
       <Paper sx={{ height: 400, position: 'relative' }}>
-        <GraphCanvas
-          nodes={[
-            { id: 'a', label: 'Node A' },
-            { id: 'b', label: 'Node B' },
-            { id: 'c', label: 'Node C' },
-            { id: 'd', label: 'Node D' },
-          ]}
-          edges={[
-            { id: 'ab', source: 'a', target: 'b' },
-            { id: 'bc', source: 'b', target: 'c' },
-            { id: 'cd', source: 'c', target: 'd' },
-          ]}
-        />
+        <GraphCanvas nodes={nodes} edges={edges} labelType="all" sizingType="default" />
       </Paper>
     )
   }
