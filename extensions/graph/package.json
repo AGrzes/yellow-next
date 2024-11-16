@@ -29,6 +29,7 @@
     "lodash": "4.17.21",
     "luxon": "^3.5.0",
     "react-dom": "18.2.0",
+    "reagraph": "^4.20.1",
     "typescript": "5.4.2"
   },
   "devDependencies": {
@@ -68,7 +69,7 @@
   "type": "module",
   "types": "types",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.tsx"
   },
   "typesVersions": {
     "*": {}
