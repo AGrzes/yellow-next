@@ -4,7 +4,7 @@ import 'mocha'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
 import { ConfluenceClient } from '../src/client'
-import { Confluence } from '../src/index.js'
+import { Confluence, ConfluenceServer } from '../src/index.js'
 const { isEqual } = lodash
 use(sinonChai)
 
@@ -516,6 +516,55 @@ describe('confluence', () => {
           name: 'label',
           prefix: 'global',
         })
+      })
+    })
+  })
+  describe('ConfluenceServer', () => {
+    describe('search', () => {
+      it('should search without body', async () => {
+        const client = sinon.createStubInstance(ConfluenceClient)
+        const confluenceServer = new ConfluenceServer(client)
+        client.get.resolves({
+          body: { results: [{ id: 123, title: 'test-title', version: { number: 123 }, status: 'draft' }] },
+          status: 200,
+        })
+        const pages = await confluenceServer.search('cql')
+        expect(pages).to.be.deep.equal([{ id: 123, title: 'test-title', version: 123, status: 'draft' }])
+        expect(client.get).to.have.been.calledOnceWith(
+          matchRelativeUrl('rest/api/content/search', {
+            cql: 'type=page and cql',
+            expand: 'version',
+          })
+        )
+      })
+
+      it('should search with body', async () => {
+        const client = sinon.createStubInstance(ConfluenceClient)
+        const confluenceServer = new ConfluenceServer(client)
+        client.get.resolves({
+          body: {
+            results: [
+              {
+                id: 123,
+                title: 'test-title',
+                version: { number: 123 },
+                status: 'draft',
+                body: { storage: { value: 'storage' } },
+              },
+            ],
+          },
+          status: 200,
+        })
+        const pages = await confluenceServer.search('cql', true)
+        expect(pages).to.be.deep.equal([
+          { id: 123, title: 'test-title', version: 123, status: 'draft', storage: 'storage' },
+        ])
+        expect(client.get).to.have.been.calledOnceWith(
+          matchRelativeUrl('rest/api/content/search', {
+            cql: 'type=page and cql',
+            expand: 'version,body.storage',
+          })
+        )
       })
     })
   })

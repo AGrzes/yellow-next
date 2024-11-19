@@ -135,6 +135,32 @@ export class Confluence {
   }
 }
 
+export class ConfluenceServer {
+  constructor(private client: ConfluenceClient) {}
+
+  async search(query: string, fetchBody: boolean = false): Promise<Page[]> {
+    const search = new URLSearchParams()
+    search.append('cql', `type=page and ${query}`)
+    const expand = ['version']
+    if (fetchBody) {
+      expand.push('body.storage')
+    }
+    search.append('expand', expand.join(','))
+    const { body } = await this.client.get('rest/api/content/search?' + search.toString())
+    return body.results.map((result: any) => ({
+      id: result.id,
+      title: result.title,
+      version: result.version.number,
+      status: result.status,
+      ...(fetchBody
+        ? {
+            storage: result.body.storage.value,
+          }
+        : {}),
+    }))
+  }
+} 
+
 export { ConfluenceClient } from './client.js'
 export { configurationFromEnv } from './configuration.js'
 
