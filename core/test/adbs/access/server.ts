@@ -23,7 +23,10 @@ describe('adbs', () => {
       })
       it('should call service.listFiles and return result', async () => {
         const service = {
-          listFiles: sinon.stub().resolves(['file1', 'file2']),
+          listFiles: sinon.stub().resolves([
+            { name: 'file1', path: 'documents/subpath/file1', formats: [] },
+            { name: 'file2', path: 'documents/subpath/file2', formats: [] },
+          ]),
         }
         const router = {
           get: sinon.stub(),
@@ -36,7 +39,10 @@ describe('adbs', () => {
         }
         await router.get.getCall(0).args[1](req, res)
         expect(service.listFiles).to.have.been.calledOnceWith('subpath')
-        expect(res.send).to.have.been.calledOnceWith(['file1', 'file2'])
+        expect(res.send).to.have.been.calledOnceWith([
+          { name: 'file1', path: 'documents/subpath/file1', formats: [] },
+          { name: 'file2', path: 'documents/subpath/file2', formats: [] },
+        ])
       })
       it('should handle error', async () => {
         const error = new Error('error')
