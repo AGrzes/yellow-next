@@ -1,5 +1,4 @@
-import { readdir } from 'fs/promises'
-import { injectable } from 'inversify'
+import fsp from 'fs/promises'
 import { join } from 'path'
 
 export interface DocumentEntry {
@@ -8,16 +7,18 @@ export interface DocumentEntry {
   formats: string[]
 }
 
-@injectable()
 export class AccessService {
-  constructor(private documentDirectory: string = 'documents') {}
+  constructor(
+    private documentDirectory: string = 'documents',
+    private fs: Pick<typeof fsp, 'readdir'> = fsp
+  ) {}
 
   public async listFiles(subPath: string = ''): Promise<DocumentEntry[]> {
     const directory = join(this.documentDirectory, subPath)
-    const files = await readdir(directory)
+    const files = await this.fs.readdir(directory)
     return files.map((file) => ({
       name: file,
-      path: join(directory, file),
+      path: join(subPath, file),
       formats: [],
     }))
   }
