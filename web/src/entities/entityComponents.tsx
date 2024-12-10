@@ -34,7 +34,7 @@ const legacyComponentFactory: EntityComponentFactory = (config, clazz, kind) =>
   config.componentMap?.[`entity:${clazz.name}:${kind}`]
 
 const directComponentFactory: EntityComponentFactory = (config, clazz, kind) => {
-  return config.classConfig?.[clazz.name].components?.[kind]
+  return config.classConfig?.[clazz.name]?.components?.[kind]
 }
 
 const configurableComponentFactory: EntityComponentFactory = (config, clazz, kind) => {
