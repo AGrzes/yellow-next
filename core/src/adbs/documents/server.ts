@@ -2,7 +2,7 @@
 import simplePlantUML from '@akebifiky/remark-simple-plantuml'
 import historyFallback from 'connect-history-api-fallback'
 import debug from 'debug'
-import { Handler, Router } from 'express'
+import { static as $static, Handler, Router } from 'express'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import { join } from 'path'
@@ -21,6 +21,7 @@ export class DocumentsHandler {
   constructor(private router: Router) {
     const documentDirectory = 'documents'
     this.router.use(historyFallback())
+    this.router.use('/documents', $static(join(cwd(), documentDirectory)))
     this.router.use(
       webpackMiddleware(
         webpack({
