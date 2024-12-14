@@ -1,13 +1,15 @@
 import { SemanticProxy } from '@agrzes/yellow-next-shared/dynamic/access'
 import { Box, List, ListItem, ListSubheader, Typography } from '@mui/material'
 import ListItemText from '@mui/material/ListItemText'
-import { camelCase, flatMap, groupBy, mapValues, upperFirst } from 'lodash'
+import lodash from 'lodash'
 import React, { useMemo } from 'react'
 import Markdown from 'react-markdown'
 import { EntityComponentType, TreeComponentType } from '..'
 import { useComponent } from '../../entities/entityComponents'
 import { CompositeEntityComponent } from '../CompositeEntityComponent'
 import { EntityTree } from '../EntityTree'
+
+const { camelCase, flatMap, groupBy, mapValues, upperFirst } = lodash
 
 export { complexRelationList, RelationListConfig } from './RelationList'
 
