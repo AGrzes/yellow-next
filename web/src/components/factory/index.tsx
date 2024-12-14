@@ -201,3 +201,5 @@ export function entitySubTree<T extends SemanticProxy>(
     )
   }
 }
+
+export { accordion } from './accordion'
