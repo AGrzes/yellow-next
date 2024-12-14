@@ -23,7 +23,10 @@ export function accordion({
             <Accordion
               expanded={expanded === key}
               key={key}
-              sx={{ border: `1px solid rgba(0, 0, 0, .125)` }}
+              sx={{
+                border: `1px solid rgba(0, 0, 0, .125)`,
+                borderBottom: () => (key !== values.length - 1 ? 0 : undefined),
+              }}
               disableGutters
             >
               <AccordionSummary
