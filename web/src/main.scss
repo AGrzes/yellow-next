@@ -1,0 +1,59 @@
+/*
+h1 {
+  display: block;
+  font-size: 2em;
+  font-weight: bold;
+  margin-block: .67em;
+}
+
+h2 {
+  display: block;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-block: .83em;
+}
+
+h3 {
+  display: block;
+  font-size: 1.17em;
+  font-weight: bold;
+  margin-block: 1em;
+}
+
+h4 {
+  display: block;
+  font-size: 1.00em;
+  font-weight: bold;
+  margin-block: 1.33em;
+}
+
+h5 {
+  display: block;
+  font-size: 0.83em;
+  font-weight: bold;
+  margin-block: 1.67em;
+}
+
+h6 {
+  display: block;
+  font-size: 0.67em;
+  font-weight: bold;
+  margin-block: 2.33em;
+}
+
+*/
+@use 'sass:list';
+
+$sizes: 2em, 1.5em, 1.17em, 1em, 0.83em, 0.67em, 0.64em, 0.61em, 0.58em, 0.55em, 0.52em, 0.49em;
+$margins: .67em, .83em, 1em, 1.33em, 1.67em, 2.33em, 2.36em, 2.39em, 2.42em, 2.45em, 2.48em, 2.51em;
+
+@for $nest from 0 through 6 {
+  .header-base-#{$nest} {
+    @for $header from 1 through 6 {
+      h#{$header} {
+        font-size: list.nth($sizes, $nest+$header);
+        margin-block: list.nth($margins, $nest+$header);
+      }
+    }
+  }
+}
