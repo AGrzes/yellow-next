@@ -7,6 +7,7 @@ import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import lodash from 'lodash'
 import React, { useState } from 'react'
+import Markdown from 'react-markdown'
 const { last, filter } = lodash
 
 export function InlineState({ state }: { state: any[] }) {
@@ -33,7 +34,9 @@ export function InlineState({ state }: { state: any[] }) {
                   <TableRow key={key}>
                     <TableCell>{s.state}</TableCell>
                     <TableCell>{s.date}</TableCell>
-                    <TableCell>{s.comment}</TableCell>
+                    <TableCell sx={{ paddingBlock: 0 }}>
+                      <Markdown>{s.comment}</Markdown>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
