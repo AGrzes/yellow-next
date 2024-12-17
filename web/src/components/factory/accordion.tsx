@@ -60,7 +60,7 @@ export function accordion({
       const values = useMemo(() => groups[groupKeys[selectedGroup]], [selectedGroup])
       return (
         <Box sx={sx}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 1 }}>
             <Tabs
               value={selectedGroup}
               onChange={(event: React.SyntheticEvent, newValue: number) => setSelectedGroup(newValue)}
