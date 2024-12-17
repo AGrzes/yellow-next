@@ -10,12 +10,14 @@ export function accordion({
   header,
   content,
   groupProperty,
+  groupLabels,
 }: {
   property: string
   header: EntityComponentType[]
   content?: EntityComponentType[]
   label?: string
   groupProperty?: string
+  groupLabels?: Record<string, string>
 }): EntityComponentType {
   const EntityAccordion = ({ values, sx }) => {
     const [expanded, setExpanded] = React.useState<string | false>(0)
@@ -52,7 +54,7 @@ export function accordion({
   if (groupProperty) {
     return ({ entity, sx }) => {
       const groups = useMemo(() => groupBy(entity[property], (value) => value[groupProperty] || 'default'), [entity])
-      const groupLabels = mapValues(groups, (values, key) => upperFirst(camelCase(key)))
+      groupLabels = groupLabels || mapValues(groups, (values, key) => upperFirst(camelCase(key)))
       const groupKeys = Object.keys(groups)
       const [selectedGroup, setSelectedGroup] = React.useState(0)
       const values = useMemo(() => groups[groupKeys[selectedGroup]], [selectedGroup])
