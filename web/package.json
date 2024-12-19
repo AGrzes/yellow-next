@@ -27,6 +27,7 @@
     "@emotion/styled": "11.11.5",
     "@fontsource/roboto": "5.0.12",
     "@mui/material": "5.15.15",
+    "@types/react": "^18.2.64",
     "jsonld": "8.3.2",
     "lodash": "4.17.21",
     "n3": "1.17.3",
@@ -38,10 +39,17 @@
     "typescript": "5.4.2"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/react": "^14.0.0",
+    "@types/jest": "^29.0.0",
     "@types/jsonld": "^1.5.13",
     "@types/lodash": "^4.14.202",
     "@types/n3": "^1.16.4",
-    "@types/react": "^18.3.1"
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.0.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "ts-jest": "^29.2.5"
   },
   "files": [
     "target",
@@ -67,7 +75,8 @@
   "scripts": {
     "build": "rm -rf target types && tsc",
     "start": "node target",
-    "watch": "tsc --watch --preserveWatchOutput"
+    "watch": "tsc --watch --preserveWatchOutput",
+    "test": "jest"
   },
   "type": "module",
   "types": "types",
