@@ -8,14 +8,33 @@ export interface AttributeConfig {
   labelProperty: string
   valueProperty: string
   groupProperty?: string
+  typeProperty?: string
+}
+
+function valueComponent(type: string) {
+  switch (type) {
+    case 'url':
+      return ({ value }) => (
+        <a href={value} target="_blank">
+          {value}
+        </a>
+      )
+    default:
+      return ({ value }) => <React.Fragment>{value}</React.Fragment>
+  }
 }
 
 export function attributeTable(property: string, config: AttributeConfig): EntityComponentType {
   const AttributeRow = ({ attribute }) => {
+    const type = attribute[config.typeProperty] || 'default'
+
+    const ValueComponent = valueComponent(type)
     return (
       <TableRow>
         <TableCell>{attribute[config.labelProperty]}</TableCell>
-        <TableCell>{attribute[config.valueProperty]}</TableCell>
+        <TableCell>
+          <ValueComponent value={attribute[config.valueProperty]} />
+        </TableCell>
       </TableRow>
     )
   }
