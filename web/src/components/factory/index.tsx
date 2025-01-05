@@ -34,9 +34,9 @@ export function simpleText(property: string): EntityComponentType {
   )
 }
 
-export function richText(property: string): EntityComponentType {
+export function richText(property: string, baseHeader: number = 0): EntityComponentType {
   return ({ entity, sx }) => (
-    <Box sx={sx}>
+    <Box sx={sx} className={`header-base-${baseHeader}`}>
       <Markdown>{entity[property]}</Markdown>
     </Box>
   )
