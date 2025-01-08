@@ -1,4 +1,4 @@
-import { Table, TableCell, TableRow } from '@mui/material'
+import { Table, TableBody, TableCell, TableRow } from '@mui/material'
 import lodash from 'lodash'
 import React, { useMemo } from 'react'
 import { EntityComponentType } from '../index.js'
@@ -49,18 +49,20 @@ export function attributeTable(property: string, config: AttributeConfig): Entit
       const groupKeys = Object.keys(groups)
       return (
         <Table>
-          {groupKeys.map((key) => (
-            <>
-              {groups[key].length > 0 && (
-                <TableRow>
-                  <TableCell colSpan={2}>{groupLabels[key]}</TableCell>
-                </TableRow>
-              )}
-              {groups[key].map((attribute, key) => (
-                <AttributeRow key={key} attribute={attribute} />
-              ))}
-            </>
-          ))}
+          <TableBody>
+            {groupKeys.map((key) => (
+              <>
+                {groups[key].length > 0 && (
+                  <TableRow>
+                    <TableCell colSpan={2}>{groupLabels[key]}</TableCell>
+                  </TableRow>
+                )}
+                {groups[key].map((attribute, key) => (
+                  <AttributeRow key={key} attribute={attribute} />
+                ))}
+              </>
+            ))}
+          </TableBody>
         </Table>
       )
     }
@@ -68,9 +70,11 @@ export function attributeTable(property: string, config: AttributeConfig): Entit
     return ({ entity }) => {
       return (
         <Table>
-          {entity[property].map((attribute, key) => (
-            <AttributeRow key={key} attribute={attribute} />
-          ))}
+          <TableBody>
+            {entity[property].map((attribute, key) => (
+              <AttributeRow key={key} attribute={attribute} />
+            ))}
+          </TableBody>
         </Table>
       )
     }
