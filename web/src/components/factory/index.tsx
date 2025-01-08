@@ -11,11 +11,20 @@ import { EntityTree } from '../EntityTree'
 
 const { camelCase, flatMap, groupBy, mapValues, upperFirst } = lodash
 
+export * from './group'
 export { complexRelationList, RelationListConfig } from './RelationList'
 
 export interface TreeOptions<T> {
   children: (parent: T) => T[]
   parent: (child: T) => T
+}
+
+export function staticText(content: string): EntityComponentType {
+  return ({ entity, sx }) => (
+    <Box component="span" sx={sx}>
+      {content}
+    </Box>
+  )
 }
 
 export function inlineText(property: string): EntityComponentType {
