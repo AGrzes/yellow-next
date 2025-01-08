@@ -34,6 +34,12 @@ export function iterate(property: string, Header: EntityComponentType, Content: 
     }))
 }
 
+const UNDEFINED = 'value_not_defined'
+
+export function SimpleGroupHeader({ group }: { group: string }) {
+  return <>{lodash.upperFirst(lodash.camelCase(group === UNDEFINED ? 'default' : group))}</>
+}
+
 export function groupBy(
   property: string,
   groupProperty: string,
@@ -43,7 +49,7 @@ export function groupBy(
   Wrapper: GroupWrapper
 ): generator {
   return (entity) => {
-    const groups = lodash.groupBy(entity[property], groupProperty)
+    const groups = lodash.groupBy(entity[property], (entity) => entity[groupProperty] || UNDEFINED)
     return lodash.map(groups, (group, key) => ({
       Header: () => <GroupHeader group={key} />,
       Content: () => (
