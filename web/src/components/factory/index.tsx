@@ -211,6 +211,20 @@ export function entitySubTree<T extends SemanticProxy>(
   }
 }
 
+export function related(relation: string, Component: EntityComponentType | EntityComponentType[]): EntityComponentType {
+  return ({ entity }) => {
+    const related = entity[relation]
+    if (!related) {
+      return null
+    }
+    if (Array.isArray(Component)) {
+      return <CompositeEntityComponent entity={related} items={Component} />
+    } else {
+      return <Component entity={related} />
+    }
+  }
+}
+
 export { accordion } from './accordion'
 export { AttributeConfig, attributeTable } from './attribute'
 
