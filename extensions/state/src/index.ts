@@ -8,6 +8,7 @@ export const state =
     b.property(state).oneToMany().orderBy('date').target(stateClassName).reverse(_.snakeCase(b.className))
 
     b.class(stateClassName)
+      .internal()
       .property('date')
       .multiplicity('single')
       .property('state')
