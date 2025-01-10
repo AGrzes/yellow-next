@@ -70,7 +70,7 @@
   "types": "types",
   "exports": {
     ".": "./src/index.ts",
-    "./components": "./src/components/index.ts",
+    "./components": "./src/components/index.tsx",
     "./utils": "./src/utils/index.ts"
   },
   "typesVersions": {
