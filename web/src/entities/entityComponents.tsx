@@ -77,7 +77,7 @@ const configurableComponentFactory: EntityComponentFactory = (config, clazz, kin
         return ({ entity }) => {
           return (
             <EntityDetailsTemplate
-              title={<CompositeEntityComponent entity={entity} items={header} />}
+              title={<CompositeEntityComponent entity={entity} items={header} direction="row" />}
               content={<CompositeEntityComponent entity={entity} items={details} />}
             />
           )
