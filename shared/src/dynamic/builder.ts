@@ -41,6 +41,7 @@ const context = {
       reverseMultiplicity: 'yd:Property:reverse_multiplicity',
       orderBy: 'yd:Property:order_by',
       pattern: 'yd:Property:pattern',
+      index: 'yd:Property:index',
     },
   },
 }
@@ -95,6 +96,11 @@ class PropertyBuilder {
 
   pattern(pattern: string) {
     this.options.pattern = pattern
+    return this
+  }
+
+  index() {
+    this.options.index = true
     return this
   }
 
@@ -248,6 +254,7 @@ class SchemaBuilder {
             reverseMultiplicity: p.reverseMultiplicity,
             orderBy: p.orderBy,
             pattern: p.pattern,
+            index: p.index,
             reverse_name: p.reverseName,
             range: p.type || resolveClassIri(this.classes[p.target]),
           })),
