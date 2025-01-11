@@ -58,6 +58,12 @@ const Book: ClassOptions = {
       type: 'Author',
       pattern: '{{author}}',
     },
+    {
+      iri: 'http://agrzes.pl/books#Book/index',
+      predicate: 'http://agrzes.pl/books#Book/index',
+      name: 'index',
+      index: true,
+    },
   ],
 }
 
@@ -306,6 +312,13 @@ describe('mapper', () => {
         const mapped = mapper(options)(document)
         expect(mapped).to.containSubset({
           '@graph': [{ generatedRelation: { iri: 'a' } }],
+        })
+      })
+      it('should handle index property', () => {
+        const document = { books: [{ title: 'a' }] }
+        const mapped = mapper(options)(document)
+        expect(mapped).to.containSubset({
+          '@graph': [{ index: 0 }],
         })
       })
       it('should assign inherited types', () => {

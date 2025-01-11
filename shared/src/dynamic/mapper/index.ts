@@ -118,14 +118,19 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
                     ],
                   ]
                 } else {
-                  if (!property.reverse && property.pattern) {
-                    const v = valueFromPattern(property.pattern, context)
-                    if (v) {
-                      if (property.type) {
-                        return [[property.name, { iri: v }]]
-                      } else {
-                        return [[property.name, v]]
+                  if (!property.reverse) {
+                    if (property.pattern) {
+                      const v = valueFromPattern(property.pattern, context)
+                      if (v) {
+                        if (property.type) {
+                          return [[property.name, { iri: v }]]
+                        } else {
+                          return [[property.name, v]]
+                        }
                       }
+                    }
+                    if (property.index) {
+                      return [[property.name, context.index]]
                     }
                   }
                   return []
@@ -147,7 +152,7 @@ export function mapper(options: MapperOptions): (document: Record<string, any>) 
     return Object.entries(options.roots).flatMap(([key, value]) =>
       document[key]
         ? Array.isArray(document[key])
-          ? document[key].map((item) => mapDocument({ document: item, className: value }))
+          ? document[key].map((item, index) => mapDocument({ document: item, className: value, index }))
           : mapDocument({ document: document[key], className: value })
         : []
     )
