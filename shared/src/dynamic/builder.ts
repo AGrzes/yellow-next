@@ -40,6 +40,7 @@ const context = {
       multiplicity: 'yd:Property:multiplicity',
       reverseMultiplicity: 'yd:Property:reverse_multiplicity',
       orderBy: 'yd:Property:order_by',
+      pattern: 'yd:Property:pattern',
     },
   },
 }
