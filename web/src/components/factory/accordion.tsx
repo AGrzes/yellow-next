@@ -19,10 +19,11 @@ export function accordion({
   groupProperty?: string
   groupLabels?: Record<string, string>
 }): EntityComponentType {
+  content = content || []
   const EntityAccordion = ({ values, sx }) => {
     const [expanded, setExpanded] = React.useState<number>(0)
     return (
-      values?.length && (
+      !!values?.length && (
         <Box sx={sx}>
           {values.map((value: any, key: number) => (
             <Accordion
