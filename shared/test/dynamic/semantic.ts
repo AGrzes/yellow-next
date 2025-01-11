@@ -8,6 +8,7 @@ import {
   CLASS_INTERNAL,
   CLASS_NAME,
   CLASS_TYPE,
+  PROPERTY_INDEX,
   PROPERTY_MULTIPLICITY,
   PROPERTY_NAME,
   PROPERTY_ORDER_BY,
@@ -205,6 +206,12 @@ describe('access', () => {
           store.addQuad(BOOK_TITLE, PROPERTY_PATTERN, DataFactory.literal('pattern'))
           const propertyOptions = new SemanticPropertyOptions(store, BOOK_TITLE.value, false)
           expect(propertyOptions).to.have.property('pattern', 'pattern')
+        })
+        it('should return index', () => {
+          const store = new Store<Quad>()
+          store.addQuad(BOOK_TITLE, PROPERTY_INDEX, DataFactory.literal('true'))
+          const propertyOptions = new SemanticPropertyOptions(store, BOOK_TITLE.value, false)
+          expect(propertyOptions).to.have.property('index', true)
         })
       })
       describe('SemanticMapperOptions', () => {
