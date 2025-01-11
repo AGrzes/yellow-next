@@ -23,6 +23,7 @@ export interface PropertyOptions {
   readonly reverseMultiplicity?: Multiplicity
   readonly orderBy?: string
   readonly pattern?: string
+  readonly index?: boolean
 }
 
 export interface ModelOptions {
