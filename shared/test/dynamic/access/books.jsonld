@@ -21,6 +21,10 @@
           "@id": "http://agrzes.pl/books#Book/pages",
           "@type": "http://www.w3.org/2001/XMLSchema#integer"
         },
+        "price": {
+          "@id": "http://agrzes.pl/books#Book/price",
+          "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+        },
         "released": {
           "@id": "http://agrzes.pl/books#Book/released",
           "@type": "http://www.w3.org/2001/XMLSchema#date"
@@ -52,6 +56,7 @@
       "@type": "Book",
       "rdfs:label": "B1",
       "pages": 1,
+      "price": 1.23,
       "released": "1993-10-02",
       "author": "authors:A1",
       "series": "s:S1"

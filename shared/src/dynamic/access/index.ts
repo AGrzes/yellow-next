@@ -56,7 +56,14 @@ export class Model {
 
   private proxy(iri: Term): any {
     if (iri.termType === 'Literal') {
-      return iri.value
+      switch (iri.datatype.value) {
+        case 'http://www.w3.org/2001/XMLSchema#integer':
+          return parseInt(iri.value)
+        case 'http://www.w3.org/2001/XMLSchema#decimal':
+          return parseFloat(iri.value)
+        default:
+          return iri.value
+      }
     } else {
       const classes = this.store
         .getObjects(iri, DataFactory.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'), null)

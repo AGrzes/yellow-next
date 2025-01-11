@@ -17,6 +17,11 @@ const Book: ClassOptions = {
       name: 'pages',
     },
     {
+      iri: 'http://agrzes.pl/books#Book/price',
+      predicate: 'http://agrzes.pl/books#Book/price',
+      name: 'price',
+    },
+    {
       iri: 'http://agrzes.pl/books#Book/released',
       predicate: 'http://agrzes.pl/books#Book/released',
       name: 'released',
@@ -163,6 +168,16 @@ describe('dynamic', () => {
         const model = new Model(store, modelOptions)
         const book = model.get('Hardcover', 'http://agrzes.pl/books#H1')
         expect(book.title).to.be.undefined
+      })
+      it('should return integer as number', () => {
+        const model = new Model(store, modelOptions)
+        const book = model.get('Book', 'http://agrzes.pl/books#B1')
+        expect(book.pages).to.equal(1)
+      })
+      it('should return float as number', () => {
+        const model = new Model(store, modelOptions)
+        const book = model.get('Book', 'http://agrzes.pl/books#B1')
+        expect(book.price).to.equal(1.23)
       })
     })
   })
