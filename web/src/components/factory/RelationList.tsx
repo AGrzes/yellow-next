@@ -69,14 +69,16 @@ export function complexRelationList({
     const ForwardRelationListItem = relationListItem({ relation: target, RelationComponent: ForwardComponent })
     const ReverseRelationListItem = relationListItem({ relation: source, RelationComponent: ReverseComponent })
     return (
-      <List subheader={label && <ListSubheader>{label}</ListSubheader>}>
-        {forwardItems.map((relation: any) => (
-          <ForwardRelationListItem entity={relation} key={relation.iri} />
-        ))}
-        {reverseItems.map((relation: any) => (
-          <ReverseRelationListItem entity={relation} key={relation.iri} />
-        ))}
-      </List>
+      (!!forwardItems?.length || !!reverseItems?.length) && (
+        <List subheader={label && <ListSubheader>{label}</ListSubheader>}>
+          {forwardItems.map((relation: any) => (
+            <ForwardRelationListItem entity={relation} key={relation.iri} />
+          ))}
+          {reverseItems.map((relation: any) => (
+            <ReverseRelationListItem entity={relation} key={relation.iri} />
+          ))}
+        </List>
+      )
     )
   }
 }
