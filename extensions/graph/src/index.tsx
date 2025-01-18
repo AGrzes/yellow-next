@@ -1,7 +1,13 @@
 import { usePrint } from '@agrzes/yellow-next-web/layout'
 import { Paper } from '@mui/material'
 import React, { useMemo } from 'react'
-import { GraphCanvas, GraphEdge, GraphNode } from 'reagraph'
+import { useNavigate } from 'react-router-dom'
+import { GraphCanvas, GraphEdge, GraphNode, GraphSceneProps } from 'reagraph'
+
+interface GraphEvents {
+  onNodeDoubleClick?: (node) => string | void
+}
+
 interface UnifiedGraphSource {
   graph(entity): { nodes: GraphNode[]; edges: GraphEdge[] }
 }
@@ -11,10 +17,11 @@ interface GraphSource {
   edges(entity): GraphEdge[]
 }
 
-type GraphConfig = UnifiedGraphSource | GraphSource
+type GraphConfig = (UnifiedGraphSource | GraphSource) & GraphEvents
 
 export function entityGraph(source: GraphConfig) {
   return ({ entity }) => {
+    const navigate = useNavigate()
     const isPrint = usePrint()
     const { nodes, edges } = useMemo(() => {
       if ('graph' in source) {
@@ -26,10 +33,23 @@ export function entityGraph(source: GraphConfig) {
         }
       }
     }, [entity])
+    const onNodeDoubleClick: GraphSceneProps['onNodeDoubleClick'] = (node, event) => {
+      const target = source.onNodeDoubleClick?.(node.data)
+      if (target) {
+        navigate(target)
+      }
+    }
+
     return (
       !isPrint && (
         <Paper sx={{ height: 400, position: 'relative' }}>
-          <GraphCanvas nodes={nodes} edges={edges} labelType="all" sizingType="default" />
+          <GraphCanvas
+            nodes={nodes}
+            edges={edges}
+            labelType="all"
+            sizingType="default"
+            onNodeDoubleClick={onNodeDoubleClick}
+          />
         </Paper>
       )
     )
