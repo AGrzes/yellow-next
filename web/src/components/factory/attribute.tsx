@@ -51,7 +51,7 @@ export function attributeTable(property: string, config: AttributeConfig): Entit
         <Table>
           <TableBody>
             {groupKeys.map((key) => (
-              <>
+              <React.Fragment key={key}>
                 {groups[key].length > 0 && (
                   <TableRow>
                     <TableCell colSpan={2}>{groupLabels[key]}</TableCell>
@@ -60,7 +60,7 @@ export function attributeTable(property: string, config: AttributeConfig): Entit
                 {groups[key].map((attribute, key) => (
                   <AttributeRow key={key} attribute={attribute} />
                 ))}
-              </>
+              </React.Fragment>
             ))}
           </TableBody>
         </Table>
