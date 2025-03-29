@@ -1,6 +1,6 @@
 import React from 'react'
-import { useStore } from '../provider/store'
-export function Ems() {
-  const store = useStore()
+import { store } from '../service/store'
+export function Ems({ id }: { id: string }) {
+  const item = store.get(id)
   return <div>Ems</div>
 }
