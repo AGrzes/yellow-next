@@ -2,7 +2,7 @@ import PouchDB from 'pouchdb'
 import pouchDbAdapterHttp from 'pouchdb-adapter-http'
 import React from 'react'
 import { Store } from '../service/store/index.js'
-import { PouchDBMetadata, PouchDBReference, PouchDBStore } from '../service/store/pouchdb.js'
+import { PouchDBMetadata, PouchDBReference, PouchDBStore } from '../service/store/pouchdb'
 
 PouchDB.plugin(pouchDbAdapterHttp)
 

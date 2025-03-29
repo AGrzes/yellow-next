@@ -488,6 +488,9 @@ importers:
 
   web:
     dependencies:
+      '@agrzes/yellow-next-ems':
+        specifier: workspace:*
+        version: link:../ems
       '@agrzes/yellow-next-shared':
         specifier: workspace:*
         version: link:../shared

@@ -36,10 +36,19 @@
   "type": "module",
   "types": "types",
   "exports": {
-    ".": "./src/index.tsx"
+    ".": "./src/index.tsx",
+    "./provider": "./src/provider/index.ts",
+    "./route": "./src/route/index.tsx"
   },
   "typesVersions": {
-    "*": {}
+    "*": {
+      "provider": [
+        "types/provider/index.d.ts"
+      ],
+      "route": [
+        "types/route/index.d.ts"
+      ]
+    }
   },
   "devDependencies": {
     "@types/pouchdb": "^6.4.2"

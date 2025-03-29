@@ -1,3 +1,4 @@
+import emsRoutes from '@agrzes/yellow-next-ems/route'
 import { Store } from 'n3'
 import * as React from 'react'
 import { Outlet, createBrowserRouter, useLoaderData } from 'react-router-dom'
@@ -22,6 +23,6 @@ export const router: ReturnType<typeof createBrowserRouter> = createBrowserRoute
   {
     element: <StoreAndModel />,
     loader: loadGraph,
-    children: [...documentsRoutes, ...entityRoutes],
+    children: [...documentsRoutes, ...entityRoutes, ...emsRoutes],
   },
 ])
