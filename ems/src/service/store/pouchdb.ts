@@ -1,4 +1,8 @@
-import { Entity, Store } from './index.js'
+import PouchDB from 'pouchdb'
+import pouchDbAdapterHttp from 'pouchdb-adapter-http'
+import { Entity, Store } from './index'
+
+PouchDB.plugin(pouchDbAdapterHttp)
 
 export interface PouchDBMetadata {
   _rev: string
