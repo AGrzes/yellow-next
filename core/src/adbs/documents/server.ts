@@ -100,6 +100,9 @@ export class DocumentsHandler {
             new HtmlWebpackPlugin({
               templateContent: `<!DOCTYPE html>
   <html>
+    <head>
+      <script src="/config"></script>
+    </head>
     <body>
       <div id="root"></div>
     </body>

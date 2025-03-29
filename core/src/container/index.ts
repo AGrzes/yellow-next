@@ -3,13 +3,14 @@ import { adbsModule } from '../adbs/module.js'
 import { dynamicCliModule } from '../cli/dynamic.js'
 import { cliModule } from '../cli/index.js'
 import { serverCliModule } from '../cli/server.js'
+import { configModule } from '../config/module.js'
 import { emsModule } from '../ems/module.js'
 import { serverModule } from '../server/module.js'
 import { stateModule } from '../state/module.js'
 
 export default async function createContainer() {
   const container = new Container()
-  container.load(cliModule, serverCliModule, adbsModule, serverModule, emsModule, stateModule)
+  container.load(cliModule, serverCliModule, adbsModule, serverModule, emsModule, stateModule, configModule)
   await container.loadAsync(dynamicCliModule())
   return container
 }
