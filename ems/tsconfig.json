@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "sourceMap": true,
+    "outDir": "target",
+    "rootDir": "src",
+    "esModuleInterop": true,
+    "declaration": true,
+    "declarationDir": "types",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "moduleResolution": "Node",
+    "jsx": "react"
+  },
+  "include": ["src"],
+  "ts-node": {
+    "moduleTypes": {
+      "*.ts": "cjs"
+    }
+  }
+}

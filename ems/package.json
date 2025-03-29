@@ -1,0 +1,47 @@
+{
+  "name": "@agrzes/yellow-next-ems",
+  "description": "Entity Management System module",
+  "version": "0.0.1",
+  "author": "Grzegorz Abramczyk <abramczykg@gmail.com>",
+  "dependencies": {
+    "@agrzes/yellow-next-shared": "workspace:*",
+    "@emotion/react": "11.11.4",
+    "@emotion/styled": "11.11.5",
+    "@fontsource/roboto": "5.0.12",
+    "@mui/material": "5.15.15",
+    "@types/react": "^18.2.64",
+    "pouchdb": "9.0.0",
+    "pouchdb-adapter-http": "9.0.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-router-dom": "6.22.3",
+    "typescript": "5.4.2"
+  },
+  "files": [
+    "target",
+    "types",
+    "LICENSE",
+    "package.json"
+  ],
+  "license": "MIT",
+  "main": "src/index.tsx",
+  "publishConfig": {
+    "registry": "http://npm.kubernetes.home.agrzes.pl/"
+  },
+  "scripts": {
+    "build": "rm -rf target types && tsc",
+    "start": "node target",
+    "watch": "tsc --watch --preserveWatchOutput"
+  },
+  "type": "module",
+  "types": "types",
+  "exports": {
+    ".": "./src/index.tsx"
+  },
+  "typesVersions": {
+    "*": {}
+  },
+  "devDependencies": {
+    "@types/pouchdb": "^6.4.2"
+  }
+}
