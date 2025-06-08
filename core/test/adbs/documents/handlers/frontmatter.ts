@@ -10,24 +10,61 @@ import {
 
 const { expect } = chai.use(sinonChai)
 
-describe.only('adbs', () => {
+describe('adbs', () => {
   describe('documents', () => {
     describe('handlers', () => {
       describe('frontmatter', () => {
         describe('FrontmatterHandler', () => {
-          it('should extract frontmatter from markdown files', async () => {
-            const fs = {
-              readFile: sinon.stub().resolves('---\ntitle: Test Document\n---\n# Content'),
-              writeFile: sinon.stub().resolves(),
-            }
-            const handler = new FrontmatterHandler('documents', fs)
-            const result = await handler.get('test.md', {})
-            expect(result).to.deep.equal(
-              JSON.stringify({
-                title: 'Test Document',
+          describe('get', () => {
+            it('should extract frontmatter from markdown files', async () => {
+              const fs = {
+                readFile: sinon.stub().resolves('---\ntitle: Test Document\n---\n# Content'),
+                writeFile: sinon.stub().resolves(),
+              }
+              const handler = new FrontmatterHandler('documents', fs)
+              const result = await handler.get('test.md', {})
+              expect(result).to.deep.equal(
+                JSON.stringify({
+                  title: 'Test Document',
+                })
+              )
+              expect(fs.readFile).to.have.been.calledOnceWith('documents/test.md', 'utf-8')
+            })
+          })
+          describe('put', () => {
+            describe('FrontmatterHandler put/patch', () => {
+              it('should update frontmatter with put (happy path)', async () => {
+                const fs = {
+                  readFile: sinon.stub().resolves('---\ntitle: Old\n---\n# Content'),
+                  writeFile: sinon.stub().resolves(),
+                }
+                const handler = new FrontmatterHandler('dir', fs)
+                fs.readFile.resolves('---\ntitle: Old\n---\n# Content')
+                const newContent = JSON.stringify({ title: 'New' })
+                await handler.put('file.md', newContent, {})
+                expect(fs.readFile).to.have.been.calledOnceWith('dir/file.md', 'utf-8')
+                expect(fs.writeFile).to.have.been.calledOnce
+                const written = fs.writeFile.getCall(0).args[1]
+                expect(written).to.include('title: New')
+                expect(written).to.include('---')
               })
-            )
-            expect(fs.readFile).to.have.been.calledOnceWith('documents/test.md', 'utf-8')
+            })
+            describe('patch', () => {
+              it('should patch frontmatter with patch (happy path)', async () => {
+                const fs = {
+                  readFile: sinon.stub().resolves('---\ntitle: Old\n---\n# Content'),
+                  writeFile: sinon.stub().resolves(),
+                }
+                const handler = new FrontmatterHandler('dir', fs)
+                const patch = JSON.stringify([{ op: 'replace', path: '/title', value: 'Patched' }])
+                await handler.patch('file.md', patch, {})
+                expect(fs.readFile).to.have.been.calledOnceWith('dir/file.md', 'utf-8')
+                expect(fs.writeFile).to.have.been.calledOnce
+                const written = fs.writeFile.getCall(0).args[1]
+                expect(written).to.include('title: Patched')
+                expect(written).to.include('---')
+              })
+            })
           })
         })
 

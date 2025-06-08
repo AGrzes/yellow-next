@@ -48,7 +48,7 @@ export class FrontmatterHandler implements DocumentHandler {
     const rawContent = await this.fs.readFile(`${this.documentDirectory}/${documentPath}`, 'utf-8')
     const frontmatter = rawContent.split('---')[1]
     const parsed = YAML.parse(frontmatter)
-    return parsed ? JSON.stringify(parsed) : null
+    return JSON.stringify(parsed)
   }
 
   async put(documentPath: string, content: string, options: any): Promise<void> {
