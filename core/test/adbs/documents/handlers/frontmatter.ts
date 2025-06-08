@@ -2,7 +2,11 @@ import chai from 'chai'
 import 'mocha'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
-import { FrontmatterHandler, parseJsonPatchPath } from '../../../../src/adbs/documents/handlers/frontmatter.js'
+import {
+  applyYamlPatch,
+  FrontmatterHandler,
+  parseJsonPatchPath,
+} from '../../../../src/adbs/documents/handlers/frontmatter.js'
 
 const { expect } = chai.use(sinonChai)
 
@@ -50,6 +54,63 @@ describe.only('adbs', () => {
 
           it('should handle multiple leading slashes', () => {
             expect(parseJsonPatchPath('///foo/bar')).to.deep.equal(['foo', 'bar'])
+          })
+        })
+
+        describe('applyYamlPatch', () => {
+          let doc: any
+          beforeEach(() => {
+            doc = {
+              setIn: sinon.stub(),
+              deleteIn: sinon.stub(),
+              getIn: sinon.stub(),
+            }
+          })
+          it('should add a value', () => {
+            applyYamlPatch(doc, [{ op: 'add', path: '/baz', value: 42 }])
+            expect(doc.setIn).to.have.been.calledOnceWith(['baz'], 42)
+          })
+          it('should replace a value', () => {
+            applyYamlPatch(doc, [{ op: 'replace', path: '/foo', value: 'baz' }])
+            expect(doc.setIn).to.have.been.calledOnceWith(['foo'], 'baz')
+          })
+          it('should remove a value', () => {
+            applyYamlPatch(doc, [{ op: 'remove', path: '/foo' }])
+            expect(doc.deleteIn).to.have.been.calledOnceWith(['foo'])
+          })
+          it('should copy a value', () => {
+            doc.getIn.withArgs(['foo']).returns('bar')
+            applyYamlPatch(doc, [{ op: 'copy', from: '/foo', path: '/copied' }])
+            expect(doc.getIn).to.have.been.calledWith(['foo'])
+            expect(doc.setIn).to.have.been.calledWith(['copied'], 'bar')
+          })
+          it('should not call setIn for copy if source is missing', () => {
+            doc.getIn.withArgs(['foo']).returns(undefined)
+            applyYamlPatch(doc, [{ op: 'copy', from: '/foo', path: '/copied' }])
+            expect(doc.getIn).to.have.been.calledWith(['foo'])
+            expect(doc.setIn).to.not.have.been.calledWith(['copied'], sinon.match.any)
+          })
+          it('should move a value', () => {
+            doc.getIn.withArgs(['foo']).returns('bar')
+            applyYamlPatch(doc, [{ op: 'move', from: '/foo', path: '/moved' }])
+            expect(doc.getIn).to.have.been.calledWith(['foo'])
+            expect(doc.setIn).to.have.been.calledWith(['moved'], 'bar')
+            expect(doc.deleteIn).to.have.been.calledWith(['foo'])
+          })
+          it('should not call setIn/deleteIn for move if source is missing', () => {
+            doc.getIn.withArgs(['foo']).returns(undefined)
+            applyYamlPatch(doc, [{ op: 'move', from: '/foo', path: '/moved' }])
+            expect(doc.getIn).to.have.been.calledWith(['foo'])
+            expect(doc.setIn).to.not.have.been.calledWith(['moved'], sinon.match.any)
+            expect(doc.deleteIn).to.not.have.been.calledWith(['foo'])
+          })
+          it('should work with nested paths', () => {
+            applyYamlPatch(doc, [{ op: 'replace', path: '/nested/a', value: 2 }])
+            expect(doc.setIn).to.have.been.calledWith(['nested', 'a'], 2)
+          })
+          it('should work with array indices', () => {
+            applyYamlPatch(doc, [{ op: 'replace', path: '/arr/1', value: 99 }])
+            expect(doc.setIn).to.have.been.calledWith(['arr', 1], 99)
           })
         })
       })
