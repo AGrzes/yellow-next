@@ -12,16 +12,20 @@ import remarkGfm from 'remark-gfm'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
 import webpack from 'webpack'
 import webpackMiddleware from 'webpack-dev-middleware'
+import { HandlerAggregator } from './handler.js'
 
 const log = debug('yellow:adbs:documents:server')
 /* The Webpack configuration is much too complex to be meaningfully unit tested. */
 /* c8 ignore start */
 export class DocumentsHandler {
   public readonly handler: Handler
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    handlerAggregator: HandlerAggregator
+  ) {
     const documentDirectory = 'documents'
     this.router.use(historyFallback())
-    this.router.use('/documents', $static(join(cwd(), documentDirectory)))
+    this.router.use('/documents', handlerAggregator.handler, $static(join(cwd(), documentDirectory)))
     this.router.use(
       webpackMiddleware(
         webpack({

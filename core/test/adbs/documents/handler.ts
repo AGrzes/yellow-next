@@ -24,13 +24,13 @@ describe('adbs', () => {
       it('should register the route', () => {
         const router = createRouter()
         new HandlerAggregator([fakeHandler], router as unknown as Router)
-        expect(router.use).to.have.been.calledOnceWith('/:documentPath(*)', sinon.match.func)
+        expect(router.use).to.have.been.calledOnceWith('{*documentPath}', sinon.match.func)
       })
       it('should handle GET with matching handler', async () => {
         const router = createRouter()
         new HandlerAggregator([fakeHandler], router as unknown as Router)
         const handler = router.use.getCall(0).args[1]
-        const req = { method: 'GET', params: { documentPath: 'file.txt' }, query: { profile: 'test' } }
+        const req = { method: 'GET', params: { documentPath: ['file.txt'] }, query: { profile: 'test' } }
         const res = { type: sinon.stub(), send: sinon.stub() }
         await handler(req, res, sinon.stub())
         expect(fakeHandler.get).to.have.been.calledOnceWith('file.txt', {})
@@ -41,7 +41,7 @@ describe('adbs', () => {
         const router = createRouter()
         new HandlerAggregator([fakeHandler], router as unknown as Router)
         const handler = router.use.getCall(0).args[1]
-        const req = { method: 'PUT', params: { documentPath: 'file.txt' }, query: { profile: 'test' }, body: 'abc' }
+        const req = { method: 'PUT', params: { documentPath: ['file.txt'] }, query: { profile: 'test' }, body: 'abc' }
         const res = { sendStatus: sinon.stub() }
         await handler(req, res, sinon.stub())
         expect(fakeHandler.put).to.have.been.calledOnceWith('file.txt', 'abc', {})
@@ -51,7 +51,7 @@ describe('adbs', () => {
         const router = createRouter()
         new HandlerAggregator([fakeHandler], router as unknown as Router)
         const handler = router.use.getCall(0).args[1]
-        const req = { method: 'PATCH', params: { documentPath: 'file.txt' }, query: { profile: 'test' }, body: 'abc' }
+        const req = { method: 'PATCH', params: { documentPath: ['file.txt'] }, query: { profile: 'test' }, body: 'abc' }
         const res = { sendStatus: sinon.stub() }
         await handler(req, res, sinon.stub())
         expect(fakeHandler.patch).to.have.been.calledOnceWith('file.txt', 'abc', {})
@@ -61,7 +61,7 @@ describe('adbs', () => {
         const router = createRouter()
         new HandlerAggregator([fakeHandler], router as unknown as Router)
         const handler = router.use.getCall(0).args[1]
-        const req = { method: 'GET', params: { documentPath: 'file.txt' }, query: {} }
+        const req = { method: 'GET', params: { documentPath: ['file.txt'] }, query: {} }
         const next = sinon.stub()
         await handler(req, {}, next)
         expect(next).to.have.been.calledOnce
@@ -70,7 +70,7 @@ describe('adbs', () => {
         const router = createRouter()
         new HandlerAggregator([], router as unknown as Router)
         const handler = router.use.getCall(0).args[1]
-        const req = { method: 'GET', params: { documentPath: 'file.txt' }, query: { profile: 'notfound' } }
+        const req = { method: 'GET', params: { documentPath: ['file.txt'] }, query: { profile: 'notfound' } }
         const next = sinon.stub()
         await handler(req, {}, next)
         expect(next).to.have.been.calledOnce
@@ -79,7 +79,7 @@ describe('adbs', () => {
         const router = createRouter()
         new HandlerAggregator([fakeHandler], router as unknown as Router)
         const handler = router.use.getCall(0).args[1]
-        const req = { method: 'DELETE', params: { documentPath: 'file.txt' }, query: { profile: 'test' } }
+        const req = { method: 'DELETE', params: { documentPath: ['file.txt'] }, query: { profile: 'test' } }
         const next = sinon.stub()
         await handler(req, {}, next)
         expect(next).to.have.been.calledOnce

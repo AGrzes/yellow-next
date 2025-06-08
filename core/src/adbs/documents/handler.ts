@@ -1,6 +1,6 @@
-import { Handler, Router } from 'express'
+import { Handler, Request, Router } from 'express'
 import { inject, injectable, interfaces, multiInject } from 'inversify'
-import { extname } from 'node:path'
+import { extname, join } from 'path'
 
 export interface DocumentHandler {
   profile: string
@@ -20,8 +20,8 @@ export class HandlerAggregator {
     @multiInject(DocumentHandler) private handlers: DocumentHandler[],
     @inject(Router) router: Router
   ) {
-    router.use('/:documentPath(*)', async (req, res, next) => {
-      const documentPath = req.params.documentPath
+    router.use('{*documentPath}', async (req: Request<{ documentPath: string }>, res, next) => {
+      const documentPath = join(...req.params.documentPath)
       const extension = extname(documentPath).toLowerCase()
       const profile = req.query.profile as string | undefined
       if (profile) {
