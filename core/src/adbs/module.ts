@@ -1,9 +1,11 @@
 /* c8 ignore start */
 import { watch } from 'chokidar'
 import { Router } from 'express'
-import { readFile } from 'fs/promises'
+import fs, { readFile } from 'fs/promises'
 import { ContainerModule } from 'inversify'
 import { ADBS } from './adbs.js'
+import { DocumentHandler, HandlerAggregator } from './documents/handler.js'
+import { FrontmatterHandler } from './documents/handlers/frontmatter.js'
 import { DocumentLoader, documentLoaderFactory } from './documents/loader.js'
 import { DocumentsHandler } from './documents/server.js'
 import { DocumentSource, documentSourceFactory } from './documents/source.js'
@@ -46,7 +48,14 @@ export const adbsModule = new ContainerModule((bind) => {
   bind(GraphHandler).toDynamicValue(
     (context) => new GraphHandler(context.container.get(GraphStore).observableStore, Router())
   )
-  bind(DocumentsHandler).toDynamicValue((context) => new DocumentsHandler(Router()))
+  bind(DocumentsHandler).toDynamicValue(
+    (context) => new DocumentsHandler(Router(), context.container.get(HandlerAggregator))
+  )
   bind(TocService).toSelf().inSingletonScope()
   bind(TocHandler).toDynamicValue((context) => new TocHandler(context.container.get(TocService), Router()))
+  bind(HandlerAggregator).toDynamicValue(
+    (context) => new HandlerAggregator(context.container.getAll(DocumentHandler), Router())
+  )
+  bind(FrontmatterHandler).toDynamicValue((context) => new FrontmatterHandler('documents', fs))
+  bind(DocumentHandler).toService(FrontmatterHandler)
 })
