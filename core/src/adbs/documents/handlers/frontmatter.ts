@@ -1,5 +1,5 @@
 import fsp from 'fs/promises'
-import YAML from 'js-yaml'
+import YAML from 'yaml'
 import { DocumentHandler } from '../handler.js'
 
 export class FrontmatterHandler implements DocumentHandler {
@@ -14,7 +14,7 @@ export class FrontmatterHandler implements DocumentHandler {
   async get(documentPath: string, options: any): Promise<string | null> {
     const rawContent = await this.fs.readFile(`${this.documentDirectory}/${documentPath}`, 'utf-8')
     const frontmatter = rawContent.split('---')[1]?.trim()
-    const parsed = YAML.load(frontmatter)
+    const parsed = YAML.parse(frontmatter)
     return parsed ? JSON.stringify(parsed) : null
   }
 

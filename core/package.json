@@ -39,7 +39,6 @@
     "gray-matter": "4.0.3",
     "html-webpack-plugin": "5.6.0",
     "inversify": "6.0.2",
-    "js-yaml": "4.1.0",
     "jsonld": "8.3.2",
     "lodash": "4.17.21",
     "mini-css-extract-plugin": "2.9.0",
@@ -60,7 +59,8 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.2",
     "webpack": "5.91.0",
-    "webpack-dev-middleware": "7.2.1"
+    "webpack-dev-middleware": "7.2.1",
+    "yaml": "^2.8.0"
   },
   "devDependencies": {
     "@types/chai": "^4.3.12",
@@ -70,7 +70,6 @@
     "@types/debug": "^4.1.12",
     "@types/express": "^5.0.3",
     "@types/find-config": "^1.0.4",
-    "@types/js-yaml": "^4.0.9",
     "@types/jsonld": "^1.5.13",
     "@types/lodash": "^4.14.202",
     "@types/mocha": "^10.0.6",
