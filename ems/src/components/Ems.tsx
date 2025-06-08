@@ -1,6 +1,4 @@
 import React from 'react'
-import { store } from '../service/store'
-export function Ems({ id }: { id: string }) {
-  const item = store.get(id)
-  return <div>Ems</div>
+export function Ems({ item }: { item: any }) {
+  return <div>Ems {JSON.stringify(item)}</div>
 }
