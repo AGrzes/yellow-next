@@ -10,6 +10,11 @@ export interface PouchDBMetadata {
 
 export type PouchDBReference = string
 
+function removePouchDBMetadata<T>(doc: PouchDB.Core.ExistingDocument<T>): T {
+  const { _id, _rev, ...rest } = doc
+  return rest as T
+}
+
 export class PouchDBStore implements Store<PouchDBMetadata, PouchDBReference> {
   constructor(private db: PouchDB.Database) {}
 
@@ -26,7 +31,7 @@ export class PouchDBStore implements Store<PouchDBMetadata, PouchDBReference> {
       .map((row) => ({
         reference: row.doc._id,
         metadata: { _rev: row.doc._rev },
-        data: row.doc,
+        data: removePouchDBMetadata(row.doc),
       }))
   }
 
