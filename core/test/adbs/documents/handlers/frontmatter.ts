@@ -12,6 +12,7 @@ describe('adbs', () => {
       it('should extract frontmatter from markdown files', async () => {
         const fs = {
           readFile: sinon.stub().resolves('---\ntitle: Test Document\n---\n# Content'),
+          writeFile: sinon.stub().resolves(),
         }
         const handler = new FrontmatterHandler('documents', fs)
         const result = await handler.get('test.md', {})
