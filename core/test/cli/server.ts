@@ -9,6 +9,7 @@ import { DocumentsHandler } from '../../src/adbs/documents/server.js'
 import { GraphHandler } from '../../src/adbs/graph/server.js'
 import { TocHandler } from '../../src/adbs/toc/server.js'
 import { serverCliModule } from '../../src/cli/server.js'
+import { ConfigHandler } from '../../src/config/server.js'
 import { EmsHandler } from '../../src/ems/server.js'
 import { HttpServer } from '../../src/server/server.js'
 import { StateHandler } from '../../src/state/server.js'
@@ -38,6 +39,7 @@ describe('cli', () => {
           bind(DocumentsHandler).toConstantValue({ handler: documentsHandler } as unknown as DocumentsHandler)
           bind(EmsHandler).toConstantValue({ handler: emsHandler } as unknown as EmsHandler)
           bind(StateHandler).toConstantValue({ handler: stateHandler } as unknown as StateHandler)
+          bind(ConfigHandler).toConstantValue({ handler: sinon.stub() } as unknown as ConfigHandler)
         })
       )
       const serverCommand = container.getNamed(Command, 'server')

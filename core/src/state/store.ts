@@ -1,7 +1,7 @@
 import fs from 'fs/promises'
 import { injectable } from 'inversify'
-import yaml from 'js-yaml'
 import path from 'path'
+import yaml from 'yaml'
 
 export interface Store<T> {
   get(key: string[]): Promise<T>
@@ -21,7 +21,7 @@ export class FileStore<T> implements Store<T> {
   async get(key: string[]): Promise<T> {
     const filePath = path.join(this.baseDir, ...key) + '.yaml'
     const fileContent = await this.fs.readFile(filePath, 'utf8')
-    return yaml.load(fileContent) as T
+    return yaml.parse(fileContent) as T
   }
 
   // Write file as YAML using base dir and key as path segments with the last one being appended with .yaml
@@ -30,7 +30,7 @@ export class FileStore<T> implements Store<T> {
     const filePath = path.join(this.baseDir, ...key) + '.yaml'
     const dirPath = path.dirname(filePath)
     await this.fs.mkdir(dirPath, { recursive: true })
-    const fileContent = yaml.dump(value)
+    const fileContent = yaml.stringify(value)
     await this.fs.writeFile(filePath, fileContent, 'utf8')
   }
 }
