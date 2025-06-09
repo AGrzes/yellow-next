@@ -1,4 +1,5 @@
 import chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
 import 'mocha'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
@@ -8,7 +9,7 @@ import {
   parseJsonPatchPath,
 } from '../../../../src/adbs/documents/handlers/frontmatter.js'
 
-const { expect } = chai.use(sinonChai)
+const { expect } = chai.use(sinonChai).use(chaiAsPromised)
 
 describe('adbs', () => {
   describe('documents', () => {
@@ -29,6 +30,55 @@ describe('adbs', () => {
                 })
               )
               expect(fs.readFile).to.have.been.calledOnceWith('documents/test.md', 'utf-8')
+            })
+            it('should return null if file does not exist', async () => {
+              const fs = {
+                readFile: sinon.stub().rejects({ code: 'ENOENT' }),
+                writeFile: sinon.stub().resolves(),
+              }
+              const handler = new FrontmatterHandler('documents', fs)
+              const result = await handler.get('nofile.md', {})
+              expect(result).to.equal(null)
+              expect(fs.readFile).to.have.been.calledOnceWith('documents/nofile.md', 'utf-8')
+            })
+            it('should return error on other file read errors', async () => {
+              const fs = {
+                readFile: sinon.stub().rejects(new Error('fail')), // not ENOENT
+                writeFile: sinon.stub().resolves(),
+              }
+              const handler = new FrontmatterHandler('documents', fs)
+              await expect(handler.get('fail.md', {})).to.be.rejectedWith('fail')
+              expect(fs.readFile).to.have.been.calledOnceWith('documents/fail.md', 'utf-8')
+            })
+            it('should return null files without frontmatter', async () => {
+              const fs = {
+                readFile: sinon.stub().resolves('# Content'),
+                writeFile: sinon.stub().resolves(),
+              }
+              const handler = new FrontmatterHandler('documents', fs)
+              const result = await handler.get('nofront.md', {})
+              expect(result).to.equal(null)
+              expect(fs.readFile).to.have.been.calledOnceWith('documents/nofront.md', 'utf-8')
+            })
+            it('should return error if front matter parsing fails', async () => {
+              const fs = {
+                readFile: sinon.stub().resolves('---\ntitle: [unclosed\n---\n# Content'),
+                writeFile: sinon.stub().resolves(),
+              }
+              const handler = new FrontmatterHandler('documents', fs)
+              await expect(handler.get('bad.md', {})).to.be.rejected
+              expect(fs.readFile).to.have.been.calledOnceWith('documents/bad.md', 'utf-8')
+            })
+            it('should only consider full line of `---` as delimiter (ignoring trailing whitespace)', async () => {
+              const fs = {
+                readFile: sinon.stub().resolves('---   \ntitle: Test\nfoo --- bar\n# Content'),
+                writeFile: sinon.stub().resolves(),
+              }
+              const handler = new FrontmatterHandler('documents', fs)
+              // Should not find frontmatter because delimiter is not exact
+              const result = await handler.get('badsep.md', {})
+              expect(result).to.equal(null)
+              expect(fs.readFile).to.have.been.calledOnceWith('documents/badsep.md', 'utf-8')
             })
           })
           describe('put', () => {

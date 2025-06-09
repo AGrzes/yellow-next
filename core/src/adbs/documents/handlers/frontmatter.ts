@@ -45,10 +45,25 @@ export class FrontmatterHandler implements DocumentHandler {
   ) {}
 
   async get(documentPath: string, options: any): Promise<string | null> {
-    const rawContent = await this.fs.readFile(`${this.documentDirectory}/${documentPath}`, 'utf-8')
-    const frontmatter = rawContent.split('---')[1]
-    const parsed = YAML.parse(frontmatter)
-    return JSON.stringify(parsed)
+    try {
+      const rawContent = await this.fs.readFile(`${this.documentDirectory}/${documentPath}`, 'utf-8')
+      const parts = rawContent.split(/^---\s*$/m)
+      if (parts.length >= 3) {
+        const frontmatter = parts[1]
+        if (frontmatter.trim()) {
+          const parsed = YAML.parse(frontmatter)
+          if (parsed) {
+            return JSON.stringify(parsed)
+          }
+        }
+      }
+      return null
+    } catch (err: any) {
+      if (err && (err.code === 'ENOENT' || err.code === 'FileNotFound')) {
+        return null
+      }
+      throw err
+    }
   }
 
   async put(documentPath: string, content: string, options: any): Promise<void> {
