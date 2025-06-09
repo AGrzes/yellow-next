@@ -62,7 +62,7 @@ describe('adbs', () => {
             })
             it('should return error if front matter parsing fails', async () => {
               const fs = {
-                readFile: sinon.stub().resolves('---\ntitle: [unclosed\n---\n# Content'),
+                readFile: sinon.stub().resolves('---\na: "b"\n c: d\n---\n# Content'),
                 writeFile: sinon.stub().resolves(),
               }
               const handler = new FrontmatterHandler('documents', fs)
