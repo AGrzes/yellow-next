@@ -44,7 +44,7 @@ describe('adbs', () => {
             })
             it('should return error on other file read errors', async () => {
               const fs = {
-                readFile: sinon.stub().rejects(new Error('fail')), // not ENOENT
+                readFile: sinon.stub().rejects(new Error('fail')),
                 writeFile: sinon.stub().resolves(),
               }
               const handler = new FrontmatterHandler('documents', fs)
@@ -76,7 +76,6 @@ describe('adbs', () => {
                 writeFile: sinon.stub().resolves(),
               }
               const handler = new FrontmatterHandler('documents', fs)
-              // Should not find frontmatter because delimiter is not exact
               const result = await handler.get('badsep.md', {})
               expect(result).to.equal(null)
               expect(fs.readFile).to.have.been.calledOnceWith('documents/badsep.md', 'utf-8')
@@ -115,7 +114,7 @@ describe('adbs', () => {
               })
               it('should return error on file read error', async () => {
                 const fs = {
-                  readFile: sinon.stub().rejects(new Error('fail')), // not ENOENT
+                  readFile: sinon.stub().rejects(new Error('fail')),
                   writeFile: sinon.stub().resolves(),
                 }
                 const handler = new FrontmatterHandler('dir', fs)
@@ -175,7 +174,7 @@ describe('adbs', () => {
               })
               it('should return error on file read error', async () => {
                 const fs = {
-                  readFile: sinon.stub().rejects(new Error('fail')), // not ENOENT
+                  readFile: sinon.stub().rejects(new Error('fail')),
                   writeFile: sinon.stub().resolves(),
                 }
                 const handler = new FrontmatterHandler('dir', fs)
@@ -237,7 +236,7 @@ describe('adbs', () => {
         })
 
         describe('applyYamlPatch', () => {
-          let doc: any
+          let doc
           beforeEach(() => {
             doc = {
               setIn: sinon.stub(),
@@ -294,7 +293,7 @@ describe('adbs', () => {
         })
 
         describe('Frontmatter', () => {
-          let fs: any
+          let fs
           const filePath = 'dir/file.md'
           beforeEach(() => {
             fs = {
@@ -309,7 +308,6 @@ describe('adbs', () => {
               const fm = new Frontmatter(filePath, fs)
               const result = await fm.read()
               expect(result).to.be.true
-              // Instead of checking fm.parts, check that document is correct
               expect(fm.document.toJSON()).to.deep.equal({ title: 'Test' })
               expect(fs.readFile).to.have.been.calledOnceWith(filePath, 'utf-8')
             })
@@ -318,7 +316,6 @@ describe('adbs', () => {
               const fm = new Frontmatter(filePath, fs)
               const result = await fm.read()
               expect(result).to.be.false
-              // Instead of checking fm.rawContent, check that document is null
               expect(fm.document).to.be.null
               expect(fs.readFile).to.have.been.calledOnceWith(filePath, 'utf-8')
             })
@@ -357,10 +354,8 @@ describe('adbs', () => {
               fs.readFile.resolves('---\ntitle: Old\n---\n# Content')
               const fm = new Frontmatter(filePath, fs)
               await fm.read()
-              // Fake doc with toString
               const fakeDoc = { toString: () => 'title: New' }
               fm.document = fakeDoc
-              // Instead of checking fm.parts and fm.rawContent, check that after write, fs.writeFile gets correct content
               await fm.write()
               const written = fs.writeFile.getCall(0).args[1]
               expect(written).to.include('title: New')
@@ -375,14 +370,12 @@ describe('adbs', () => {
               await fm.read()
               await fm.write()
               expect(fs.writeFile).to.have.been.calledOnceWith(filePath, sinon.match.string, 'utf-8')
-              // Optionally, check that the written content includes expected frontmatter
               const written = fs.writeFile.getCall(0).args[1]
               expect(written).to.include('title: Test')
               expect(written).to.include('---')
             })
             it('should throw if no content to write', async () => {
               const fm = new Frontmatter(filePath, fs)
-              // Instead of setting rawContent to null, simulate by not calling read()
               await expect(fm.write()).to.be.rejectedWith('No content to write')
               expect(fs.writeFile).to.not.have.been.called
             })
