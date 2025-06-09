@@ -5,6 +5,7 @@ import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
 import {
   applyYamlPatch,
+  Frontmatter,
   FrontmatterHandler,
   parseJsonPatchPath,
 } from '../../../../src/adbs/documents/handlers/frontmatter.js'
@@ -289,6 +290,102 @@ describe('adbs', () => {
           it('should work with array indices', () => {
             applyYamlPatch(doc, [{ op: 'replace', path: '/arr/1', value: 99 }])
             expect(doc.setIn).to.have.been.calledWith(['arr', 1], 99)
+          })
+        })
+
+        describe('Frontmatter', () => {
+          let fs: any
+          const filePath = 'dir/file.md'
+          beforeEach(() => {
+            fs = {
+              readFile: sinon.stub(),
+              writeFile: sinon.stub().resolves(),
+            }
+          })
+
+          describe('read', () => {
+            it('should read and split content on delimiter', async () => {
+              fs.readFile.resolves('---\ntitle: Test\n---\n# Content')
+              const fm = new Frontmatter(filePath, fs)
+              const result = await fm.read()
+              expect(result).to.be.true
+              // Instead of checking fm.parts, check that document is correct
+              expect(fm.document.toJSON()).to.deep.equal({ title: 'Test' })
+              expect(fs.readFile).to.have.been.calledOnceWith(filePath, 'utf-8')
+            })
+            it('should return false and set rawContent to null if file not found', async () => {
+              fs.readFile.rejects({ code: 'ENOENT' })
+              const fm = new Frontmatter(filePath, fs)
+              const result = await fm.read()
+              expect(result).to.be.false
+              // Instead of checking fm.rawContent, check that document is null
+              expect(fm.document).to.be.null
+              expect(fs.readFile).to.have.been.calledOnceWith(filePath, 'utf-8')
+            })
+            it('should throw on other errors', async () => {
+              fs.readFile.rejects(new Error('fail'))
+              const fm = new Frontmatter(filePath, fs)
+              await expect(fm.read()).to.be.rejectedWith('fail')
+              expect(fs.readFile).to.have.been.calledOnceWith(filePath, 'utf-8')
+            })
+          })
+
+          describe('document getter', () => {
+            it('should parse valid frontmatter', async () => {
+              fs.readFile.resolves('---\ntitle: Test\n---\n# Content')
+              const fm = new Frontmatter(filePath, fs)
+              await fm.read()
+              const doc = fm.document
+              expect(doc.toJSON()).to.deep.equal({ title: 'Test' })
+            })
+            it('should return null if no frontmatter present', async () => {
+              fs.readFile.resolves('# Content')
+              const fm = new Frontmatter(filePath, fs)
+              await fm.read()
+              expect(fm.document).to.be.null
+            })
+            it('should throw if YAML is invalid', async () => {
+              fs.readFile.resolves('---\na: 1\n b: 2\n---\n# Content')
+              const fm = new Frontmatter(filePath, fs)
+              await fm.read()
+              expect(() => fm.document).to.throw()
+            })
+          })
+
+          describe('document setter', () => {
+            it('should update the YAML and rawContent', async () => {
+              fs.readFile.resolves('---\ntitle: Old\n---\n# Content')
+              const fm = new Frontmatter(filePath, fs)
+              await fm.read()
+              // Fake doc with toString
+              const fakeDoc = { toString: () => 'title: New' }
+              fm.document = fakeDoc
+              // Instead of checking fm.parts and fm.rawContent, check that after write, fs.writeFile gets correct content
+              await fm.write()
+              const written = fs.writeFile.getCall(0).args[1]
+              expect(written).to.include('title: New')
+              expect(written).to.include('---')
+            })
+          })
+
+          describe('write', () => {
+            it('should write rawContent to file', async () => {
+              fs.readFile.resolves('---\ntitle: Test\n---\n# Content')
+              const fm = new Frontmatter(filePath, fs)
+              await fm.read()
+              await fm.write()
+              expect(fs.writeFile).to.have.been.calledOnceWith(filePath, sinon.match.string, 'utf-8')
+              // Optionally, check that the written content includes expected frontmatter
+              const written = fs.writeFile.getCall(0).args[1]
+              expect(written).to.include('title: Test')
+              expect(written).to.include('---')
+            })
+            it('should throw if no content to write', async () => {
+              const fm = new Frontmatter(filePath, fs)
+              // Instead of setting rawContent to null, simulate by not calling read()
+              await expect(fm.write()).to.be.rejectedWith('No content to write')
+              expect(fs.writeFile).to.not.have.been.called
+            })
           })
         })
       })
