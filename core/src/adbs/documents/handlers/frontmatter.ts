@@ -37,39 +37,40 @@ export function applyYamlPatch(currentContent: any, patch: Operation[]) {
 
 export class Frontmatter {
   private rawContent: string
-  private parts: string[] = []
+  private parts: string[]
   constructor(
     private filePath: string,
     private fs: Pick<typeof fsp, 'readFile' | 'writeFile'>
   ) {}
 
-  async read(): Promise<void> {
+  async read(): Promise<boolean> {
     try {
       this.rawContent = await this.fs.readFile(this.filePath, 'utf-8')
       this.parts = this.rawContent.split(/^---\s*$/m)
+      return true
     } catch (err: any) {
       if (err && (err.code === 'ENOENT' || err.code === 'FileNotFound')) {
         this.rawContent = null
-        this.parts = ['---', '', '---']
+        return false
       } else {
         throw err
       }
     }
   }
   get document() {
-    if (this.parts.length >= 3) {
+    if (this.parts?.length >= 3) {
       const frontmatter = this.parts[1]
-      if (frontmatter.trim()) {
-        const parsed = YAML.parseDocument(frontmatter)
-        if (parsed?.errors.length > 0) {
-          throw new Error(`YAML parsing errors: ${parsed.errors.map((e) => e.message).join(', ')}`)
-        }
-        return parsed
+      const parsed = YAML.parseDocument(frontmatter)
+      if (parsed?.errors.length > 0) {
+        throw new Error(`YAML parsing errors: ${parsed.errors.map((e) => e.message).join(', ')}`)
       }
+      return parsed
+    } else {
+      return null
     }
-    return null
   }
   set document(value: any) {
+    this.parts = this.parts || ['', '', '']
     if (this.parts.length >= 3) {
       this.parts[1] = value.toString()
       this.rawContent = this.parts.join('---\n')
@@ -95,28 +96,43 @@ export class FrontmatterHandler implements DocumentHandler {
 
   async get(documentPath: string, options: any): Promise<string | null> {
     const frontmatter = new Frontmatter(`${this.documentDirectory}/${documentPath}`, this.fs)
-    await frontmatter.read()
-    const document = frontmatter.document
-    return document ? JSON.stringify(document.toJSON()) : null
+    if (await frontmatter.read()) {
+      const document = frontmatter.document
+      return document ? JSON.stringify(document.toJSON()) : null
+    }
   }
 
   async put(documentPath: string, content: string, options: any): Promise<void> {
     const frontmatter = new Frontmatter(`${this.documentDirectory}/${documentPath}`, this.fs)
-    await frontmatter.read()
-    const currentContent = frontmatter.document
-    const patch = compare(currentContent, JSON.parse(content))
-    applyYamlPatch(currentContent, patch)
-    frontmatter.document = currentContent
+    if (await frontmatter.read()) {
+      const currentContent = frontmatter.document
+      if (currentContent) {
+        const patch = compare(currentContent, JSON.parse(content))
+        applyYamlPatch(currentContent, patch)
+        frontmatter.document = currentContent
+      } else {
+        throw new Error(`Unable to update unreadable frontmatter`)
+      }
+    } else {
+      frontmatter.document = YAML.stringify(JSON.parse(content))
+    }
     await frontmatter.write()
   }
 
   async patch(documentPath: string, content: string, options: any): Promise<void> {
     const frontmatter = new Frontmatter(`${this.documentDirectory}/${documentPath}`, this.fs)
-    await frontmatter.read()
-    const currentContent = frontmatter.document
-    const patch = JSON.parse(content) as Operation[]
-    applyYamlPatch(currentContent, patch)
-    frontmatter.document = currentContent
-    await frontmatter.write()
+    if (await frontmatter.read()) {
+      const currentContent = frontmatter.document
+      if (currentContent) {
+        const patch = JSON.parse(content) as Operation[]
+        applyYamlPatch(currentContent, patch)
+        frontmatter.document = currentContent
+        await frontmatter.write()
+      } else {
+        throw new Error(`Unable to patch unreadable frontmatter`)
+      }
+    } else {
+      throw new Error(`UNable to patch non-existent document`)
+    }
   }
 }
