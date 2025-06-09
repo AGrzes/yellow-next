@@ -161,10 +161,50 @@ describe('adbs', () => {
                 expect(written).to.include('title: Patched')
                 expect(written).to.include('---')
               })
-              it('should return error if file does not exist', async () => {})
-              it('should return error on file read error', async () => {})
-              it('should return error on missing frontmatter', async () => {})
-              it('should return error on invalid frontmatter', async () => {})
+              it('should return error if file does not exist', async () => {
+                const fs = {
+                  readFile: sinon.stub().rejects({ code: 'ENOENT' }),
+                  writeFile: sinon.stub().resolves(),
+                }
+                const handler = new FrontmatterHandler('dir', fs)
+                const patch = JSON.stringify([{ op: 'replace', path: '/title', value: 'Patched' }])
+                await expect(handler.patch('file.md', patch, {})).to.be.rejected
+                expect(fs.readFile).to.have.been.calledOnceWith('dir/file.md', 'utf-8')
+                expect(fs.writeFile).to.not.have.been.called
+              })
+              it('should return error on file read error', async () => {
+                const fs = {
+                  readFile: sinon.stub().rejects(new Error('fail')), // not ENOENT
+                  writeFile: sinon.stub().resolves(),
+                }
+                const handler = new FrontmatterHandler('dir', fs)
+                const patch = JSON.stringify([{ op: 'replace', path: '/title', value: 'Patched' }])
+                await expect(handler.patch('file.md', patch, {})).to.be.rejectedWith('fail')
+                expect(fs.readFile).to.have.been.calledOnceWith('dir/file.md', 'utf-8')
+                expect(fs.writeFile).to.not.have.been.called
+              })
+              it('should return error on missing frontmatter', async () => {
+                const fs = {
+                  readFile: sinon.stub().resolves('# Content'),
+                  writeFile: sinon.stub().resolves(),
+                }
+                const handler = new FrontmatterHandler('dir', fs)
+                const patch = JSON.stringify([{ op: 'replace', path: '/title', value: 'Patched' }])
+                await expect(handler.patch('file.md', patch, {})).to.be.rejected
+                expect(fs.readFile).to.have.been.calledOnceWith('dir/file.md', 'utf-8')
+                expect(fs.writeFile).to.not.have.been.called
+              })
+              it('should return error on invalid frontmatter', async () => {
+                const fs = {
+                  readFile: sinon.stub().resolves('---\na: "b"\n c: d\n---\n# Content'),
+                  writeFile: sinon.stub().resolves(),
+                }
+                const handler = new FrontmatterHandler('dir', fs)
+                const patch = JSON.stringify([{ op: 'replace', path: '/title', value: 'Patched' }])
+                await expect(handler.patch('file.md', patch, {})).to.be.rejected
+                expect(fs.readFile).to.have.been.calledOnceWith('dir/file.md', 'utf-8')
+                expect(fs.writeFile).to.not.have.been.called
+              })
             })
           })
         })
