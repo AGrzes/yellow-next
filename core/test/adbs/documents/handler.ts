@@ -29,7 +29,7 @@ describe('adbs', () => {
       it('should handle GET with matching handler', async () => {
         const router = createRouter()
         new HandlerAggregator([fakeHandler], router as unknown as Router)
-        const handler = router.use.getCall(0).args[1]
+        const handler = router.use.getCall(0).args[2]
         const req = { method: 'GET', params: { documentPath: ['file.txt'] }, query: { profile: 'test' } }
         const res = { type: sinon.stub(), send: sinon.stub() }
         await handler(req, res, sinon.stub())
@@ -40,7 +40,7 @@ describe('adbs', () => {
       it('should handle PUT with matching handler', async () => {
         const router = createRouter()
         new HandlerAggregator([fakeHandler], router as unknown as Router)
-        const handler = router.use.getCall(0).args[1]
+        const handler = router.use.getCall(0).args[2]
         const req = { method: 'PUT', params: { documentPath: ['file.txt'] }, query: { profile: 'test' }, body: 'abc' }
         const res = { sendStatus: sinon.stub() }
         await handler(req, res, sinon.stub())
@@ -50,7 +50,7 @@ describe('adbs', () => {
       it('should handle PATCH with matching handler', async () => {
         const router = createRouter()
         new HandlerAggregator([fakeHandler], router as unknown as Router)
-        const handler = router.use.getCall(0).args[1]
+        const handler = router.use.getCall(0).args[2]
         const req = { method: 'PATCH', params: { documentPath: ['file.txt'] }, query: { profile: 'test' }, body: 'abc' }
         const res = { sendStatus: sinon.stub() }
         await handler(req, res, sinon.stub())
@@ -60,7 +60,7 @@ describe('adbs', () => {
       it('should call next if no profile', async () => {
         const router = createRouter()
         new HandlerAggregator([fakeHandler], router as unknown as Router)
-        const handler = router.use.getCall(0).args[1]
+        const handler = router.use.getCall(0).args[2]
         const req = { method: 'GET', params: { documentPath: ['file.txt'] }, query: {} }
         const next = sinon.stub()
         await handler(req, {}, next)
@@ -69,7 +69,7 @@ describe('adbs', () => {
       it('should call next if no handler matches', async () => {
         const router = createRouter()
         new HandlerAggregator([], router as unknown as Router)
-        const handler = router.use.getCall(0).args[1]
+        const handler = router.use.getCall(0).args[2]
         const req = { method: 'GET', params: { documentPath: ['file.txt'] }, query: { profile: 'notfound' } }
         const next = sinon.stub()
         await handler(req, {}, next)
@@ -78,7 +78,7 @@ describe('adbs', () => {
       it('should call next for unsupported method', async () => {
         const router = createRouter()
         new HandlerAggregator([fakeHandler], router as unknown as Router)
-        const handler = router.use.getCall(0).args[1]
+        const handler = router.use.getCall(0).args[2]
         const req = { method: 'DELETE', params: { documentPath: ['file.txt'] }, query: { profile: 'test' } }
         const next = sinon.stub()
         await handler(req, {}, next)
