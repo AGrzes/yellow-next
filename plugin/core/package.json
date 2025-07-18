@@ -27,6 +27,7 @@
   "dependencies": {
     "debug": "4.4.1",
     "dotenv": "17.2.0",
+    "fast-glob": "^3.3.3",
     "lodash": "4.17.21"
   },
   "devDependencies": {
