@@ -12,6 +12,9 @@
   "pnpm": {
     "overrides": {
       "whatwg-url": "^14.0.0"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
