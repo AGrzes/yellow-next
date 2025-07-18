@@ -7,5 +7,3 @@ import { makeLookupManifest } from './lookup-manifests.js'
 const log = debug('yellow:plugin:core')
 
 export const lookupManifest = makeLookupManifest(createRequire(import.meta.url).resolve.paths, fg, fs.readFile)
-
-await lookupManifest()
