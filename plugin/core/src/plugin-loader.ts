@@ -1,0 +1,21 @@
+import { join } from 'path'
+import { PluginManifest, PluginManifest_v1 } from './manifest.js'
+import { PluginEntrypoint } from './plugin.js'
+
+export async function loadPlugin(manifest: PluginManifest): Promise<PluginEntrypoint> {
+  switch (manifest.manifestVersion) {
+    case '1': {
+      const v1 = manifest as PluginManifest_v1
+      const entrypoint = await import(join(v1.base, v1.entrypoint))
+      if (typeof entrypoint.default === 'function') {
+        return entrypoint.default
+      } else if (typeof entrypoint === 'function') {
+        return entrypoint
+      } else {
+        throw new Error(`Plugin at ${v1.entrypoint} does not export a n entrypoint function`)
+      }
+    }
+    default:
+      throw new Error(`Unsupported plugin manifest version: ${manifest.manifestVersion}`)
+  }
+}
