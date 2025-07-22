@@ -41,7 +41,10 @@ describe('plugin', () => {
           'Plugin no-entrypoint does not export an entrypoint function'
         )
       })
-
+      it('should throw error if module fails to load', async () => {
+        const manifest = { manifestVersion: '1', base: cwd(), entrypoint: 'test/sample/missing.mjs' }
+        await expect(loadPlugin(manifest)).to.be.rejectedWith(`Cannot find module '${cwd()}/test/sample/missing.mjs'`)
+      })
     })
   })
 })
