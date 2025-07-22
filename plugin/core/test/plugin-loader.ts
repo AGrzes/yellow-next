@@ -30,6 +30,18 @@ describe('plugin', () => {
         const plugin = await loadPlugin(manifest)
         expect(plugin).to.be.a('function')
       })
+      it('should throw error if entrypoint does not export a function', async () => {
+        const manifest = {
+          manifestVersion: '1',
+          name: 'no-entrypoint',
+          base: cwd(),
+          entrypoint: 'test/sample/no-entrypoint.mjs',
+        }
+        await expect(loadPlugin(manifest)).to.be.rejectedWith(
+          'Plugin no-entrypoint does not export an entrypoint function'
+        )
+      })
+
     })
   })
 })

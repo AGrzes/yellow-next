@@ -10,7 +10,7 @@ export async function loadPlugin(manifest: PluginManifest): Promise<PluginEntryp
       if (typeof entrypoint.default === 'function') {
         return entrypoint.default
       } else {
-        throw new Error(`Plugin at ${v1.entrypoint} does not export a n entrypoint function`)
+        throw new Error(`Plugin ${v1.name} does not export an entrypoint function`)
       }
     }
     default:
