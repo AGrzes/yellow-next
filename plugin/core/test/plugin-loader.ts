@@ -25,6 +25,11 @@ describe('plugin', () => {
         const plugin = await loadPlugin(manifest)
         expect(plugin).to.be.a('function')
       })
+      it('should load plugin with whole exports as function (cjs style)', async () => {
+        const manifest = { manifestVersion: '1', base: cwd(), entrypoint: 'test/sample/module.cjs' }
+        const plugin = await loadPlugin(manifest)
+        expect(plugin).to.be.a('function')
+      })
     })
   })
 })

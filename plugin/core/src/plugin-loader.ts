@@ -9,8 +9,6 @@ export async function loadPlugin(manifest: PluginManifest): Promise<PluginEntryp
       const entrypoint = await import(join(v1.base, v1.entrypoint))
       if (typeof entrypoint.default === 'function') {
         return entrypoint.default
-      } else if (typeof entrypoint === 'function') {
-        return entrypoint
       } else {
         throw new Error(`Plugin at ${v1.entrypoint} does not export a n entrypoint function`)
       }
