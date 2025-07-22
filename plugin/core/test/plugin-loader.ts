@@ -44,6 +44,10 @@ describe('plugin', () => {
           'Plugin missing-entrypoint manifest is missing entrypoint'
         )
       })
+      it('should throw error if manifest is missing base', async () => {
+        const manifest = { manifestVersion: '1', name: 'missing-base', entrypoint: 'index.js' }
+        await expect(loadPlugin(manifest as any)).to.be.rejectedWith('Plugin missing-base manifest is missing base')
+      })
     })
   })
 })

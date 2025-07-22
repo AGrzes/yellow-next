@@ -9,6 +9,9 @@ export async function loadPlugin(manifest: PluginManifest): Promise<PluginEntryp
       if (!v1.entrypoint) {
         throw new Error(`Plugin ${v1.name} manifest is missing entrypoint`)
       }
+      if (!v1.base) {
+        throw new Error(`Plugin ${v1.name} manifest is missing base`)
+      }
       const entrypoint = await import(join(v1.base, v1.entrypoint))
       if (typeof entrypoint.default === 'function') {
         return entrypoint.default
