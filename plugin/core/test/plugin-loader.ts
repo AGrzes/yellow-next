@@ -38,6 +38,12 @@ describe('plugin', () => {
         const manifest = { manifestVersion: '1', base: cwd(), entrypoint: 'test/sample/missing.mjs' }
         await expect(loadPlugin(manifest)).to.be.rejectedWith(`Cannot find module '${cwd()}/test/sample/missing.mjs'`)
       })
+      it('should throw error if manifest is missing entrypoint', async () => {
+        const manifest = { manifestVersion: '1', name: 'missing-entrypoint', base: cwd() }
+        await expect(loadPlugin(manifest as any)).to.be.rejectedWith(
+          'Plugin missing-entrypoint manifest is missing entrypoint'
+        )
+      })
     })
   })
 })
