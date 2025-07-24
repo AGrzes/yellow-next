@@ -3,9 +3,6 @@
   "description": "",
   "version": "0.0.1",
   "author": "Grzegorz Abramczyk <abramczykg@gmail.com>",
-  "bin": {
-    "yd": "bin/cli.mjs"
-  },
   "c8": {
     "all": true,
     "extension": [
@@ -28,6 +25,7 @@
     "debug": "4.4.1",
     "dotenv": "17.2.0",
     "fast-glob": "^3.3.3",
+    "inversify": "7.6.1",
     "lodash": "4.17.21"
   },
   "devDependencies": {
