@@ -2,7 +2,13 @@
  * Plugin context.
  * Passed to entrypoint function of the plugin to register services and perform other initialization tasks.
  */
-export interface PluginContext {}
+export interface PluginContext {
+  /**
+   * Manifest based on which the plugin was loaded.
+   * May be used to access plugin metadata or resolve paths to plugin resources.
+   */
+  manifest: PluginManifest
+}
 
 /**
  * Define plugin entry point - a function that initializes the plugin using the provided context.
