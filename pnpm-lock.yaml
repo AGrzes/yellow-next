@@ -401,8 +401,14 @@ importers:
         specifier: ^18.2.64
         version: 18.3.23
 
-  plugin/core:
+  plugin/cli:
     dependencies:
+      '@agrzes/yellow-next-plugin-core':
+        specifier: workspace:*
+        version: link:../core
+      commander:
+        specifier: ^14.0.0
+        version: 14.0.0
       debug:
         specifier: 4.4.1
         version: 4.4.1(supports-color@8.1.1)
@@ -412,6 +418,9 @@ importers:
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
+      inversify:
+        specifier: 7.6.1
+        version: 7.6.1(reflect-metadata@0.2.2)
       lodash:
         specifier: 4.17.21
         version: 4.17.21
@@ -461,6 +470,79 @@ importers:
       sinon-chai:
         specifier: ^4.0.0
         version: 4.0.0(chai@5.2.1)(sinon@21.0.0)
+      ts-node-maintained:
+        specifier: ^10.9.5
+        version: 10.9.5(@types/node@24.0.14)(typescript@5.8.3)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+
+  plugin/core:
+    dependencies:
+      debug:
+        specifier: 4.4.1
+        version: 4.4.1(supports-color@8.1.1)
+      dotenv:
+        specifier: 17.2.0
+        version: 17.2.0
+      fast-glob:
+        specifier: ^3.3.3
+        version: 3.3.3
+      inversify:
+        specifier: 7.6.1
+        version: 7.6.1(reflect-metadata@0.2.2)
+      lodash:
+        specifier: 4.17.21
+        version: 4.17.21
+    devDependencies:
+      '@types/chai':
+        specifier: ^5.2.2
+        version: 5.2.2
+      '@types/chai-as-promised':
+        specifier: ^8.0.2
+        version: 8.0.2
+      '@types/debug':
+        specifier: ^4.1.12
+        version: 4.1.12
+      '@types/lodash':
+        specifier: ^4.17.20
+        version: 4.17.20
+      '@types/mocha':
+        specifier: ^10.0.10
+        version: 10.0.10
+      '@types/node':
+        specifier: ^24.0.14
+        version: 24.0.14
+      '@types/sinon':
+        specifier: ^17.0.4
+        version: 17.0.4
+      '@types/sinon-chai':
+        specifier: ^4.0.0
+        version: 4.0.0
+      c8:
+        specifier: ^10.1.3
+        version: 10.1.3
+      chai:
+        specifier: ^5.2.1
+        version: 5.2.1
+      chai-as-promised:
+        specifier: ^8.0.1
+        version: 8.0.1(chai@5.2.1)
+      mocha:
+        specifier: ^11.7.1
+        version: 11.7.1
+      prettier:
+        specifier: ^3.6.2
+        version: 3.6.2
+      sinon:
+        specifier: ^21.0.0
+        version: 21.0.0
+      sinon-chai:
+        specifier: ^4.0.0
+        version: 4.0.0(chai@5.2.1)(sinon@21.0.0)
+      ts-node-maintained:
+        specifier: ^10.9.5
+        version: 10.9.5(@types/node@24.0.14)(typescript@5.8.3)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -1071,6 +1153,28 @@ packages:
 
   '@inrupt/vocab-common-rdf@1.0.5':
     resolution: {integrity: sha512-onrehQte8m0XW83WwM6T4o5WgmYGzdYUCef6FDjMKfQCF64FnARFNn5fYhKodimBaAOFKhuJ3vw1NBZV/EYqJw==}
+
+  '@inversifyjs/common@1.5.2':
+    resolution: {integrity: sha512-WlzR9xGadABS9gtgZQ+luoZ8V6qm4Ii6RQfcfC9Ho2SOlE6ZuemFo7PKJvKI0ikm8cmKbU8hw5UK6E4qovH21w==}
+
+  '@inversifyjs/container@1.11.1':
+    resolution: {integrity: sha512-MhgriyCm/lihOoo/ydGyBwZsKT6bUGAqQ+JM2i5JGgINLJx2g7Unt4bK+cFepHBh+um0M34VlRZFczmsHJhTSw==}
+    peerDependencies:
+      reflect-metadata: ~0.2.2
+
+  '@inversifyjs/core@5.4.0':
+    resolution: {integrity: sha512-ZQXfPvXmIlzWs/K8n8R5AFBHk55gV7xEjKtKv1dvS3K6f8wEVXeHij9Zh0tqp2pvEyiuxv0UHPBONpE84DuYcg==}
+
+  '@inversifyjs/plugin@0.2.0':
+    resolution: {integrity: sha512-R/JAdkTSD819pV1zi0HP54mWHyX+H2m8SxldXRgPQarS3ySV4KPyRdosWcfB8Se0JJZWZLHYiUNiS6JvMWSPjw==}
+
+  '@inversifyjs/prototype-utils@0.1.2':
+    resolution: {integrity: sha512-WZAEycwVd8zVCPCQ7GRzuQmjYF7X5zbjI9cGigDbBoTHJ8y5US9om00IAp0RYislO+fYkMzgcB2SnlIVIzyESA==}
+
+  '@inversifyjs/reflect-metadata-utils@1.2.0':
+    resolution: {integrity: sha512-EvXdBP+IjAZ3QKWFWGDzWLacyng9RMohtZ0c0EPUmvbaF4wgfwrE6n92ilt9aGwdbE5roGmDTmoRSmvavVOtIA==}
+    peerDependencies:
+      reflect-metadata: 0.2.2
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -1859,6 +1963,11 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
+  acorn@8.15.0:
+    resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
+    engines: {node: '>=0.4.0'}
+    hasBin: true
+
   agent-base@6.0.2:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
     engines: {node: '>= 6.0.0'}
@@ -2268,6 +2377,10 @@ packages:
   commander@12.0.0:
     resolution: {integrity: sha512-MwVNWlYjDTtOjX5PiD7o5pK0UrFU/OYgcJfjjK4RaHZETNtjJqrZa9Y9ds88+A+f+d5lv+561eZ+yCKoS3gbAA==}
     engines: {node: '>=18'}
+
+  commander@14.0.0:
+    resolution: {integrity: sha512-2uM9rYjPvyq39NwLRqaiLtWHyDC1FvryJDa2ATTVims5YAS4PupsEQsDvP14FqhFr0P49CYDugi59xaxJlTXRA==}
+    engines: {node: '>=20'}
 
   commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
@@ -3218,6 +3331,11 @@ packages:
 
   inversify@6.0.2:
     resolution: {integrity: sha512-i9m8j/7YIv4mDuYXUAcrpKPSaju/CIly9AHK5jvCBeoiM/2KEsuCQTTP+rzSWWpLYWRukdXFSl6ZTk2/uumbiA==}
+
+  inversify@7.6.1:
+    resolution: {integrity: sha512-a4bN7pjKP+h5ABNsf7vQNU0S5P/44RFqcUpFWXZLGEJuedF5ux3CvWGn2TfSbVbk3r7hNto6G3tR0j70nbFDKw==}
+    peerDependencies:
+      reflect-metadata: ~0.2.2
 
   ipaddr.js@1.9.1:
     resolution: {integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==}
@@ -5935,6 +6053,34 @@ snapshots:
 
   '@inrupt/vocab-common-rdf@1.0.5': {}
 
+  '@inversifyjs/common@1.5.2': {}
+
+  '@inversifyjs/container@1.11.1(reflect-metadata@0.2.2)':
+    dependencies:
+      '@inversifyjs/common': 1.5.2
+      '@inversifyjs/core': 5.4.0(reflect-metadata@0.2.2)
+      '@inversifyjs/plugin': 0.2.0
+      '@inversifyjs/reflect-metadata-utils': 1.2.0(reflect-metadata@0.2.2)
+      reflect-metadata: 0.2.2
+
+  '@inversifyjs/core@5.4.0(reflect-metadata@0.2.2)':
+    dependencies:
+      '@inversifyjs/common': 1.5.2
+      '@inversifyjs/prototype-utils': 0.1.2
+      '@inversifyjs/reflect-metadata-utils': 1.2.0(reflect-metadata@0.2.2)
+    transitivePeerDependencies:
+      - reflect-metadata
+
+  '@inversifyjs/plugin@0.2.0': {}
+
+  '@inversifyjs/prototype-utils@0.1.2':
+    dependencies:
+      '@inversifyjs/common': 1.5.2
+
+  '@inversifyjs/reflect-metadata-utils@1.2.0(reflect-metadata@0.2.2)':
+    dependencies:
+      reflect-metadata: 0.2.2
+
   '@isaacs/cliui@8.0.2':
     dependencies:
       string-width: 5.1.2
@@ -6041,7 +6187,7 @@ snapshots:
       '@jest/test-result': 29.7.0
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
-      '@jridgewell/trace-mapping': 0.3.25
+      '@jridgewell/trace-mapping': 0.3.29
       '@types/node': 24.0.14
       chalk: 4.1.2
       collect-v8-coverage: 1.0.2
@@ -6091,7 +6237,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.27.4
       '@jest/types': 29.6.3
-      '@jridgewell/trace-mapping': 0.3.25
+      '@jridgewell/trace-mapping': 0.3.29
       babel-plugin-istanbul: 6.1.1
       chalk: 4.1.2
       convert-source-map: 2.0.0
@@ -6119,7 +6265,7 @@ snapshots:
   '@jridgewell/gen-mapping@0.3.8':
     dependencies:
       '@jridgewell/set-array': 1.2.1
-      '@jridgewell/sourcemap-codec': 1.5.0
+      '@jridgewell/sourcemap-codec': 1.5.4
       '@jridgewell/trace-mapping': 0.3.29
 
   '@jridgewell/resolve-uri@3.1.2': {}
@@ -6148,7 +6294,7 @@ snapshots:
   '@jridgewell/trace-mapping@0.3.9':
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
-      '@jridgewell/sourcemap-codec': 1.5.0
+      '@jridgewell/sourcemap-codec': 1.5.4
 
   '@jsonjoy.com/base64@1.1.2(tslib@2.8.1)':
     dependencies:
@@ -6326,7 +6472,7 @@ snapshots:
 
   '@rdfjs/types@2.0.1':
     dependencies:
-      '@types/node': 20.19.8
+      '@types/node': 24.0.14
 
   '@react-spring/animated@10.0.1(react@18.2.0)':
     dependencies:
@@ -6542,11 +6688,11 @@ snapshots:
   '@types/body-parser@1.19.6':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 20.19.8
+      '@types/node': 24.0.14
 
   '@types/chai-as-promised@7.1.8':
     dependencies:
-      '@types/chai': 4.3.20
+      '@types/chai': 5.2.2
 
   '@types/chai-as-promised@8.0.2':
     dependencies:
@@ -6565,11 +6711,11 @@ snapshots:
   '@types/connect-history-api-fallback@1.5.4':
     dependencies:
       '@types/express-serve-static-core': 5.0.6
-      '@types/node': 20.19.8
+      '@types/node': 24.0.14
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 20.19.8
+      '@types/node': 24.0.14
 
   '@types/debug@4.1.12':
     dependencies:
@@ -6597,7 +6743,7 @@ snapshots:
 
   '@types/express-serve-static-core@5.0.6':
     dependencies:
-      '@types/node': 20.19.8
+      '@types/node': 24.0.14
       '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.5
@@ -6666,7 +6812,7 @@ snapshots:
   '@types/n3@1.26.0':
     dependencies:
       '@rdfjs/types': 2.0.1
-      '@types/node': 20.19.8
+      '@types/node': 24.0.14
 
   '@types/node@20.19.8':
     dependencies:
@@ -6801,17 +6947,17 @@ snapshots:
   '@types/send@0.17.5':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 20.19.8
+      '@types/node': 24.0.14
 
   '@types/serve-static@1.15.8':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 20.19.8
+      '@types/node': 24.0.14
       '@types/send': 0.17.5
 
   '@types/sinon-chai@3.2.12':
     dependencies:
-      '@types/chai': 4.3.20
+      '@types/chai': 5.2.2
       '@types/sinon': 17.0.4
 
   '@types/sinon-chai@4.0.0':
@@ -6988,7 +7134,7 @@ snapshots:
 
   acorn-globals@7.0.1:
     dependencies:
-      acorn: 8.14.1
+      acorn: 8.15.0
       acorn-walk: 8.3.4
 
   acorn-import-assertions@1.9.0(acorn@8.14.1):
@@ -6999,11 +7145,17 @@ snapshots:
     dependencies:
       acorn: 8.14.1
 
+  acorn-jsx@5.3.2(acorn@8.15.0):
+    dependencies:
+      acorn: 8.15.0
+
   acorn-walk@8.3.4:
     dependencies:
-      acorn: 8.14.1
+      acorn: 8.15.0
 
   acorn@8.14.1: {}
+
+  acorn@8.15.0: {}
 
   agent-base@6.0.2:
     dependencies:
@@ -7447,6 +7599,8 @@ snapshots:
 
   commander@12.0.0: {}
 
+  commander@14.0.0: {}
+
   commander@2.20.3: {}
 
   commander@8.3.0: {}
@@ -7860,7 +8014,7 @@ snapshots:
   esast-util-from-js@2.0.1:
     dependencies:
       '@types/estree-jsx': 1.0.5
-      acorn: 8.14.1
+      acorn: 8.15.0
       esast-util-from-estree: 2.0.0
       vfile-message: 4.0.2
 
@@ -8494,6 +8648,13 @@ snapshots:
 
   inversify@6.0.2: {}
 
+  inversify@7.6.1(reflect-metadata@0.2.2):
+    dependencies:
+      '@inversifyjs/common': 1.5.2
+      '@inversifyjs/container': 1.11.1(reflect-metadata@0.2.2)
+      '@inversifyjs/core': 5.4.0(reflect-metadata@0.2.2)
+      reflect-metadata: 0.2.2
+
   ipaddr.js@1.9.1: {}
 
   is-alphabetical@2.0.1: {}
@@ -9004,7 +9165,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 20.19.8
+      '@types/node': 24.0.14
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -9043,7 +9204,7 @@ snapshots:
   jsdom@20.0.3:
     dependencies:
       abab: 2.0.6
-      acorn: 8.14.1
+      acorn: 8.15.0
       acorn-globals: 7.0.1
       cssom: 0.5.0
       cssstyle: 2.3.0
@@ -9588,8 +9749,8 @@ snapshots:
 
   micromark-extension-mdxjs@3.0.0:
     dependencies:
-      acorn: 8.14.1
-      acorn-jsx: 5.3.2(acorn@8.14.1)
+      acorn: 8.15.0
+      acorn-jsx: 5.3.2(acorn@8.15.0)
       micromark-extension-mdx-expression: 3.0.1
       micromark-extension-mdx-jsx: 3.0.2
       micromark-extension-mdx-md: 2.0.0
@@ -10963,7 +11124,7 @@ snapshots:
   terser@5.41.0:
     dependencies:
       '@jridgewell/source-map': 0.3.6
-      acorn: 8.14.1
+      acorn: 8.15.0
       commander: 2.20.3
       source-map-support: 0.5.21
 
@@ -11089,7 +11250,7 @@ snapshots:
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
       '@types/node': 20.19.8
-      acorn: 8.14.1
+      acorn: 8.15.0
       acorn-walk: 8.3.4
       arg: 4.1.3
       create-require: 1.1.1
@@ -11107,7 +11268,25 @@ snapshots:
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
       '@types/node': 20.19.8
-      acorn: 8.14.1
+      acorn: 8.15.0
+      acorn-walk: 8.3.4
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      typescript: 5.8.3
+      v8-compile-cache-lib: 3.0.1
+      yn: 3.1.1
+
+  ts-node-maintained@10.9.5(@types/node@24.0.14)(typescript@5.8.3):
+    dependencies:
+      '@cspotcode/source-map-support': 0.8.1
+      '@tsconfig/node10': 1.0.11
+      '@tsconfig/node12': 1.0.11
+      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.4
+      '@types/node': 24.0.14
+      acorn: 8.15.0
       acorn-walk: 8.3.4
       arg: 4.1.3
       create-require: 1.1.1
