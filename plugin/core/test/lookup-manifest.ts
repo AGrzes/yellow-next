@@ -20,6 +20,25 @@ describe('plugin', () => {
           'path/to/plugins/@*/*/yellow-plugin.json',
         ])
       })
+      it('should use custom plugin directory from environment', async () => {
+        const requirePaths = sinon.stub().returns(['path/to/plugins'])
+        const glob = sinon.stub().resolves([])
+        const readFile = sinon.stub()
+        try {
+          process.env.YELLOW_PLUGIN_DIR = 'custom/plugin/dir'
+          const lookupManifest = makeLookupManifests(requirePaths, glob, readFile)
+          await lookupManifest()
+          expect(requirePaths).to.have.been.calledWith('*')
+          expect(glob).to.have.been.calledWith([
+            'path/to/plugins/*/yellow-plugin.json',
+            'path/to/plugins/@*/*/yellow-plugin.json',
+            'custom/plugin/dir/*/yellow-plugin.json',
+            'custom/plugin/dir/@*/*/yellow-plugin.json',
+          ])
+        } finally {
+          delete process.env.YELLOW_PLUGIN_DIR
+        }
+      })
       it('should load found manifests', async () => {
         const requirePaths = sinon.stub().returns(['path/to/plugins'])
         const glob = sinon.stub().resolves(['path/to/plugins/plugin-a/yellow-plugin.json'])
