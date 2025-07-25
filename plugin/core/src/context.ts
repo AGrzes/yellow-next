@@ -1,7 +1,8 @@
 import { Container } from 'inversify'
-import { isObject } from 'lodash'
+import lodash from 'lodash'
 import { lookupManifests } from './index.js'
 import { loadPlugin } from './plugin-loader.js'
+const { isObject } = lodash
 
 type Never<T> = T extends unknown ? never : never
 export type ServiceIdentifier<T> = symbol | string | Never<T>
