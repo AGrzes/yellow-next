@@ -1,3 +1,6 @@
+import { ServiceRegistry } from './context.js'
+import { PluginManifest } from './manifest.js'
+
 /**
  * Plugin context.
  * Passed to entrypoint function of the plugin to register services and perform other initialization tasks.
@@ -8,6 +11,10 @@ export interface PluginContext {
    * May be used to access plugin metadata or resolve paths to plugin resources.
    */
   manifest: PluginManifest
+  /**
+   * Service registry to register services provided by the plugin.
+   */
+  registry: ServiceRegistry
 }
 
 /**
