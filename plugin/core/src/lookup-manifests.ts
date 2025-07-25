@@ -4,12 +4,12 @@ import { dirname, join } from 'node:path'
 import { PluginManifest } from './manifest.js'
 const log = debug('yellow:plugin:core:lookup-manifests')
 
-export function makeLookupManifest(
+export function makeLookupManifests(
   requirePaths: (module: string) => string[],
   glob: (source: string[]) => Promise<string[]>,
   readFile: typeof import('node:fs/promises').readFile
 ) {
-  return async function lookupManifest(): Promise<PluginManifest[]> {
+  return async function lookupManifests(): Promise<PluginManifest[]> {
     const require = createRequire(import.meta.url)
     const paths = await glob(
       requirePaths('*').flatMap((p) => [join(p, '*', 'yellow-plugin.json'), join(p, '@*', '*', 'yellow-plugin.json')])
