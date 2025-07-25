@@ -1,3 +1,6 @@
+import { ServiceIdentifier } from '@agrzes/yellow-next-plugin-core'
+import { Command } from 'commander'
 export { Command } from 'commander'
-export const COMMAND = 'cli.command'
+export const COMMAND: ServiceIdentifier<Command> = 'cli.command'
 export const ROOT_COMMAND = 'root'
+export const PROGRAM_NAME = 'yd2'
