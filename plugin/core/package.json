@@ -76,6 +76,9 @@
   "type": "module",
   "types": "types",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./target/index.js"
+    }
   }
 }
