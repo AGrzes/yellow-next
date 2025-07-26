@@ -97,6 +97,17 @@ describe('plugin', () => {
               expect(container.toService).to.have.been.calledWith('testService')
             })
           })
+          describe('startup', () => {
+            it('should call all startup services', async () => {
+              const startupStub = sinon.stub().resolves()
+              const container = {
+                getAllAsync: sinon.stub().resolves([startupStub]),
+              }
+              const context = new InversifyContext(container as any)
+              await context.startup()
+              expect(startupStub).to.have.been.calledOnce
+            })
+          })
         })
       })
     })
