@@ -7,6 +7,6 @@ import { makeLookupManifests } from './lookup-manifests.js'
 const log = debug('yellow:plugin:core')
 
 export const lookupManifests = makeLookupManifests(createRequire(import.meta.url).resolve.paths, fg, fs.readFile)
-export * from './context/context.js'
+export * from './context/index.js'
 export type { PluginContext, PluginEntrypoint } from './plugin.js'
 
