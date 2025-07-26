@@ -96,6 +96,23 @@ describe('plugin', () => {
               expect(container.bind).to.have.been.calledWith('providedService2')
               expect(container.toService).to.have.been.calledWith('testService')
             })
+            it('should create service without dependencies', async () => {
+              const container = {
+                bind: sinon.stub().returnsThis(),
+                toDynamicValue: sinon.stub().returnsThis(),
+                inSingletonScope: sinon.stub().returnsThis(),
+              }
+              const context = new InversifyContext(container as any)
+              const factory = sinon.stub().returns('createdService')
+              context.register({
+                identifier: 'testService',
+                factory,
+              })
+              const initializer = container.toDynamicValue.getCall(0).args[0]
+              const instance = await initializer()
+              expect(instance).to.equal('createdService')
+              expect(factory).to.have.been.calledOnceWith([])
+            })
             it('should construct service with dependencies', async () => {
               const container = {
                 bind: sinon.stub().returnsThis(),
@@ -116,6 +133,7 @@ describe('plugin', () => {
               expect(factory).to.have.been.calledOnceWith(['dependencyServiceImpl'])
               expect(container.getAsync).to.have.been.calledOnceWith('dependencyService', {
                 tag: { key: 'qualifier', value: undefined },
+                optional: undefined,
               })
             })
           })
