@@ -2,16 +2,12 @@ import { Container } from 'inversify'
 import lodash from 'lodash'
 import { lookupManifests } from '../index.js'
 import { loadPlugin } from '../plugin-loader.js'
-import { ApplicationContext, DependencyTypes, ServiceIdentifier, ServiceRegistration, ServiceRequest } from './model.js'
+import { SHUTDOWN, STARTUP } from './lifecycle.js'
+import { ApplicationContext, DependencyTypes, ServiceRegistration, ServiceRequest } from './model.js'
+export * from './lifecycle.js'
 const { isObject } = lodash
 
 const QUALIFIER_KEY = 'qualifier'
-
-export type Startup = () => Promise<void>
-export type Shutdown = () => Promise<void>
-
-export const STARTUP: ServiceIdentifier<Startup> = Symbol.for('startup')
-export const SHUTDOWN: ServiceIdentifier<Shutdown> = Symbol.for('shutdown')
 
 export class InversifyContext implements ApplicationContext {
   private container: Container
