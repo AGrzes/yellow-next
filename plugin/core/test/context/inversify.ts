@@ -40,6 +40,18 @@ describe('plugin', () => {
                 optional: false,
               })
             })
+            it('should handle string as identifier', async () => {
+              const container = {
+                getAsync: sinon.stub().resolves('testService'),
+              }
+              const context = new InversifyContext(container as any)
+              const service = await context.get('testService')
+              expect(service).to.equal('testService')
+              expect(container.getAsync).to.have.been.calledOnceWith('testService', {
+                tag: { key: 'qualifier', value: undefined },
+                optional: undefined,
+              })
+            })
           })
           describe('register', () => {
             it('should register a service', () => {
