@@ -1,4 +1,4 @@
-import { ServiceRegistry } from './context.js'
+import { ServiceRegistry } from './context/model.js'
 import { PluginManifest } from './manifest.js'
 
 /**
