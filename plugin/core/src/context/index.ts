@@ -1,14 +1,8 @@
 import { Container } from 'inversify'
 import lodash from 'lodash'
-import {
-  ApplicationContext,
-  DependencyTypes,
-  ServiceIdentifier,
-  ServiceRegistration,
-  ServiceRequest,
-} from './context/model.js'
-import { lookupManifests } from './index.js'
-import { loadPlugin } from './plugin-loader.js'
+import { lookupManifests } from '../index.js'
+import { loadPlugin } from '../plugin-loader.js'
+import { ApplicationContext, DependencyTypes, ServiceIdentifier, ServiceRegistration, ServiceRequest } from './model.js'
 const { isObject } = lodash
 
 const QUALIFIER_KEY = 'qualifier'
