@@ -34,8 +34,8 @@ export class InversifyContext implements ApplicationContext {
     const { identifier, dependencies, factory, qualifier } = registration
     const binder = this.container
       .bind<T>(identifier)
-      .toDynamicValue((context) => {
-        const deps = dependencies ? dependencies.map((dep) => this.get(dep)) : []
+      .toDynamicValue(async (context) => {
+        const deps = dependencies ? await Promise.all(dependencies.map((dep) => this.get(dep))) : []
         return factory(deps as DependencyTypes<D>)
       })
       .inSingletonScope()
