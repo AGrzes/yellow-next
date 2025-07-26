@@ -23,6 +23,23 @@ describe('plugin', () => {
                 optional: false,
               })
             })
+            it('should get multiple services by identifier', async () => {
+              const container = {
+                getAllAsync: sinon.stub().resolves(['service1', 'service2']),
+              }
+              const context = new InversifyContext(container as any)
+              const services = await context.get({
+                identifier: 'testService',
+                qualifier: 'qualifier',
+                multiple: true,
+                optional: false,
+              })
+              expect(services).to.deep.equal(['service1', 'service2'])
+              expect(container.getAllAsync).to.have.been.calledOnceWith('testService', {
+                tag: { key: 'qualifier', value: 'qualifier' },
+                optional: false,
+              })
+            })
           })
         })
       })
