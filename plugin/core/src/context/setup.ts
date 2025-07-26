@@ -5,14 +5,14 @@ import { InversifyContext } from './inversify.js'
 import { ApplicationContext } from './model.js'
 
 export function createSetupContext(
-  ContainerClass: typeof Container,
-  InversifyContextClass: typeof InversifyContext,
+  containerFactory: () => Container,
+  inversifyContextFactory: (container: Container) => InversifyContext,
   lookupManifestsRef: typeof lookupManifests,
   loadPluginRef: typeof loadPlugin
 ): () => Promise<ApplicationContext> {
   return async function setupContext(): Promise<ApplicationContext> {
-    const container = new ContainerClass({ defaultScope: 'Singleton' })
-    const context = new InversifyContextClass(container)
+    const container = containerFactory()
+    const context = inversifyContextFactory(container)
     const manifests = await lookupManifestsRef()
     for (const manifest of manifests) {
       const entrypoint = await loadPluginRef(manifest)
