@@ -1,9 +1,10 @@
 import * as chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
 import 'mocha'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
 import { InversifyContext } from '../../src/context/inversify.js'
-const { expect } = chai.use(sinonChai)
+const { expect } = chai.use(sinonChai).use(chaiAsPromised)
 
 describe('plugin', () => {
   describe('core', () => {
@@ -48,7 +49,31 @@ describe('plugin', () => {
               const service = await context.get('testService')
               expect(service).to.equal('testService')
               expect(container.getAsync).to.have.been.calledOnceWith('testService', {
-                tag: { key: 'qualifier', value: undefined },
+                tag: undefined,
+                optional: undefined,
+              })
+            })
+            it('should handle unqualified service requests', async () => {
+              const container = {
+                getAsync: sinon.stub().resolves('testService'),
+              }
+              const context = new InversifyContext(container as any)
+              const service = await context.get({ identifier: 'testService', optional: true })
+              expect(service).to.equal('testService')
+              expect(container.getAsync).to.have.been.calledOnceWith('testService', {
+                tag: undefined,
+                optional: true,
+              })
+            })
+            it('should handle unqualified service requests for multiple services', async () => {
+              const container = {
+                getAllAsync: sinon.stub().resolves(['testService']),
+              }
+              const context = new InversifyContext(container as any)
+              const service = await context.get({ identifier: 'testService', multiple: true })
+              expect(service).to.deep.equal(['testService'])
+              expect(container.getAllAsync).to.have.been.calledOnceWith('testService', {
+                tag: undefined,
                 optional: undefined,
               })
             })
@@ -144,7 +169,7 @@ describe('plugin', () => {
               expect(instance).to.equal('createdService')
               expect(factory).to.have.been.calledOnceWith(['dependencyServiceImpl'])
               expect(container.getAsync).to.have.been.calledOnceWith('dependencyService', {
-                tag: { key: 'qualifier', value: undefined },
+                tag: undefined,
                 optional: undefined,
               })
             })

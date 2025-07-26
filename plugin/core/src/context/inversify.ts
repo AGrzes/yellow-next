@@ -19,12 +19,12 @@ export class InversifyContext implements ApplicationContext {
     const { identifier, optional, qualifier, multiple } = request
     if (multiple) {
       return this.container.getAllAsync<T>(identifier, {
-        tag: { key: QUALIFIER_KEY, value: qualifier },
+        tag: qualifier ? { key: QUALIFIER_KEY, value: qualifier } : undefined,
         optional: optional,
       })
     } else {
       return this.container.getAsync<T>(identifier, {
-        tag: { key: QUALIFIER_KEY, value: qualifier },
+        tag: qualifier ? { key: QUALIFIER_KEY, value: qualifier } : undefined,
         optional: optional,
       })
     }
