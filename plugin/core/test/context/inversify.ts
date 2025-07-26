@@ -108,6 +108,26 @@ describe('plugin', () => {
               expect(startupStub).to.have.been.calledOnce
             })
           })
+          describe('shutdown', () => {
+            it('should call all shutdown services', async () => {
+              const shutdownStub = sinon.stub().resolves()
+              const container = {
+                getAllAsync: sinon.stub().resolves([shutdownStub]),
+              }
+              const context = new InversifyContext(container as any)
+              await context.shutdown()
+              expect(shutdownStub).to.have.been.calledOnce
+            })
+            it('should handle errors in shutdown services', async () => {
+              const error = new Error('Shutdown failed')
+              const shutdownStub = sinon.stub().rejects(error)
+              const container = {
+                getAllAsync: sinon.stub().resolves([shutdownStub]),
+              }
+              const context = new InversifyContext(container as any)
+              expect(context.shutdown()).to.be.rejectedWith('Errors during shutdown')
+            })
+          })
         })
       })
     })
