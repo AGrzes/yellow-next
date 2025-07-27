@@ -6,7 +6,7 @@ const context = await setupContext()
 await context.startup()
 
 const root = await context.get(ServiceRequest.named(COMMAND, ROOT_COMMAND))
-
+await context.get(ServiceRequest.multiple(COMMAND))
 await root.parseAsync()
 
 await context.shutdown()
