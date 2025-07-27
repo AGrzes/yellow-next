@@ -84,6 +84,22 @@ describe('plugin', () => {
               registry: 'context',
             })
           })
+          it('should call extensions with context', async () => {
+            const containerFactory = sinon.stub().returns('container')
+            const inversifyContextFactory = sinon.stub().returns('context')
+            const lookupManifestsRef = sinon.stub().resolves(['manifest'])
+            const loadPluginRef = sinon.stub().resolves(() => {})
+            const extension = sinon.stub()
+            const setupContext = createSetupContext(
+              containerFactory as any,
+              inversifyContextFactory as any,
+              lookupManifestsRef as any,
+              loadPluginRef as any,
+              [extension]
+            )
+            await setupContext()
+            expect(extension).to.have.been.calledOnceWith('context')
+          })
         })
 
       })

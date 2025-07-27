@@ -8,7 +8,8 @@ export function createSetupContext(
   containerFactory: () => Container,
   inversifyContextFactory: (container: Container) => InversifyContext,
   lookupManifestsRef: typeof lookupManifests,
-  loadPluginRef: typeof loadPlugin
+  loadPluginRef: typeof loadPlugin,
+  extensions?: Array<(context: ApplicationContext) => void>
 ): () => Promise<ApplicationContext> {
   return async function setupContext(): Promise<ApplicationContext> {
     const container = containerFactory()
@@ -18,6 +19,9 @@ export function createSetupContext(
       const entrypoint = await loadPluginRef(manifest)
       entrypoint({ manifest, registry: context })
     }
+    extensions?.forEach((extension) => {
+      extension(context)
+    })
     return context
   }
 }
