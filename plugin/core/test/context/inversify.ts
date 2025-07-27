@@ -84,6 +84,7 @@ describe('plugin', () => {
                 bind: sinon.stub().returnsThis(),
                 toDynamicValue: sinon.stub().returnsThis(),
                 inSingletonScope: sinon.stub().returnsThis(),
+                when: sinon.stub().returnsThis(),
               }
               const context = new InversifyContext(container as any)
               const factory = sinon.stub().returns('createdService')
@@ -95,13 +96,33 @@ describe('plugin', () => {
               expect(container.bind).to.have.been.calledOnceWith('testService')
               expect(container.toDynamicValue).to.have.been.calledOnce
               expect(container.inSingletonScope).to.have.been.calledOnce
+              expect(container.when).to.have.been.calledOnce
+            })
+            it('should filter unqualified services', () => {
+              const container = {
+                bind: sinon.stub().returnsThis(),
+                toDynamicValue: sinon.stub().returnsThis(),
+                inSingletonScope: sinon.stub().returnsThis(),
+                when: sinon.stub().returnsThis(),
+              }
+              const context = new InversifyContext(container as any)
+              const factory = sinon.stub().returns('createdService')
+              context.register({
+                identifier: 'testService',
+                dependencies: [],
+                factory,
+              })
+              expect(container.when).to.have.been.calledOnce
+              const constraint = container.when.getCall(0).args[0]
+              expect(constraint({ tags: new Map() })).to.be.true
+              expect(constraint({ tags: new Map([['qualifier', 'testQualifier']]) })).to.be.false
             })
             it('should register a service with qualifier', () => {
               const container = {
                 bind: sinon.stub().returnsThis(),
                 toDynamicValue: sinon.stub().returnsThis(),
                 inSingletonScope: sinon.stub().returnsThis(),
-                whenTagged: sinon.stub().returnsThis(),
+                when: sinon.stub().returnsThis(),
               }
               const context = new InversifyContext(container as any)
               const factory = sinon.stub().returns('createdService')
@@ -111,15 +132,37 @@ describe('plugin', () => {
                 factory,
                 qualifier: 'testQualifier',
               })
-              expect(container.whenTagged).to.have.been.calledOnceWith('qualifier', 'testQualifier')
+              expect(container.when).to.have.been.calledOnce
             })
-            it('should register a service with provided identifiers', () => {
+            it('should filter qualified services', () => {
               const container = {
                 bind: sinon.stub().returnsThis(),
                 toDynamicValue: sinon.stub().returnsThis(),
                 inSingletonScope: sinon.stub().returnsThis(),
-                whenTagged: sinon.stub().returnsThis(),
+                when: sinon.stub().returnsThis(),
+              }
+              const context = new InversifyContext(container as any)
+              const factory = sinon.stub().returns('createdService')
+              context.register({
+                identifier: 'testService',
+                qualifier: 'testQualifier',
+                dependencies: [],
+                factory,
+              })
+              expect(container.when).to.have.been.calledOnce
+              const constraint = container.when.getCall(0).args[0]
+              expect(constraint({ tags: new Map() })).to.be.true
+              expect(constraint({ tags: new Map([['qualifier', 'testQualifier']]) })).to.be.true
+              expect(constraint({ tags: new Map([['qualifier', 'otherQualifier']]) })).to.be.false
+            })
+            it('should register a service with provided identifiers', async () => {
+              const container = {
+                bind: sinon.stub().returnsThis(),
+                toDynamicValue: sinon.stub().returnsThis(),
+                inSingletonScope: sinon.stub().returnsThis(),
+                when: sinon.stub().returnsThis(),
                 toService: sinon.stub().returnsThis(),
+                getAsync: sinon.stub().resolves('dependencyServiceImpl'),
               }
               const context = new InversifyContext(container as any)
               context.register({
@@ -129,15 +172,41 @@ describe('plugin', () => {
                 factory: () => 'createdService',
               })
               expect(container.bind).to.have.been.calledWith('providedService1')
-              expect(container.toService).to.have.been.calledWith('testService')
               expect(container.bind).to.have.been.calledWith('providedService2')
-              expect(container.toService).to.have.been.calledWith('testService')
+              expect(container.toDynamicValue.callCount).to.be.equals(3)
             })
+            it('should resolve aliases to the registered service', async () => {
+              const container = {
+                bind: sinon.stub().returnsThis(),
+                toDynamicValue: sinon.stub().returnsThis(),
+                inSingletonScope: sinon.stub().returnsThis(),
+                when: sinon.stub().returnsThis(),
+                toService: sinon.stub().returnsThis(),
+                getAsync: sinon.stub().resolves('registeredService'),
+              }
+              const context = new InversifyContext(container as any)
+              context.register({
+                identifier: 'testService',
+                provided: ['providedService'],
+                dependencies: [],
+                factory: () => 'createdService',
+              })
+              expect(container.toDynamicValue.callCount).to.be.equals(2)
+              const alias = container.toDynamicValue.getCall(1).args[0]
+              const service = await alias()
+              expect(container.getAsync).to.have.been.calledWith('testService', {
+                tag: undefined,
+                optional: undefined,
+              })
+              expect(service).to.equal('registeredService')
+            })
+
             it('should create service without dependencies', async () => {
               const container = {
                 bind: sinon.stub().returnsThis(),
                 toDynamicValue: sinon.stub().returnsThis(),
                 inSingletonScope: sinon.stub().returnsThis(),
+                when: sinon.stub().returnsThis(),
               }
               const context = new InversifyContext(container as any)
               const factory = sinon.stub().returns('createdService')
@@ -155,6 +224,7 @@ describe('plugin', () => {
                 bind: sinon.stub().returnsThis(),
                 toDynamicValue: sinon.stub().returnsThis(),
                 inSingletonScope: sinon.stub().returnsThis(),
+                when: sinon.stub().returnsThis(),
                 getAsync: sinon.stub().resolves('dependencyServiceImpl'),
               }
               const context = new InversifyContext(container as any)

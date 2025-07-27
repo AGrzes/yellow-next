@@ -1,4 +1,4 @@
-import { Container } from 'inversify'
+import { BindingConstraints, Container } from 'inversify'
 import lodash from 'lodash'
 import { SHUTDOWN, STARTUP } from './lifecycle.js'
 import { ApplicationContext, DependencyTypes, ServiceRegistration, ServiceRequest } from './model.js'
@@ -32,19 +32,24 @@ export class InversifyContext implements ApplicationContext {
 
   register<T, D extends readonly ServiceRequest<any>[]>(registration: ServiceRegistration<T, D>): void {
     const { identifier, dependencies, factory, qualifier } = registration
-    const binder = this.container
+    const constraint = (request: BindingConstraints) => {
+      const tag = request.tags?.get(QUALIFIER_KEY)
+      return !tag || tag === qualifier
+    }
+    this.container
       .bind<T>(identifier)
       .toDynamicValue(async (context) => {
         const deps = dependencies ? await Promise.all(dependencies.map((dep) => this.get(dep))) : []
         return factory(deps as DependencyTypes<D>)
       })
       .inSingletonScope()
-    if (qualifier) {
-      binder.whenTagged(QUALIFIER_KEY, qualifier)
-    }
+      .when(constraint)
     if (registration.provided) {
       registration.provided.forEach((providedIdentifier) => {
-        this.container.bind(providedIdentifier).toService(identifier)
+        this.container
+          .bind(providedIdentifier)
+          .toDynamicValue(async () => this.get(identifier))
+          .when(constraint)
       })
     }
   }
