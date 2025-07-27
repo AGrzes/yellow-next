@@ -5,7 +5,7 @@ function entrypoint({ manifest, registry }: PluginContext): void {
     identifier: COMMAND,
     qualifier: ROOT_COMMAND,
     factory: () => {
-      return new Command(PROGRAM_NAME).help()
+      return new Command(PROGRAM_NAME)
     },
   })
 }
