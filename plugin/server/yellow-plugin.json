@@ -1,0 +1,5 @@
+{
+  "manifestVersion": "1",
+  "name": "server",
+  "entrypoint": "target/plugin.js"
+}
