@@ -1,3 +1,4 @@
+/* c8 ignore start */
 import { ServiceRequest, setupContext } from '@agrzes/yellow-next-plugin-core'
 import { COMMAND, ROOT_COMMAND } from './index.js'
 
