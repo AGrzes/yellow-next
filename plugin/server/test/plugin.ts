@@ -35,6 +35,9 @@ describe('plugin', () => {
           },
         })
       })
+      it('should register server', () => {
+        expect(registration).to.be.an('object')
+      })
       it('should declare dependencies', () => {
         expect(registration.dependencies).to.be.deep.equal([ServiceRequest.named(CONTEXT, null)])
       })
