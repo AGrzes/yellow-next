@@ -1,0 +1,5 @@
+{
+  "manifestVersion": "1",
+  "name": "web",
+  "entrypoint": "target/plugin.js"
+}
