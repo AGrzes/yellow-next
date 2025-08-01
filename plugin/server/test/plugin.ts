@@ -41,6 +41,13 @@ describe('plugin', () => {
       it('should declare dependencies', () => {
         expect(registration.dependencies).to.be.deep.equal([ServiceRequest.named(CONTEXT, null)])
       })
+      it('should not have provided services', () => {
+        expect(registration.provided).to.be.undefined
+      })
+      it('should not have qualifier', () => {
+        expect(registration.qualifier).to.be.undefined
+      })
+
     })
   })
 })
