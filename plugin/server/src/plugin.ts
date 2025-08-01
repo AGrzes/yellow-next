@@ -1,14 +1,24 @@
 import { COMMAND, Command, ROOT_COMMAND } from '@agrzes/yellow-next-plugin-cli'
-import { CONTEXT, PluginContext, ServiceRequest } from '@agrzes/yellow-next-plugin-core'
+import { CONTEXT, PluginContext, ServiceIdentifier, ServiceRequest } from '@agrzes/yellow-next-plugin-core'
 import express from 'express'
 import { ROUTER, SERVER, SERVER_COMMAND, SERVER_COMMAND_NAME } from './index.js'
 
+export const EXPRESS: ServiceIdentifier<() => express.Express> = 'server.express'
+
 function entrypoint({ manifest, registry }: PluginContext): void {
   registry.register({
+    identifier: EXPRESS,
+    dependencies: [],
+    factory: async ([]) => {
+      return express
+    },
+  })
+
+  registry.register({
     identifier: SERVER,
-    dependencies: [ServiceRequest.named(CONTEXT, null)],
-    factory: async ([context]) => {
-      const app = express()
+    dependencies: [ServiceRequest.named(CONTEXT, null), EXPRESS],
+    factory: async ([context, appFactory]) => {
+      const app = appFactory()
       const routers = await context.get(ServiceRequest.multiple(ROUTER))
       routers.forEach((router) => {
         app.use(router)
