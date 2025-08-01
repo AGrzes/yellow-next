@@ -6,7 +6,7 @@ import {
   ServiceSelector,
 } from '@agrzes/yellow-next-plugin-core'
 import * as chai from 'chai'
-import { Application, Express } from 'express'
+import express, { Application, Express } from 'express'
 import 'mocha'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
@@ -16,6 +16,41 @@ const { expect } = chai.use(sinonChai)
 
 describe('plugin', () => {
   describe('cli', () => {
+    describe('express', () => {
+      let registration: ServiceRegistration<() => Express, readonly []>
+      before(() => {
+        plugin({
+          manifest: {
+            base: 'base',
+            manifestVersion: '1',
+          },
+          registry: {
+            register: (options) => {
+              if (options.identifier === EXPRESS) {
+                registration = options as unknown as ServiceRegistration<() => Express, readonly []>
+              }
+            },
+          },
+        })
+      })
+      it('should register express', () => {
+        expect(registration).to.be.an('object')
+      })
+      it('should declare no dependencies', () => {
+        expect(registration.dependencies).to.be.deep.equal([])
+      })
+      it('should not have provided services', () => {
+        expect(registration.provided).to.be.undefined
+      })
+      it('should not have qualifier', () => {
+        expect(registration.qualifier).to.be.undefined
+      })
+      it('should register a express', async () => {
+        expect(registration.factory).to.be.a('function')
+        const registered = await registration.factory([])
+        expect(registered).to.be.equals(express)
+      })
+    })
     describe('server', () => {
       let registration: ServiceRegistration<Application, readonly [ServiceSelector<ApplicationContext>, typeof EXPRESS]>
       before(() => {
