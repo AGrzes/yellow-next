@@ -5,7 +5,7 @@ import { ROUTER, SERVER, SERVER_COMMAND, SERVER_COMMAND_NAME } from './index.js'
 
 export const EXPRESS: ServiceIdentifier<() => express.Express> = 'server.express'
 
-function entrypoint({ manifest, registry }: PluginContext): void {
+function entrypoint({ registry }: PluginContext): void {
   registry.register({
     identifier: EXPRESS,
     dependencies: [],
