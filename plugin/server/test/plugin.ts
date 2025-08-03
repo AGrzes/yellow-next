@@ -1,3 +1,4 @@
+import { COMMAND, COMMAND_FACTORY, ROOT_COMMAND } from '@agrzes/yellow-next-plugin-cli'
 import {
   ApplicationContext,
   CONTEXT,
@@ -11,7 +12,7 @@ import express, { Application, Express } from 'express'
 import 'mocha'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
-import { SERVER } from '../src/index.js'
+import { SERVER, SERVER_COMMAND, SERVER_COMMAND_NAME } from '../src/index.js'
 import plugin, { EXPRESS } from '../src/plugin.js'
 const { expect } = chai.use(sinonChai)
 
@@ -121,6 +122,14 @@ describe('plugin', () => {
             expect(appMock.use).to.have.been.calledWith('route')
           })
         },
+      })
+    })
+    describe('command', () => {
+      registrationTest(SERVER_COMMAND, {
+        qualifier: SERVER_COMMAND_NAME,
+        dependencies: [ServiceRequest.named(COMMAND, ROOT_COMMAND), SERVER, COMMAND_FACTORY],
+        provided: [COMMAND],
+        factoryTests: (registrationSource) => {},
       })
     })
   })
