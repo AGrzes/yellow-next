@@ -1,6 +1,7 @@
 import {
   ApplicationContext,
   CONTEXT,
+  ServiceIdentifier,
   ServiceRegistration,
   ServiceRequest,
   ServiceSelector,
@@ -14,41 +15,78 @@ import { SERVER } from '../src/index.js'
 import plugin, { EXPRESS } from '../src/plugin.js'
 const { expect } = chai.use(sinonChai)
 
+function registrationTest<T, D extends readonly ServiceRequest<any>[]>(
+  identifier: ServiceIdentifier<T>,
+  options: {
+    factoryTests: (registrationSource: () => ServiceRegistration<T, readonly []>) => void
+    dependencies?: D
+    provided?: readonly ServiceIdentifier<T>[]
+    qualifier?: string
+  }
+) {
+  let registration: ServiceRegistration<T, readonly []>
+  before(() => {
+    plugin({
+      manifest: {
+        base: 'base',
+        manifestVersion: '1',
+      },
+      registry: {
+        register: (options) => {
+          if ((options.identifier as unknown) === identifier) {
+            registration = options as unknown as ServiceRegistration<T, readonly []>
+          }
+        },
+      },
+    })
+  })
+  it('should register service', () => {
+    expect(registration).to.be.an('object')
+  })
+  if (options.dependencies) {
+    it('should declare dependencies', () => {
+      expect(registration.dependencies).to.be.deep.equal(options.dependencies)
+    })
+  } else {
+    it('should declare no dependencies', () => {
+      expect(registration.dependencies).to.be.deep.equal([])
+    })
+  }
+  if (options.provided) {
+    it('should have provided services', () => {
+      expect(registration.provided).to.be.deep.equal(options.provided)
+    })
+  } else {
+    it('should not have provided services', () => {
+      expect(registration.provided).to.be.undefined
+    })
+  }
+  if (options.qualifier) {
+    it('should have qualifier', () => {
+      expect(registration.qualifier).to.be.equals(options.qualifier)
+    })
+  } else {
+    it('should not have qualifier', () => {
+      expect(registration.qualifier).to.be.undefined
+    })
+  }
+  if (options.factoryTests) {
+    options.factoryTests(() => registration)
+  }
+}
+
 describe('plugin', () => {
   describe('cli', () => {
     describe('express', () => {
-      let registration: ServiceRegistration<() => Express, readonly []>
-      before(() => {
-        plugin({
-          manifest: {
-            base: 'base',
-            manifestVersion: '1',
-          },
-          registry: {
-            register: (options) => {
-              if (options.identifier === EXPRESS) {
-                registration = options as unknown as ServiceRegistration<() => Express, readonly []>
-              }
-            },
-          },
-        })
-      })
-      it('should register express', () => {
-        expect(registration).to.be.an('object')
-      })
-      it('should declare no dependencies', () => {
-        expect(registration.dependencies).to.be.deep.equal([])
-      })
-      it('should not have provided services', () => {
-        expect(registration.provided).to.be.undefined
-      })
-      it('should not have qualifier', () => {
-        expect(registration.qualifier).to.be.undefined
-      })
-      it('should register a express', async () => {
-        expect(registration.factory).to.be.a('function')
-        const registered = await registration.factory([])
-        expect(registered).to.be.equals(express)
+      registrationTest<() => Express, readonly []>(EXPRESS, {
+        factoryTests: (registrationSource) => {
+          it('should register a express', async () => {
+            const registration = registrationSource()
+            expect(registration.factory).to.be.a('function')
+            const registered = await registration.factory([])
+            expect(registered).to.be.equals(express)
+          })
+        },
       })
     })
     describe('server', () => {
