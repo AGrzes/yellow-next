@@ -1,12 +1,6 @@
 import { Command, COMMAND, COMMAND_FACTORY, ROOT_COMMAND } from '@agrzes/yellow-next-plugin-cli'
-import {
-  ApplicationContext,
-  CONTEXT,
-  ServiceIdentifier,
-  ServiceRegistration,
-  ServiceRequest,
-  ServiceSelector,
-} from '@agrzes/yellow-next-plugin-core'
+import { ApplicationContext, CONTEXT, ServiceRequest, ServiceSelector } from '@agrzes/yellow-next-plugin-core'
+import { registrationTest, withConsoleSpies } from '@agrzes/yellow-next-plugin-test'
 import * as chai from 'chai'
 import express, { Application, Express } from 'express'
 import 'mocha'
@@ -16,83 +10,10 @@ import { SERVER, SERVER_COMMAND, SERVER_COMMAND_NAME } from '../src/index.js'
 import plugin, { EXPRESS } from '../src/plugin.js'
 const { expect } = chai.use(sinonChai)
 
-function registrationTest<T, D extends readonly ServiceRequest<any>[]>(
-  identifier: ServiceIdentifier<T>,
-  options: {
-    factoryTests: (registrationSource: () => ServiceRegistration<T, D>) => void
-    dependencies?: D
-    provided?: readonly ServiceIdentifier<T>[]
-    qualifier?: string
-  }
-) {
-  let registration: ServiceRegistration<T, D>
-  before(() => {
-    plugin({
-      manifest: {
-        base: 'base',
-        manifestVersion: '1',
-      },
-      registry: {
-        register: (options) => {
-          if ((options.identifier as unknown) === identifier) {
-            registration = options as unknown as ServiceRegistration<T, D>
-          }
-        },
-      },
-    })
-  })
-  it('should register service', () => {
-    expect(registration).to.be.an('object')
-  })
-  if (options.dependencies) {
-    it('should declare dependencies', () => {
-      expect(registration.dependencies).to.be.deep.equal(options.dependencies)
-    })
-  } else {
-    it('should declare no dependencies', () => {
-      expect(registration.dependencies).to.be.deep.equal([])
-    })
-  }
-  if (options.provided) {
-    it('should have provided services', () => {
-      expect(registration.provided).to.be.deep.equal(options.provided)
-    })
-  } else {
-    it('should not have provided services', () => {
-      expect(registration.provided).to.be.undefined
-    })
-  }
-  if (options.qualifier) {
-    it('should have qualifier', () => {
-      expect(registration.qualifier).to.be.equals(options.qualifier)
-    })
-  } else {
-    it('should not have qualifier', () => {
-      expect(registration.qualifier).to.be.undefined
-    })
-  }
-  if (options.factoryTests) {
-    options.factoryTests(() => registration)
-  }
-}
-
-async function withConsoleSpies(callback: () => Promise<void> | void) {
-  const consoleSpy = sinon.spy(console)
-  try {
-    return await callback()
-  } finally {
-    Object.getOwnPropertyNames(consoleSpy).forEach((method) => {
-      if (typeof consoleSpy[method] === 'function') {
-        consoleSpy[method].restore()
-      }
-    })
-  }
-}
-
 describe('plugin', () => {
   describe('cli', () => {
     describe('express', () => {
-      registrationTest<() => Express, readonly []>(EXPRESS, {
+      registrationTest<() => Express, readonly []>(plugin, EXPRESS, {
         factoryTests: (registrationSource) => {
           it('should register a express', async () => {
             const registration = registrationSource()
@@ -104,7 +25,7 @@ describe('plugin', () => {
       })
     })
     describe('server', () => {
-      registrationTest<Application, readonly [ServiceSelector<ApplicationContext>, typeof EXPRESS]>(SERVER, {
+      registrationTest<Application, readonly [ServiceSelector<ApplicationContext>, typeof EXPRESS]>(plugin, SERVER, {
         dependencies: [ServiceRequest.named(CONTEXT, null), EXPRESS],
         factoryTests: (registrationSource) => {
           it('should register a server', async () => {
@@ -138,7 +59,7 @@ describe('plugin', () => {
       })
     })
     describe('command', () => {
-      registrationTest(SERVER_COMMAND, {
+      registrationTest(plugin, SERVER_COMMAND, {
         qualifier: SERVER_COMMAND_NAME,
         dependencies: [ServiceRequest.named(COMMAND, ROOT_COMMAND), SERVER, COMMAND_FACTORY],
         provided: [COMMAND],

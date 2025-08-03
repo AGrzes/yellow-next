@@ -30,6 +30,7 @@
     "lodash": "4.17.21"
   },
   "devDependencies": {
+    "@agrzes/yellow-next-plugin-test": "workspace:*",
     "@types/chai": "^5.2.2",
     "@types/chai-as-promised": "^8.0.2",
     "@types/debug": "^4.1.12",
