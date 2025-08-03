@@ -76,6 +76,19 @@ function registrationTest<T, D extends readonly ServiceRequest<any>[]>(
   }
 }
 
+async function withConsoleSpies(callback: () => Promise<void> | void) {
+  const consoleSpy = sinon.spy(console)
+  try {
+    return await callback()
+  } finally {
+    Object.getOwnPropertyNames(consoleSpy).forEach((method) => {
+      if (typeof consoleSpy[method] === 'function') {
+        consoleSpy[method].restore()
+      }
+    })
+  }
+}
+
 describe('plugin', () => {
   describe('cli', () => {
     describe('express', () => {
@@ -145,6 +158,33 @@ describe('plugin', () => {
             await registration.factory([rootCommand, serverMock, commandFactory])
             expect(commandFactory).to.have.been.calledWith(SERVER_COMMAND_NAME)
             expect(rootCommand.addCommand).to.have.been.calledOnceWith(command)
+          })
+          it('should start server on action', async () => {
+            const registration = registrationSource()
+            const rootCommand = {
+              addCommand: sinon.stub(),
+            }
+            const serverMock = {
+              listen: sinon.stub(),
+            }
+            const command = {
+              description: sinon.stub().returnsThis(),
+              action: sinon.stub(),
+            }
+            const commandFactory = sinon.stub().returns(command) as unknown as (name: string) => Command
+            await registration.factory([
+              rootCommand as unknown as Command,
+              serverMock as unknown as Application,
+              commandFactory,
+            ])
+            await command.action.firstCall.args[0]()
+            expect(serverMock.listen).to.have.been.calledWith(process.env.PORT || 3000)
+            withConsoleSpies(() => {
+              serverMock.listen.firstCall.args[1]()
+              expect(console.log).to.have.been.calledWith(
+                `Server is running on http://localhost:${process.env.PORT || 3000}`
+              )
+            })
           })
         },
       })
