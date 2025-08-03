@@ -1,4 +1,4 @@
-import { COMMAND, COMMAND_FACTORY, ROOT_COMMAND } from '@agrzes/yellow-next-plugin-cli'
+import { Command, COMMAND, COMMAND_FACTORY, ROOT_COMMAND } from '@agrzes/yellow-next-plugin-cli'
 import {
   ApplicationContext,
   CONTEXT,
@@ -129,7 +129,24 @@ describe('plugin', () => {
         qualifier: SERVER_COMMAND_NAME,
         dependencies: [ServiceRequest.named(COMMAND, ROOT_COMMAND), SERVER, COMMAND_FACTORY],
         provided: [COMMAND],
-        factoryTests: (registrationSource) => {},
+        factoryTests: (registrationSource) => {
+          it('should register a server command', async () => {
+            const registration = registrationSource()
+            expect(registration.factory).to.be.a('function')
+            const rootCommand = {
+              addCommand: sinon.stub(),
+            } as unknown as Command
+            const serverMock = {} as unknown as Application
+            const command = {
+              description: sinon.stub().returnsThis(),
+              action: sinon.stub(),
+            }
+            const commandFactory = sinon.stub().returns(command) as unknown as (name: string) => Command
+            await registration.factory([rootCommand, serverMock, commandFactory])
+            expect(commandFactory).to.have.been.calledWith(SERVER_COMMAND_NAME)
+            expect(rootCommand.addCommand).to.have.been.calledOnceWith(command)
+          })
+        },
       })
     })
   })
