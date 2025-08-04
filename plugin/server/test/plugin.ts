@@ -2,11 +2,11 @@ import { Command, COMMAND, COMMAND_FACTORY, ROOT_COMMAND } from '@agrzes/yellow-
 import { ApplicationContext, CONTEXT, ServiceRequest, ServiceSelector } from '@agrzes/yellow-next-plugin-core'
 import { registrationTest, withConsoleSpies } from '@agrzes/yellow-next-plugin-test'
 import * as chai from 'chai'
-import express, { Application, Express } from 'express'
+import express, { Application, Express, Router } from 'express'
 import 'mocha'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
-import { SERVER, SERVER_COMMAND, SERVER_COMMAND_NAME } from '../src/index.js'
+import { ROUTER_FACTORY, SERVER, SERVER_COMMAND, SERVER_COMMAND_NAME } from '../src/index.js'
 import plugin, { EXPRESS } from '../src/plugin.js'
 const { expect } = chai.use(sinonChai)
 
@@ -20,6 +20,18 @@ describe('plugin', () => {
             expect(registration.factory).to.be.a('function')
             const registered = await registration.factory([])
             expect(registered).to.be.equals(express)
+          })
+        },
+      })
+    })
+    describe('router factory', () => {
+      registrationTest<typeof Router, readonly []>(plugin, ROUTER_FACTORY, {
+        factoryTests: (registrationSource) => {
+          it('should register a Router', async () => {
+            const registration = registrationSource()
+            expect(registration.factory).to.be.a('function')
+            const registered = await registration.factory([])
+            expect(registered).to.be.equals(Router)
           })
         },
       })
