@@ -708,6 +708,9 @@ importers:
         specifier: ^7.0.6
         version: 7.0.6(@types/node@24.0.14)(sass@1.75.0)(terser@5.41.0)(yaml@2.8.0)
     devDependencies:
+      '@agrzes/yellow-next-plugin-test':
+        specifier: workspace:*
+        version: link:../test
       '@types/chai':
         specifier: ^5.2.2
         version: 5.2.2
