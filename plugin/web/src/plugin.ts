@@ -1,5 +1,5 @@
 import { PluginContext, ServiceIdentifier } from '@agrzes/yellow-next-plugin-core'
-import { Router, ROUTER } from '@agrzes/yellow-next-plugin-server'
+import { ROUTER, ROUTER_FACTORY } from '@agrzes/yellow-next-plugin-server'
 import { join } from 'path'
 import { createServer } from 'vite'
 import { VITE_ROUTER } from './index.js'
@@ -14,9 +14,9 @@ function entrypoint({ manifest, registry }: PluginContext): void {
 
   registry.register({
     identifier: VITE_ROUTER,
-    dependencies: [VITE_SERVER_FACTORY],
-    factory: async ([viteServerFactory]) => {
-      const router = Router()
+    dependencies: [VITE_SERVER_FACTORY, ROUTER_FACTORY],
+    factory: async ([viteServerFactory, routerFactory]) => {
+      const router = routerFactory()
       const vite = await viteServerFactory({
         root: join(manifest.base, 'web'),
         server: {

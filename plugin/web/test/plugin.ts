@@ -1,4 +1,4 @@
-import { Router, ROUTER } from '@agrzes/yellow-next-plugin-server'
+import { Router, ROUTER, ROUTER_FACTORY } from '@agrzes/yellow-next-plugin-server'
 import { registrationTest } from '@agrzes/yellow-next-plugin-test'
 import * as chai from 'chai'
 import 'mocha'
@@ -25,9 +25,9 @@ describe('plugin', () => {
       })
     })
     describe('vite router', () => {
-      registrationTest<Router, readonly [typeof VITE_SERVER_FACTORY]>(plugin, VITE_ROUTER, {
+      registrationTest<Router, readonly [typeof VITE_SERVER_FACTORY, typeof ROUTER_FACTORY]>(plugin, VITE_ROUTER, {
         provided: [ROUTER],
-        dependencies: [VITE_SERVER_FACTORY],
+        dependencies: [VITE_SERVER_FACTORY, ROUTER_FACTORY],
         factoryTests: (registrationSource) => {
           it('should register a vite server', async () => {
             const registration = registrationSource()
@@ -36,14 +36,20 @@ describe('plugin', () => {
             const viteServerFactory = sinon.stub().resolves({
               middlewares,
             })
-            const registered = await registration.factory([viteServerFactory])
-            expect(registered).to.be.a('function')
+            const router = {
+              use: sinon.stub(),
+            }
+            const routerFactory = sinon.stub().returns(router) as unknown as () => Router
+            const registered = await registration.factory([viteServerFactory, routerFactory])
+            expect(registered).to.be.equals(router)
             expect(viteServerFactory).to.be.calledOnceWith({
               root: 'base/web',
               server: {
                 middlewareMode: true,
               },
             })
+            expect(routerFactory).to.be.calledOnce
+            expect(router.use).to.be.calledOnceWith(middlewares)
           })
         },
       })
