@@ -1,0 +1,5 @@
+{
+  "manifestVersion": "1",
+  "name": "event-log",
+  "entrypoint": "target/plugin.js"
+}
