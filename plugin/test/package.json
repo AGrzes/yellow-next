@@ -2,9 +2,6 @@
   "name": "@agrzes/yellow-next-plugin-test",
   "description": "",
   "version": "0.0.1",
-  "bin": {
-    "yd2": "bin/cli.mjs"
-  },
   "author": "Grzegorz Abramczyk <abramczykg@gmail.com>",
   "c8": {
     "all": true,
