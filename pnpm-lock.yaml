@@ -412,15 +412,6 @@ importers:
       debug:
         specifier: 4.4.1
         version: 4.4.1(supports-color@8.1.1)
-      dotenv:
-        specifier: 17.2.0
-        version: 17.2.0
-      fast-glob:
-        specifier: ^3.3.3
-        version: 3.3.3
-      inversify:
-        specifier: 7.6.1
-        version: 7.6.1(reflect-metadata@0.2.2)
       lodash:
         specifier: 4.17.21
         version: 4.17.21
