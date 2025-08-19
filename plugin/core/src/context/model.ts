@@ -37,7 +37,13 @@ export interface ServiceLocator {
 }
 
 export type ExtractServiceType<T> =
-  T extends ServiceIdentifier<infer X> ? X : T extends ServiceSelector<infer X> ? X : never
+  T extends ServiceIdentifier<infer X>
+    ? X
+    : T extends ServiceSelector<infer X> & { multiple: true }
+      ? X[]
+      : T extends ServiceSelector<infer X>
+        ? X
+        : never
 
 export type DependencyTypes<T extends readonly ServiceRequest<any>[]> = {
   [K in keyof T]: ExtractServiceType<T[K]>
