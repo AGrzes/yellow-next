@@ -1,6 +1,7 @@
 import { PluginContext, ServiceIdentifier, ServiceRequest } from '@agrzes/yellow-next-plugin-core'
 import { ROUTER, ROUTER_FACTORY } from '@agrzes/yellow-next-plugin-server'
 import { join } from 'path'
+import resolve from 'resolve'
 import { createServer } from 'vite'
 import { VITE_PLUGIN, VITE_ROUTER, WebEntrypoint } from './index.js'
 import { injectWebEntrypoints } from './inject-web-entrypoints.js'
@@ -11,7 +12,7 @@ function entrypoint({ manifest, registry }: PluginContext): void {
   registry.register({
     identifier: 'vite.resolve-bare-from-importer',
     dependencies: [],
-    factory: async ([]) => resolveBareFromImporter(),
+    factory: async ([]) => resolveBareFromImporter(resolve),
     provided: [VITE_PLUGIN],
   })
   registry.register({
