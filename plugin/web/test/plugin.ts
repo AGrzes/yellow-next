@@ -5,8 +5,8 @@ import * as chai from 'chai'
 import 'mocha'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
-import { createServer } from 'vite'
-import { VITE_ROUTER, WebEntrypoint } from '../src/index.js'
+import { createServer, Plugin } from 'vite'
+import { VITE_PLUGIN, VITE_ROUTER } from '../src/index.js'
 import plugin, { VITE_SERVER_FACTORY } from '../src/plugin.js'
 const { expect } = chai.use(sinonChai)
 
@@ -28,10 +28,10 @@ describe('plugin', () => {
     describe('vite router', () => {
       registrationTest<
         Router,
-        readonly [typeof VITE_SERVER_FACTORY, typeof ROUTER_FACTORY, MultipleServiceSelector<WebEntrypoint>]
+        readonly [typeof VITE_SERVER_FACTORY, typeof ROUTER_FACTORY, MultipleServiceSelector<Plugin>]
       >(plugin, VITE_ROUTER, {
         provided: [ROUTER],
-        dependencies: [VITE_SERVER_FACTORY, ROUTER_FACTORY, ServiceRequest.multiple(WebEntrypoint)],
+        dependencies: [VITE_SERVER_FACTORY, ROUTER_FACTORY, ServiceRequest.multiple(VITE_PLUGIN)],
         factoryTests: (registrationSource) => {
           it('should register a vite server', async () => {
             const registration = registrationSource()
@@ -44,10 +44,16 @@ describe('plugin', () => {
               use: sinon.stub(),
             }
             const routerFactory = sinon.stub().returns(router) as unknown as () => Router
-            const registered = await registration.factory([viteServerFactory, routerFactory, []])
+            const plugins = ['plugin1']
+            const registered = await registration.factory([
+              viteServerFactory,
+              routerFactory,
+              plugins as unknown as Plugin[],
+            ])
             expect(registered).to.be.equals(router)
             expect(viteServerFactory).to.be.calledOnceWith(
               sinon.match({
+                plugins,
                 root: 'base/web',
                 server: {
                   middlewareMode: true,
