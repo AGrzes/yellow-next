@@ -10,6 +10,10 @@ export interface ServiceSelector<T> {
   multiple?: boolean
 }
 
+export interface MultipleServiceSelector<T> extends ServiceSelector<T> {
+  multiple: true
+}
+
 export type ServiceRequest<T> = ServiceIdentifier<T> | ServiceSelector<T>
 
 export const ServiceRequest = {
@@ -24,7 +28,7 @@ export const ServiceRequest = {
     identifier,
     optional: true,
   }),
-  multiple: <T>(identifier: ServiceIdentifier<T>, optional = true): ServiceSelector<T> & { multiple: true } => ({
+  multiple: <T>(identifier: ServiceIdentifier<T>, optional = true): MultipleServiceSelector<T> => ({
     identifier,
     multiple: true,
     optional,
@@ -32,14 +36,14 @@ export const ServiceRequest = {
 }
 
 export interface ServiceLocator {
-  get<T>(identifier: ServiceSelector<T> & { multiple: true }): Promise<T[]>
+  get<T>(identifier: MultipleServiceSelector<T>): Promise<T[]>
   get<T>(identifier: ServiceRequest<T>): Promise<T>
 }
 
 export type ExtractServiceType<T> =
   T extends ServiceIdentifier<infer X>
     ? X
-    : T extends ServiceSelector<infer X> & { multiple: true }
+    : T extends MultipleServiceSelector<infer X>
       ? X[]
       : T extends ServiceSelector<infer X>
         ? X
