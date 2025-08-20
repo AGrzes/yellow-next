@@ -6,7 +6,7 @@ import 'mocha'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
 import { createServer, Plugin } from 'vite'
-import { VITE_PLUGIN, VITE_ROUTER } from '../src/index.js'
+import { VITE_PLUGIN, VITE_ROUTER, WebEntrypoint } from '../src/index.js'
 import plugin, { VITE_SERVER_FACTORY } from '../src/plugin.js'
 const { expect } = chai.use(sinonChai)
 
@@ -24,6 +24,43 @@ describe('plugin', () => {
           })
         },
       })
+    })
+    describe('resolve-bare-from-importer', () => {
+      registrationTest<Plugin, readonly []>(plugin, 'vite.resolve-bare-from-importer', {
+        provided: [VITE_PLUGIN],
+        dependencies: [],
+        factoryTests: (registrationSource) => {
+          it('should register a resolve bare from importer plugin', async () => {
+            const registration = registrationSource()
+            expect(registration.factory).to.be.a('function')
+            const registered = await registration.factory([])
+            expect(registered).to.be.an('object')
+            expect(registered.name).to.equal('resolve-bare-from-importer')
+            expect(registered.resolveId).to.be.a('function')
+          })
+        },
+      })
+    })
+    describe('inject-web-entrypoints', () => {
+      registrationTest<Plugin, readonly [MultipleServiceSelector<WebEntrypoint>]>(
+        plugin,
+        'vite.inject-web-entrypoints',
+        {
+          provided: [VITE_PLUGIN],
+          dependencies: [ServiceRequest.multiple(WebEntrypoint)],
+          factoryTests: (registrationSource) => {
+            it('should register a inject web entrypoints plugin', async () => {
+              const registration = registrationSource()
+              expect(registration.factory).to.be.a('function')
+              const entrypoints = ['entrypoint1', 'entrypoint2'] as unknown as WebEntrypoint[]
+              const registered = await registration.factory([entrypoints])
+              expect(registered).to.be.an('object')
+              expect(registered.name).to.equal('inject-web-entrypoints')
+              expect(registered.transformIndexHtml).to.be.a('function')
+            })
+          },
+        }
+      )
     })
     describe('vite router', () => {
       registrationTest<
