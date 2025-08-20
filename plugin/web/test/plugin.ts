@@ -11,7 +11,7 @@ import plugin, { VITE_SERVER_FACTORY } from '../src/plugin.js'
 const { expect } = chai.use(sinonChai)
 
 describe('plugin', () => {
-  describe('cli', () => {
+  describe('web', () => {
     describe('vite server factory', () => {
       registrationTest<typeof createServer, readonly []>(plugin, VITE_SERVER_FACTORY, {
         factoryTests: (registrationSource) => {

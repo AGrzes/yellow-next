@@ -5,7 +5,7 @@ import { VITE_ROUTER } from '../src/index.js'
 const { expect } = chai.use(sinonChai)
 
 describe('plugin', () => {
-  describe('cli', () => {
+  describe('web', () => {
     it('should export VITE_ROUTER', () => {
       expect(VITE_ROUTER).to.be.a('string')
     })
