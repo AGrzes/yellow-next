@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "noEmit": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "Node",
+    "jsx": "react"
+  },
+  "ts-node": {
+    "moduleTypes": {
+      "*.ts": "cjs"
+    }
+  }
+}
