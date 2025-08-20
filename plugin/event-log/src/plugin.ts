@@ -8,7 +8,7 @@ function entrypoint({ manifest, registry }: PluginContext): void {
   registry.register({
     identifier: WebEntrypoint,
     dependencies: [],
-    factory: async ([]) => ({ root: manifest.base, script: resolve(manifest.base, 'web', 'index.ts') }),
+    factory: async ([]) => ({ root: manifest.base, script: resolve(manifest.base, 'web', 'index.tsx') }),
   })
 }
 
