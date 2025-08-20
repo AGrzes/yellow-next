@@ -14,7 +14,7 @@ export function injectWebEntrypoints(entrypoints: WebEntrypoint[]): Plugin {
       const tags = entrypoints.map(
         (e): HtmlTagDescriptor => ({
           tag: 'script',
-          attrs: { type: 'module', src: `/@fs/${e.script.replace(/\\/g, '/')}` },
+          attrs: { type: 'module', src: `/@fs${e.script.replace(/\\/g, '/')}` },
           injectTo: 'body',
         })
       )

@@ -53,5 +53,29 @@ describe('plugin', () => {
         })
       })
     })
+    describe('transformIndexHtml', () => {
+      it('should inject scripts for each entrypoint', () => {
+        const entrypoints = [
+          { root: '/path/to/entrypoint1', script: '/path/to/script1.js' },
+          { root: '/path/to/entrypoint2', script: '/path/to/script2.js' },
+        ]
+        const plugin = injectWebEntrypoints(entrypoints)
+        const html = '<html></html>'
+        const result = (plugin.transformIndexHtml as any)(html)
+
+        expect(result.html).to.equal(html)
+        expect(result.tags).to.have.lengthOf(2)
+        expect(result.tags[0]).to.deep.equal({
+          tag: 'script',
+          attrs: { type: 'module', src: '/@fs/path/to/script1.js' },
+          injectTo: 'body',
+        })
+        expect(result.tags[1]).to.deep.equal({
+          tag: 'script',
+          attrs: { type: 'module', src: '/@fs/path/to/script2.js' },
+          injectTo: 'body',
+        })
+      })
+    })
   })
 })
