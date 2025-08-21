@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@agrzes/yellow-next-plugin-web": "workspace:*",
+    "@tanstack/react-router": "^1.131.27",
     "debug": "4.4.1",
     "lodash": "4.17.21",
     "react": "18.2.0",
