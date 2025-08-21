@@ -6,6 +6,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "moduleResolution": "Node",
+    "strictNullChecks": true,
     "jsx": "react"
   },
   "ts-node": {
