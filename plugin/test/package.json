@@ -68,7 +68,6 @@
   "scripts": {
     "build": "rm -rf target types && tsc",
     "start": "node target",
-    "test": "c8 mocha test/**/*.{ts,tsx}",
     "watch": "tsc --watch --preserveWatchOutput"
   },
   "type": "module",
