@@ -1,5 +1,5 @@
 import { Outlet, createRootRoute, createRoute, createRouter } from '@tanstack/react-router'
-import React from 'react'
+import { EntryScreen } from './screens/entry.js'
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -17,15 +17,13 @@ const indexRoute = createRoute({
   },
 })
 
-const aboutRoute = createRoute({
+const entryRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/about',
-  component: function About() {
-    return <div className="p-2">Hello from About!</div>
-  },
+  path: '/entry',
+  component: EntryScreen,
 })
 
-const routeTree = rootRoute.addChildren([indexRoute, aboutRoute])
+const routeTree = rootRoute.addChildren([indexRoute, entryRoute])
 
 export const router = createRouter({ routeTree })
 
