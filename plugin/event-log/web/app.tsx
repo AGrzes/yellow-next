@@ -1,7 +1,11 @@
+import { ChakraProvider, defaultSystem } from '@chakra-ui/react'
 import { RouterProvider } from '@tanstack/react-router'
-import React from 'react'
 import { router } from './router.js'
 
 export function App() {
-  return <RouterProvider router={router} />
+  return (
+    <ChakraProvider value={defaultSystem}>
+      <RouterProvider router={router} />
+    </ChakraProvider>
+  )
 }
