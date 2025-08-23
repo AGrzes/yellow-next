@@ -1,4 +1,4 @@
-import { Button, Input } from '@chakra-ui/react'
+import { Button, HStack, Input } from '@chakra-ui/react'
 import { useState } from 'react'
 import { usePostEntry } from '../../query/index.js'
 
@@ -17,7 +17,7 @@ export function EventEntry() {
     )
   }
   return (
-    <div>
+    <HStack gap={2} align="center">
       <Input
         onChange={(e) => setContent(e.target.value)}
         value={content}
@@ -26,8 +26,13 @@ export function EventEntry() {
             submit()
           }
         }}
+        placeholder="Add new event..."
+        flex={1}
+        disabled={postEntry.isPending}
       />
-      <Button onClick={submit}>Add</Button>
-    </div>
+      <Button onClick={submit} loading={postEntry.isPending}>
+        Add
+      </Button>
+    </HStack>
   )
 }
