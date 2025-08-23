@@ -6,7 +6,9 @@ export interface EventService {
   list(): Promise<EventEntry[]>
 }
 
-const data: EventEntry[] = []
+const STORAGE_KEY = 'events-db'
+
+const data: EventEntry[] = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
 
 const service: EventService = {
   async create(event: EventEntry) {
@@ -17,6 +19,7 @@ const service: EventService = {
     }
     created.id = id
     data.push(created)
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
     return id
   },
   async get(id: string) {
