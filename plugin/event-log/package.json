@@ -29,6 +29,7 @@
     "@tanstack/react-router": "^1.131.27",
     "debug": "4.4.1",
     "lodash": "4.17.21",
+    "luxon": "^3.7.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
@@ -38,6 +39,7 @@
     "@types/chai-as-promised": "^8.0.2",
     "@types/debug": "^4.1.12",
     "@types/lodash": "^4.17.20",
+    "@types/luxon": "^3.6.2",
     "@types/mocha": "^10.0.10",
     "@types/node": "^24.0.14",
     "@types/react": "^18.3.23",

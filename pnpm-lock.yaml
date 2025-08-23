@@ -564,6 +564,9 @@ importers:
       lodash:
         specifier: 4.17.21
         version: 4.17.21
+      luxon:
+        specifier: ^3.7.1
+        version: 3.7.1
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -586,6 +589,9 @@ importers:
       '@types/lodash':
         specifier: ^4.17.20
         version: 4.17.20
+      '@types/luxon':
+        specifier: ^3.6.2
+        version: 3.6.2
       '@types/mocha':
         specifier: ^10.0.10
         version: 10.0.10
