@@ -1,17 +1,23 @@
-import { Stack } from '@chakra-ui/react'
+import { Timeline } from '@chakra-ui/react'
 import { useListEntries } from '../../query/index.js'
 
 export function LastEvents() {
   const events = useListEntries()
 
   return (
-    <Stack dir="column" gap={1}>
+    <Timeline.Root>
       {events.data?.map((event) => (
-        <div key={event.id}>
-          <small>{event.createdAt}</small>
-          <span>{event.content}</span>
-        </div>
+        <Timeline.Item key={event.id}>
+          <Timeline.Connector>
+            <Timeline.Separator />
+            <Timeline.Indicator />
+          </Timeline.Connector>
+          <Timeline.Content>
+            <Timeline.Title>{event.content}</Timeline.Title>
+            <Timeline.Description>{event.createdAt}</Timeline.Description>
+          </Timeline.Content>
+        </Timeline.Item>
       ))}
-    </Stack>
+    </Timeline.Root>
   )
 }
