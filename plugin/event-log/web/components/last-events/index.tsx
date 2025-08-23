@@ -1,4 +1,5 @@
 import { Timeline } from '@chakra-ui/react'
+import { DateTime } from 'luxon'
 import { useListEntries } from '../../query/index.js'
 
 export function LastEvents() {
@@ -14,7 +15,9 @@ export function LastEvents() {
           </Timeline.Connector>
           <Timeline.Content>
             <Timeline.Title>{event.content}</Timeline.Title>
-            <Timeline.Description>{event.createdAt}</Timeline.Description>
+            <Timeline.Description>
+              {event.createdAt && DateTime.fromISO(event.createdAt).toFormat('yyyy-MM-dd HH:mm')}
+            </Timeline.Description>
           </Timeline.Content>
         </Timeline.Item>
       ))}
