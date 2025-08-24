@@ -36,6 +36,7 @@
     "@types/lodash": "^4.17.20",
     "@types/mocha": "^10.0.10",
     "@types/node": "^24.0.14",
+    "@types/pouchdb": "^6.4.2",
     "@types/pouchdb-node": "^6.1.7",
     "@types/resolve": "^1.20.6",
     "@types/sinon": "^17.0.4",
