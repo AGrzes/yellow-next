@@ -1,0 +1,5 @@
+{
+  "manifestVersion": "1",
+  "name": "data-pouch-db",
+  "entrypoint": "target/plugin.js"
+}
