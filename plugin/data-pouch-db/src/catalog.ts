@@ -20,7 +20,7 @@ export class StaticCatalog implements Catalog {
     private readonly factory: PouchDBFactory,
     config: PouchDbConfig[]
   ) {
-    this.config = (config || []).reduce((acc, cur) => {
+    this.config = config.reduce((acc, cur) => {
       acc[cur.name] = cur
       return acc
     }, this.config)
