@@ -22,11 +22,13 @@
     ]
   },
   "dependencies": {
+    "@agrzes/pouch-rx": "^3.0.0",
     "@agrzes/yellow-next-plugin-core": "workspace:*",
     "@agrzes/yellow-next-plugin-server": "workspace:*",
     "debug": "4.4.1",
     "lodash": "4.17.21",
-    "pouchdb-node": "^9.0.0"
+    "pouchdb-node": "^9.0.0",
+    "rxjs": "7.8.1"
   },
   "devDependencies": {
     "@agrzes/yellow-next-plugin-test": "workspace:*",

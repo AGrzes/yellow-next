@@ -622,6 +622,9 @@ importers:
 
   plugin/data-pouch-db:
     dependencies:
+      '@agrzes/pouch-rx':
+        specifier: ^3.0.0
+        version: 3.0.0(pouchdb@9.0.0)(rxjs@7.8.1)
       '@agrzes/yellow-next-plugin-core':
         specifier: workspace:*
         version: link:../core
@@ -637,6 +640,9 @@ importers:
       pouchdb-node:
         specifier: ^9.0.0
         version: 9.0.0
+      rxjs:
+        specifier: 7.8.1
+        version: 7.8.1
     devDependencies:
       '@agrzes/yellow-next-plugin-test':
         specifier: workspace:*
@@ -1192,6 +1198,12 @@ packages:
 
   '@adobe/css-tools@4.4.3':
     resolution: {integrity: sha512-VQKMkwriZbaOgVCby1UDY/LDk5fIjhQicCvVPFqfe+69fWaPWydbWJ3wRt59/YzIwda1I81loas3oCoHxnqvdA==}
+
+  '@agrzes/pouch-rx@3.0.0':
+    resolution: {integrity: sha512-47KXCowekd8fkhEqnWTMBCyGc+hL0rlL9rJYIHwi4lBvMOgPPhGuPJIxQwIAfTYm0Fvolkjft/3ZPgRGYUkBQQ==}
+    peerDependencies:
+      pouchdb: ^9.0.0
+      rxjs: ^6.3.2
 
   '@akebifiky/remark-simple-plantuml@1.0.2':
     resolution: {integrity: sha512-y5rWgQvU+DMpLKx1KlXCsgUeqVooqQm1S3hePLF9iecZy6YhKRybznFdvAvoAoiV2GoGhObQDHnneAl93llIcg==}
@@ -6610,6 +6622,15 @@ packages:
 snapshots:
 
   '@adobe/css-tools@4.4.3': {}
+
+  '@agrzes/pouch-rx@3.0.0(pouchdb@9.0.0)(rxjs@7.8.1)':
+    dependencies:
+      debug: 4.4.1(supports-color@8.1.1)
+      lodash: 4.17.21
+      pouchdb: 9.0.0
+      rxjs: 7.8.1
+    transitivePeerDependencies:
+      - supports-color
 
   '@akebifiky/remark-simple-plantuml@1.0.2':
     dependencies:
