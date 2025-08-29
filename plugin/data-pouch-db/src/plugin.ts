@@ -1,5 +1,5 @@
 import {
-  factoryFromConstructor,
+  factoryForConstructor,
   PluginContext,
   ServiceIdentifier,
   ServiceRequest,
@@ -14,7 +14,7 @@ function entrypoint({ manifest, registry }: PluginContext): void {
   registry.register({
     identifier: POUCHDB_FACTORY,
     dependencies: [],
-    factory: factoryFromConstructor(PouchDB),
+    factory: factoryForConstructor(PouchDB),
   })
 
   registry.register({
