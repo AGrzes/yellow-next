@@ -23,3 +23,4 @@ export const setupContext = createSetupContext(
 export * from './context/index.js'
 export type { PluginContext, PluginEntrypoint } from './plugin.js'
 
+export * from './utils.js'
