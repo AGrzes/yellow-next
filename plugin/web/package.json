@@ -27,7 +27,7 @@
     "debug": "4.4.1",
     "lodash": "4.17.21",
     "resolve": "^1.22.10",
-    "vite": "^7.0.6"
+    "vite": "^7.0.7"
   },
   "devDependencies": {
     "@agrzes/yellow-next-plugin-test": "workspace:*",
