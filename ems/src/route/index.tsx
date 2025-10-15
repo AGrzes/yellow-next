@@ -1,14 +1,15 @@
 import React from 'react'
+import { RouteObject } from 'react-router-dom'
 import { Ems } from '../components/Ems'
 import { store } from '../service/store/index'
 import { withLoader } from '../utils/routeComponents'
 
 const RouterEms = withLoader(Ems)
 
-const routes = [
+const routes: RouteObject[] = [
   {
     path: 'ems/:id',
-    loader: async ({ params }: { params: { id: string } }) => {
+    loader: async ({ params }) => {
       return {
         item: (await store.get(params.id))[0],
       }
