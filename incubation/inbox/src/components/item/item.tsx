@@ -16,7 +16,7 @@ function ContentDisplay({ content, ...boxProps }: { content: Content } & BoxProp
 
 function ItemLabel({ labelKey, labelValue }: { labelKey: string; labelValue: string }) {
   return (
-    <Tag.Root>
+    <Tag.Root colorPalette={'blue'}>
       <Tag.Label>
         {labelKey}: {labelValue}
       </Tag.Label>
