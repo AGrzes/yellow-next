@@ -23,7 +23,7 @@ function ItemLabel({ labelKey, labelValue }: { labelKey: string; labelValue: str
 
 export function ItemLine({ item }: { item: Item }) {
   return (
-    <Box borderWidth="1px" borderRadius="lg" padding="4" position="relative" display="flex" alignItems="center">
+    <Box borderWidth="1px" borderRadius="lg" padding="1" position="relative" display="flex" alignItems="center">
       <Flex direction="column" alignItems="center" marginRight="4">
         <Text fontSize="sm" color="gray.500">
           {new Date(item.captured).toISOString().split('T')[0]}
