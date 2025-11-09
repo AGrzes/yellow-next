@@ -19,3 +19,22 @@ export const Primary: Story = {
     },
   },
 }
+
+export const Full: Story = {
+  args: {
+    item: {
+      id: '2',
+      kind: 'email',
+      captured: new Date().toISOString(),
+      title: 'Important Email',
+      summary: {
+        markdown: 'This is a **summary** of the email content.',
+      },
+      read: false,
+      labels: {
+        priority: 'high',
+        category: 'work',
+      },
+    },
+  },
+}
