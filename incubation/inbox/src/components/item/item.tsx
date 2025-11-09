@@ -1,5 +1,5 @@
 import type { BoxProps } from '@chakra-ui/react'
-import { Box, Button, ButtonGroup, Flex, Icon, Text, Wrap } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Flex, Icon, Tag, Text, Wrap } from '@chakra-ui/react'
 import type { Content, Item } from '@model/item.ts'
 import { Check, MoreHorizontal } from 'lucide-react'
 
@@ -11,6 +11,16 @@ function ContentDisplay({ content, ...boxProps }: { content: Content } & BoxProp
     <Box as="pre" {...boxProps}>
       {content.markdown}
     </Box>
+  )
+}
+
+function ItemLabel({ labelKey, labelValue }: { labelKey: string; labelValue: string }) {
+  return (
+    <Tag.Root>
+      <Tag.Label>
+        {labelKey}: {labelValue}
+      </Tag.Label>
+    </Tag.Root>
   )
 }
 
@@ -33,18 +43,7 @@ export function ItemLine({ item }: { item: Item }) {
           {item.labels && (
             <Wrap>
               {Object.entries(item.labels).map(([key, value]) => (
-                <Box
-                  key={key}
-                  as="span"
-                  backgroundColor="blue.100"
-                  color="blue.800"
-                  paddingX="2"
-                  paddingY="1"
-                  borderRadius="md"
-                  fontSize="sm"
-                >
-                  {key}: {value}
-                </Box>
+                <ItemLabel key={key} labelKey={key} labelValue={value} />
               ))}
             </Wrap>
           )}
