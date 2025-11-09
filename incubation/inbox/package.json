@@ -11,6 +11,8 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@chakra-ui/react": "^3.25.0",
+    "@emotion/react": "11.11.4",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
