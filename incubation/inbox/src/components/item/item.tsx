@@ -24,11 +24,11 @@ function ItemLabel({ labelKey, labelValue }: { labelKey: string; labelValue: str
 export function ItemLine({ item, ...boxProps }: { item: Item } & BoxProps) {
   return (
     <Box {...boxProps} padding="1" position="relative" display="flex" alignItems="center">
-      <Flex direction="column" alignItems="center" marginRight="4">
+      <Flex direction={{ base: 'column', md: 'row' }} alignItems="center" marginRight="4">
         <Text fontSize="sm" color="gray.500">
           {new Date(item.captured).toISOString().split('T')[0]}
         </Text>
-        <Text fontSize="xs" color="gray.400">
+        <Text fontSize="xs" color="gray.400" marginLeft={{ base: '0', md: '2' }}>
           {new Date(item.captured).toISOString().split('T')[1].slice(0, 8)}
         </Text>
       </Flex>
