@@ -1,5 +1,16 @@
-import { Box, Button, ButtonGroup, Flex, Text, Wrap } from '@chakra-ui/react'
-import type { Item } from '@model/item.ts'
+import { Box, type BoxProps, Button, ButtonGroup, Flex, Text, Wrap } from '@chakra-ui/react'
+import type { Content, Item } from '@model/item.ts'
+
+function ContentDisplay({ content, ...boxProps }: { content: Content } & BoxProps) {
+  if ('html' in content) {
+    return <Box {...boxProps} dangerouslySetInnerHTML={{ __html: content.html }} />
+  }
+  return (
+    <Box as="pre" {...boxProps}>
+      {content.markdown}
+    </Box>
+  )
+}
 
 export function ItemLine({ item }: { item: Item }) {
   return (
@@ -16,11 +27,7 @@ export function ItemLine({ item }: { item: Item }) {
         <Text fontSize="lg" fontWeight={item.read ? 'normal' : 'bold'}>
           {item.title}
         </Text>
-        {item.summary && (
-          <Text fontSize="sm" color="gray.500">
-            {'html' in item.summary ? item.summary.html : item.summary.markdown}
-          </Text>
-        )}
+        {item.summary && <ContentDisplay content={item.summary} fontSize="sm" color="gray.500" />}
         {item.labels && (
           <Wrap mt="2">
             {Object.entries(item.labels).map(([key, value]) => (
