@@ -1,5 +1,7 @@
-import { Box, Button, ButtonGroup, Flex, Text, Wrap } from '@chakra-ui/react'
+import type { BoxProps } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Flex, Icon, Text, Wrap } from '@chakra-ui/react'
 import type { Content, Item } from '@model/item.ts'
+import { Check, MoreHorizontal } from 'lucide-react'
 
 function ContentDisplay({ content, ...boxProps }: { content: Content } & BoxProps) {
   if ('html' in content) {
@@ -49,11 +51,17 @@ export function ItemLine({ item }: { item: Item }) {
         </Flex>
         {item.summary && <ContentDisplay content={item.summary} fontSize="sm" color="gray.500" />}
       </Flex>
-      <ButtonGroup gap="2" position="absolute" right="4" top="50%" transform="translateY(-50%)">
+      <ButtonGroup attached position="absolute" right="4" top="50%" transform="translateY(-50%)">
         <Button variant="outline" colorScheme="green">
-          Resolve
+          <Icon>
+            <Check size={16} />
+          </Icon>
         </Button>
-        <Button variant="outline">More</Button>
+        <Button variant="outline">
+          <Icon>
+            <MoreHorizontal size={16} />
+          </Icon>
+        </Button>
       </ButtonGroup>
     </Box>
   )
