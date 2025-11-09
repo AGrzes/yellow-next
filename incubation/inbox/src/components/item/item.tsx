@@ -2,16 +2,13 @@ import type { BoxProps } from '@chakra-ui/react'
 import { Box, Button, ButtonGroup, Flex, Icon, Tag, Text, Wrap } from '@chakra-ui/react'
 import type { Content, Item } from '@model/item.ts'
 import { Check, MoreHorizontal } from 'lucide-react'
+import { marked } from 'marked'
 
 function ContentDisplay({ content, ...boxProps }: { content: Content } & BoxProps) {
   if ('html' in content) {
     return <Box {...boxProps} dangerouslySetInnerHTML={{ __html: content.html }} />
   }
-  return (
-    <Box as="pre" {...boxProps}>
-      {content.markdown}
-    </Box>
-  )
+  return <Box {...boxProps} dangerouslySetInnerHTML={{ __html: marked.parse(content.markdown) }} />
 }
 
 function ItemLabel({ labelKey, labelValue }: { labelKey: string; labelValue: string }) {
