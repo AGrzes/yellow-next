@@ -26,15 +26,15 @@ function ItemLabel({ labelKey, labelValue }: { labelKey: string; labelValue: str
 
 export function ItemLine({ item }: { item: Item }) {
   return (
-    <Box
-      borderWidth="1px"
-      borderRadius="lg"
-      padding="4"
-      position="relative"
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-    >
+    <Box borderWidth="1px" borderRadius="lg" padding="4" position="relative" display="flex" alignItems="center">
+      <Flex direction="column" alignItems="center" marginRight="4">
+        <Text fontSize="sm" color="gray.500">
+          {new Date(item.captured).toISOString().split('T')[0]}
+        </Text>
+        <Text fontSize="xs" color="gray.400">
+          {new Date(item.captured).toISOString().split('T')[1].slice(0, 8)}
+        </Text>
+      </Flex>
       <Flex direction="column" flex="1">
         <Flex alignItems="center" gap="2">
           <Text fontSize="lg" fontWeight={item.read ? 'normal' : 'bold'}>
