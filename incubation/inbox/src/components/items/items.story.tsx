@@ -16,6 +16,7 @@ export const Primary: Story = {
         id: '1',
         kind: 'task',
         captured: new Date().toISOString(),
+        read: true,
         title: 'Sample Item',
       },
       {

@@ -6,7 +6,7 @@ export function ItemsList({ items }: { items: Item[] }) {
   return (
     <Flex direction="column" gap="1">
       {items.map((item) => (
-        <ItemLine key={item.id} item={item} />
+        <ItemLine key={item.id} item={item} borderTopWidth="1px" borderTopColor="gray.300" />
       ))}
     </Flex>
   )

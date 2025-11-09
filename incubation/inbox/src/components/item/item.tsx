@@ -1,5 +1,5 @@
 import type { BoxProps } from '@chakra-ui/react'
-import { Box, Button, ButtonGroup, Flex, Icon, Tag, Text, Wrap } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Flex, Icon, Spacer, Tag, Text, Wrap } from '@chakra-ui/react'
 import type { Content, Item } from '@model/item.ts'
 import { Check, MoreHorizontal } from 'lucide-react'
 import { marked } from 'marked'
@@ -21,9 +21,9 @@ function ItemLabel({ labelKey, labelValue }: { labelKey: string; labelValue: str
   )
 }
 
-export function ItemLine({ item }: { item: Item }) {
+export function ItemLine({ item, ...boxProps }: { item: Item } & BoxProps) {
   return (
-    <Box borderWidth="1px" borderRadius="lg" padding="1" position="relative" display="flex" alignItems="center">
+    <Box {...boxProps} padding="1" position="relative" display="flex" alignItems="center">
       <Flex direction="column" alignItems="center" marginRight="4">
         <Text fontSize="sm" color="gray.500">
           {new Date(item.captured).toISOString().split('T')[0]}
@@ -47,13 +47,14 @@ export function ItemLine({ item }: { item: Item }) {
         </Flex>
         {item.summary && <ContentDisplay content={item.summary} fontSize="sm" color="gray.500" />}
       </Flex>
-      <ButtonGroup attached position="absolute" right="4" top="50%" transform="translateY(-50%)">
-        <Button variant="outline" colorScheme="green">
+      <Spacer />
+      <ButtonGroup attached>
+        <Button variant="ghost" colorScheme="green">
           <Icon>
             <Check size={16} />
           </Icon>
         </Button>
-        <Button variant="outline">
+        <Button variant="ghost">
           <Icon>
             <MoreHorizontal size={16} />
           </Icon>
