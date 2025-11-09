@@ -22,19 +22,25 @@ function ItemLabel({ labelKey, labelValue }: { labelKey: string; labelValue: str
 }
 
 export function ItemLine({ item, ...boxProps }: { item: Item } & BoxProps) {
+  const fontWeight = item.read ? 'normal' : 'bold'
   return (
     <Box {...boxProps} padding="1" position="relative" display="flex" alignItems="center">
       <Flex direction={{ base: 'column', md: 'row' }} alignItems="center" marginRight="4">
-        <Text fontSize="sm" color="gray.500">
+        <Text fontSize="sm" fontWeight={fontWeight} color="gray.500">
           {new Date(item.captured).toISOString().split('T')[0]}
         </Text>
-        <Text fontSize="xs" color="gray.400" marginLeft={{ base: '0', md: '2' }}>
+        <Text
+          fontSize={{ base: 'xs', md: 'sm' }}
+          fontWeight={fontWeight}
+          color={{ base: 'gray.400', md: 'gray.500' }}
+          marginLeft={{ base: '0', md: '2' }}
+        >
           {new Date(item.captured).toISOString().split('T')[1].slice(0, 8)}
         </Text>
       </Flex>
       <Flex direction="column" flex="1">
         <Flex alignItems="center" gap="2">
-          <Text fontSize="lg" fontWeight={item.read ? 'normal' : 'bold'}>
+          <Text fontSize="lg" fontWeight={fontWeight}>
             {item.title}
           </Text>
           {item.labels && (
