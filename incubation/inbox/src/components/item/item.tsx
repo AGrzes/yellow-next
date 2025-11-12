@@ -1,5 +1,5 @@
 import type { BoxProps } from '@chakra-ui/react'
-import { Box, Button, ButtonGroup, Flex, Icon, Spacer, Tag, Text, Wrap } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Flex, Icon, Spacer, Text, Wrap } from '@chakra-ui/react'
 import type { Item } from '@model/item.ts'
 import { Check, MoreHorizontal } from 'lucide-react'
 import { ContentDisplay } from '../content-display/content-display'
