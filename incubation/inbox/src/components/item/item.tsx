@@ -1,15 +1,8 @@
 import type { BoxProps } from '@chakra-ui/react'
 import { Box, Button, ButtonGroup, Flex, Icon, Spacer, Tag, Text, Wrap } from '@chakra-ui/react'
-import type { Content, Item } from '@model/item.ts'
+import type { Item } from '@model/item.ts'
 import { Check, MoreHorizontal } from 'lucide-react'
-import { marked } from 'marked'
-
-function ContentDisplay({ content, ...boxProps }: { content: Content } & BoxProps) {
-  if ('html' in content) {
-    return <Box {...boxProps} dangerouslySetInnerHTML={{ __html: content.html }} />
-  }
-  return <Box {...boxProps} dangerouslySetInnerHTML={{ __html: marked.parse(content.markdown) }} />
-}
+import { ContentDisplay } from '../content-display/content-display'
 
 function ItemLabel({ labelKey, labelValue }: { labelKey: string; labelValue: string }) {
   return (
