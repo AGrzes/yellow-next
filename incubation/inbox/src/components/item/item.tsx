@@ -11,20 +11,20 @@ export function ItemLine({ item, ...boxProps }: { item: Item } & BoxProps) {
   return (
     <Box {...boxProps} padding="1" position="relative" display="flex" alignItems="center">
       <DateDisplay date={item.captured} highlight={!item.read} />
-      <Flex direction="column" flex="1">
-        <Flex alignItems="center" gap="2">
-          <Text fontSize="lg" fontWeight={fontWeight}>
-            {item.title}
-          </Text>
-          {item.labels && (
-            <Wrap>
-              {Object.entries(item.labels).map(([key, value]) => (
-                <LabelDisplay key={key} labelKey={key} labelValue={value} />
-              ))}
-            </Wrap>
-          )}
-        </Flex>
-        {item.summary && <ContentDisplay content={item.summary} fontSize="sm" color="gray.500" />}
+      <Flex direction="row" flexWrap="wrap" flex="1" gap="2" alignItems="center">
+        <Text fontSize="lg" fontWeight={fontWeight} flexShrink={0}>
+          {item.title}
+        </Text>
+        {item.labels && (
+          <Wrap flexShrink={1} minWidth="0">
+            {Object.entries(item.labels).map(([key, value]) => (
+              <LabelDisplay key={key} labelKey={key} labelValue={value} />
+            ))}
+          </Wrap>
+        )}
+        {item.summary && (
+          <ContentDisplay content={item.summary} fontSize="sm" color="gray.500" flexShrink={1} minWidth="0" />
+        )}
       </Flex>
       {/* Replace Spacer with a Box that collapses when needed */}
       <Box flexShrink={1} />
