@@ -2,7 +2,6 @@ import type { Meta, StoryFn } from '@storybook/react-vite'
 import { LabelDisplay } from './label-display'
 
 export default {
-  title: 'Components/LabelDisplay',
   component: LabelDisplay,
 } as Meta<typeof LabelDisplay>
 

@@ -2,7 +2,6 @@ import type { Meta, StoryFn } from '@storybook/react-vite'
 import { DateDisplay } from './date-display'
 
 export default {
-  title: 'Components/DateDisplay',
   component: DateDisplay,
 } as Meta<typeof DateDisplay>
 
