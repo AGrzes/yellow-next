@@ -1,5 +1,5 @@
 import type { BoxProps } from '@chakra-ui/react'
-import { Box, Button, ButtonGroup, Flex, Icon, Spacer, Text, Wrap } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Flex, Icon, Text, Wrap } from '@chakra-ui/react'
 import type { Item } from '@model/item.ts'
 import { Check, MoreHorizontal } from 'lucide-react'
 import { ContentDisplay } from '../content-display/content-display'
@@ -26,7 +26,8 @@ export function ItemLine({ item, ...boxProps }: { item: Item } & BoxProps) {
         </Flex>
         {item.summary && <ContentDisplay content={item.summary} fontSize="sm" color="gray.500" />}
       </Flex>
-      <Spacer />
+      {/* Replace Spacer with a Box that collapses when needed */}
+      <Box flexShrink={1} />
       <ButtonGroup attached>
         <Button variant="ghost" colorScheme="green">
           <Icon>
