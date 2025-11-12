@@ -4,16 +4,7 @@ import type { Item } from '@model/item.ts'
 import { Check, MoreHorizontal } from 'lucide-react'
 import { ContentDisplay } from '../content-display/content-display'
 import { DateDisplay } from '../date-display/date-display'
-
-function ItemLabel({ labelKey, labelValue }: { labelKey: string; labelValue: string }) {
-  return (
-    <Tag.Root colorPalette={'blue'}>
-      <Tag.Label>
-        {labelKey}: {labelValue}
-      </Tag.Label>
-    </Tag.Root>
-  )
-}
+import { LabelDisplay } from '../label-display/label-display'
 
 export function ItemLine({ item, ...boxProps }: { item: Item } & BoxProps) {
   const fontWeight = item.read ? 'normal' : 'bold'
@@ -28,7 +19,7 @@ export function ItemLine({ item, ...boxProps }: { item: Item } & BoxProps) {
           {item.labels && (
             <Wrap>
               {Object.entries(item.labels).map(([key, value]) => (
-                <ItemLabel key={key} labelKey={key} labelValue={value} />
+                <LabelDisplay key={key} labelKey={key} labelValue={value} />
               ))}
             </Wrap>
           )}
