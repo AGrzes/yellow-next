@@ -1,4 +1,4 @@
-import { Flex, Select, Text } from '@mantine/core'
+import { Flex, Input, Select } from '@mantine/core'
 export interface ItemsFilterSpec {
   resolved?: 'all' | 'recently' | 'none'
   read?: 'all' | 'read' | 'unread'
@@ -13,10 +13,8 @@ export function ItemsFilter({
 }) {
   return (
     <Flex p="sm" gap="lg" wrap="wrap">
-      <Flex gap="xs" align="center">
-        <Text fw={500}>Resolved</Text>
+      <Input.Wrapper label="Resolved" w={180}>
         <Select
-          w={180}
           value={value.resolved || 'recently'}
           data={[
             { value: 'all', label: 'All' },
@@ -31,11 +29,9 @@ export function ItemsFilter({
             onChange?.({ ...value, resolved: newResolved })
           }}
         />
-      </Flex>
-      <Flex gap="xs" align="center">
-        <Text fw={500}>Read</Text>
+      </Input.Wrapper>
+      <Input.Wrapper label="Read" w={180}>
         <Select
-          w={180}
           value={value.read || 'all'}
           data={[
             { value: 'all', label: 'All' },
@@ -50,7 +46,7 @@ export function ItemsFilter({
             onChange?.({ ...value, read: newRead })
           }}
         />
-      </Flex>
+      </Input.Wrapper>
     </Flex>
   )
 }
