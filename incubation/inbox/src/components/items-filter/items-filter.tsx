@@ -1,4 +1,18 @@
 import { Flex, Input, Select } from '@mantine/core'
+
+const horizontalInputStyles = {
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'var(--mantine-spacing-xs)',
+  },
+  label: {
+    marginBottom: 0,
+  },
+  input: {
+    flex: 1,
+  },
+}
 export interface ItemsFilterSpec {
   resolved?: 'all' | 'recently' | 'none'
   read?: 'all' | 'read' | 'unread'
@@ -13,8 +27,9 @@ export function ItemsFilter({
 }) {
   return (
     <Flex p="sm" gap="lg" wrap="wrap">
-      <Input.Wrapper label="Resolved" w={180}>
+      <Input.Wrapper label="Resolved" labelProps={{ style: { fontWeight: 500 } }} styles={horizontalInputStyles}>
         <Select
+          w={128}
           value={value.resolved || 'recently'}
           data={[
             { value: 'all', label: 'All' },
@@ -30,8 +45,9 @@ export function ItemsFilter({
           }}
         />
       </Input.Wrapper>
-      <Input.Wrapper label="Read" w={180}>
+      <Input.Wrapper label="Read" labelProps={{ style: { fontWeight: 500 } }} styles={horizontalInputStyles}>
         <Select
+          w={128}
           value={value.read || 'all'}
           data={[
             { value: 'all', label: 'All' },
