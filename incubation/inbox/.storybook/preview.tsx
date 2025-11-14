@@ -1,5 +1,9 @@
-import { MantineProvider } from '@mantine/core'
+import { createTheme, MantineProvider } from '@mantine/core'
+import '@mantine/core/styles.css'
 import type { Preview } from '@storybook/react-vite'
+
+export const theme = createTheme({})
+
 const preview: Preview = {
   parameters: {
     controls: {
@@ -11,7 +15,7 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <MantineProvider defaultColorScheme="light">
+      <MantineProvider theme={theme}>
         <Story />
       </MantineProvider>
     ),
