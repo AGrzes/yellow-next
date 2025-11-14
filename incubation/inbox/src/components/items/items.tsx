@@ -1,13 +1,17 @@
-import { Flex } from '@chakra-ui/react'
+import { Stack } from '@mantine/core'
 import type { Item } from '@model/item.ts'
 import { ItemLine } from '../item/item.tsx'
 
 export function ItemsList({ items }: { items: Item[] }) {
   return (
-    <Flex direction="column" gap="1">
+    <Stack gap="xs">
       {items.map((item) => (
-        <ItemLine key={item.id} item={item} borderTopWidth="1px" borderTopColor="gray.300" />
+        <ItemLine
+          key={item.id}
+          item={item}
+          style={{ borderTop: '1px solid var(--mantine-color-gray-3)' }}
+        />
       ))}
-    </Flex>
+    </Stack>
   )
 }

@@ -1,11 +1,9 @@
-import { Tag } from '@chakra-ui/react'
+import { Badge } from '@mantine/core'
 
 export function LabelDisplay({ labelKey, labelValue }: { labelKey: string; labelValue: string }) {
   return (
-    <Tag.Root colorPalette={'blue'}>
-      <Tag.Label>
-        {labelKey}: {labelValue}
-      </Tag.Label>
-    </Tag.Root>
+    <Badge variant="light" color="blue">
+      {labelKey}: {labelValue}
+    </Badge>
   )
 }

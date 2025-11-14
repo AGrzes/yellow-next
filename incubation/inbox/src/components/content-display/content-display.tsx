@@ -1,5 +1,5 @@
-import type { BoxProps } from '@chakra-ui/react'
-import { Box } from '@chakra-ui/react'
+import type { BoxProps } from '@mantine/core'
+import { Box } from '@mantine/core'
 import type { Content } from '@model/item.ts'
 import { marked } from 'marked'
 

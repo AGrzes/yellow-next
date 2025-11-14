@@ -1,44 +1,44 @@
-import type { BoxProps } from '@chakra-ui/react'
-import { Box, ButtonGroup, Flex, Icon, IconButton, Text, Wrap } from '@chakra-ui/react'
+import type { FlexProps } from '@mantine/core'
+import { ActionIcon, Flex, Group, Text } from '@mantine/core'
 import type { Item } from '@model/item.ts'
 import { Check, MoreHorizontal } from 'lucide-react'
 import { ContentDisplay } from '../content-display/content-display'
 import { DateDisplay } from '../date-display/date-display'
 import { LabelDisplay } from '../label-display/label-display'
 
-export function ItemLine({ item, ...boxProps }: { item: Item } & BoxProps) {
+export function ItemLine({ item, ...flexProps }: { item: Item } & FlexProps) {
   const fontWeight = item.read ? 'normal' : 'bold'
   return (
-    <Box {...boxProps} padding="1" position="relative" display="flex" alignItems="center">
+    <Flex {...flexProps} p="xs" align="center" wrap="wrap" gap="sm">
       <DateDisplay date={item.captured} highlight={!item.read} />
-      <Flex direction="row" flexWrap="wrap" flex="1" gap="2" alignItems="center">
-        <Text fontSize="lg" fontWeight={fontWeight} flexShrink={0}>
+      <Flex direction="row" wrap="wrap" flex="1" gap="sm" align="center">
+        <Text size="lg" fw={fontWeight} style={{ flexShrink: 0 }}>
           {item.title}
         </Text>
         {item.labels && (
-          <Wrap flexShrink={1} minWidth="0">
+          <Group gap="xs" wrap="wrap" style={{ flexShrink: 1, minWidth: 0 }}>
             {Object.entries(item.labels).map(([key, value]) => (
               <LabelDisplay key={key} labelKey={key} labelValue={value} />
             ))}
-          </Wrap>
+          </Group>
         )}
         {item.summary && (
-          <ContentDisplay content={item.summary} fontSize="sm" color="gray.500" flexShrink={1} minWidth="0" />
+          <ContentDisplay
+            content={item.summary}
+            style={{ flexShrink: 1, minWidth: 0 }}
+            c="dimmed"
+            fz="sm"
+          />
         )}
       </Flex>
-      <Box flexShrink={1} />
-      <ButtonGroup attached>
-        <IconButton variant="ghost" colorScheme="green">
-          <Icon>
-            <Check size={16} />
-          </Icon>
-        </IconButton>
-        <IconButton variant="ghost">
-          <Icon>
-            <MoreHorizontal size={16} />
-          </Icon>
-        </IconButton>
-      </ButtonGroup>
-    </Box>
+      <ActionIcon.Group>
+        <ActionIcon variant="subtle" color="green" radius="md">
+          <Check size={16} />
+        </ActionIcon>
+        <ActionIcon variant="subtle" radius="md">
+          <MoreHorizontal size={16} />
+        </ActionIcon>
+      </ActionIcon.Group>
+    </Flex>
   )
 }

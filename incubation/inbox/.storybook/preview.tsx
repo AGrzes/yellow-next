@@ -1,4 +1,4 @@
-import { ChakraProvider, defaultSystem } from '@chakra-ui/react'
+import { MantineProvider } from '@mantine/core'
 import type { Preview } from '@storybook/react-vite'
 const preview: Preview = {
   parameters: {
@@ -11,9 +11,9 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <ChakraProvider value={defaultSystem}>
+      <MantineProvider defaultColorScheme="light">
         <Story />
-      </ChakraProvider>
+      </MantineProvider>
     ),
   ],
 }

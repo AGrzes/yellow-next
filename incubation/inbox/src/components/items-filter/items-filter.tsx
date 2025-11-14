@@ -1,4 +1,4 @@
-import { Field, Flex, NativeSelect } from '@chakra-ui/react'
+import { Flex, NativeSelect, Text } from '@mantine/core'
 export interface ItemsFilterSpec {
   resolved?: 'all' | 'recently' | 'none'
   read?: 'all' | 'read' | 'unread'
@@ -12,41 +12,39 @@ export function ItemsFilter({
   onChange: (newValue: ItemsFilterSpec) => void
 }) {
   return (
-    <Flex padding="2" direction="row" gap="4">
-      <Field.Root orientation="horizontal" w="192px">
-        <Field.Label>Resolved</Field.Label>
-        <NativeSelect.Root>
-          <NativeSelect.Field
-            value={value.resolved || 'recently'}
-            onChange={(e) => {
-              const newResolved = e.target.value as 'all' | 'recently' | 'none'
-              onChange?.({ ...value, resolved: newResolved })
-            }}
-          >
-            <option value="all">All</option>
-            <option value="recently">Recently</option>
-            <option value="none">None</option>
-          </NativeSelect.Field>
-          <NativeSelect.Indicator />
-        </NativeSelect.Root>
-      </Field.Root>
-      <Field.Root orientation="horizontal" w="192px">
-        <Field.Label>Read</Field.Label>
-        <NativeSelect.Root>
-          <NativeSelect.Field
-            value={value.read || 'all'}
-            onChange={(e) => {
-              const newResolved = e.target.value as 'all' | 'read' | 'unread'
-              onChange?.({ ...value, read: newResolved })
-            }}
-          >
-            <option value="all">All</option>
-            <option value="read">Read</option>
-            <option value="unread">None</option>
-          </NativeSelect.Field>
-          <NativeSelect.Indicator />
-        </NativeSelect.Root>
-      </Field.Root>
+    <Flex p="sm" gap="lg" wrap="wrap">
+      <Flex gap="xs" align="center">
+        <Text fw={500}>Resolved</Text>
+        <NativeSelect
+          w={180}
+          value={value.resolved || 'recently'}
+          data={[
+            { value: 'all', label: 'All' },
+            { value: 'recently', label: 'Recently' },
+            { value: 'none', label: 'None' },
+          ]}
+          onChange={(event) => {
+            const newResolved = event.currentTarget.value as 'all' | 'recently' | 'none'
+            onChange?.({ ...value, resolved: newResolved })
+          }}
+        />
+      </Flex>
+      <Flex gap="xs" align="center">
+        <Text fw={500}>Read</Text>
+        <NativeSelect
+          w={180}
+          value={value.read || 'all'}
+          data={[
+            { value: 'all', label: 'All' },
+            { value: 'read', label: 'Read' },
+            { value: 'unread', label: 'None' },
+          ]}
+          onChange={(event) => {
+            const newRead = event.currentTarget.value as 'all' | 'read' | 'unread'
+            onChange?.({ ...value, read: newRead })
+          }}
+        />
+      </Flex>
     </Flex>
   )
 }
