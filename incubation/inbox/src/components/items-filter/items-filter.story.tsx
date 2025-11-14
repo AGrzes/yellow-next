@@ -1,13 +1,36 @@
-import type { Meta, StoryFn } from '@storybook/react-vite'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ItemsFilter } from './items-filter'
 
-export default {
+const meta = {
   component: ItemsFilter,
-} as Meta<typeof ItemsFilter>
+} satisfies Meta<typeof ItemsFilter>
 
-const Template: StoryFn<typeof ItemsFilter> = (args) => <ItemsFilter {...args} />
+export default meta
+type Story = StoryObj<typeof meta>
 
-export const Default = Template.bind({})
-Default.args = {
-  value: {},
+export const Primary: Story = {
+  args: {
+    value: {},
+    onChange: (newValue) => {
+      console.log('Filter changed:', newValue)
+    },
+  },
+}
+
+export const WithLabels: Story = {
+  args: {
+    value: {
+      labels: {
+        priority: ['high'],
+        category: ['work'],
+      },
+    },
+    onChange: (newValue) => {
+      console.log('Filter changed:', newValue)
+    },
+    labels: {
+      priority: { high: 'High Priority', medium: 'Medium Priority', low: 'Low Priority' },
+      category: { work: 'Work', personal: 'Personal', spam: 'Spam' },
+    },
+  },
 }

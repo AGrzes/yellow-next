@@ -16,14 +16,19 @@ const horizontalInputStyles = {
 export interface ItemsFilterSpec {
   resolved?: 'all' | 'recently' | 'none'
   read?: 'all' | 'read' | 'unread'
+  labels?: Record<string, string[]>
 }
+
+
 
 export function ItemsFilter({
   value,
+  labels,
   onChange,
 }: {
   value: ItemsFilterSpec
   onChange: (newValue: ItemsFilterSpec) => void
+  labels?: Record<string, Record<string, string>>
 }) {
   return (
     <Flex p="sm" gap="lg" wrap="wrap">
@@ -63,6 +68,40 @@ export function ItemsFilter({
           }}
         />
       </Input.Wrapper>
+      {labels &&
+        Object.entries(labels).map(([labelKey, labelValues]) => (
+          <Input.Wrapper
+            key={labelKey}
+            label={labelKey}
+            labelProps={{ style: { fontWeight: 500 } }}
+            styles={horizontalInputStyles}
+          >
+            <Select
+              w={128}
+              value={value.labels?.[labelKey]?.join(',') || ''}
+              placeholder="All"
+              data={[
+                { value: '', label: 'All' },
+                ...Object.keys(labelValues).map((labelValue) => ({
+                  value: labelValue,
+                  label: labelValue,
+                })),
+              ]}
+              onChange={(newValue) => {
+                const newLabels = { ...(value.labels || {}) }
+                if (newValue) {
+                  newLabels[labelKey] = newValue.split(',')
+                } else {
+                  delete newLabels[labelKey]
+                }
+                onChange?.({ ...value, labels: newLabels })
+              }}
+              multiple
+              searchable
+              clearable
+            />
+          </Input.Wrapper>
+        ))}
     </Flex>
   )
 }
