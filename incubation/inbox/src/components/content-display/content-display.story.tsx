@@ -20,15 +20,15 @@ const htmlContent: Content = {
 export const Markdown: Story = {
   args: {
     content: markdownContent,
-    fontSize: 'sm',
-    color: 'gray.500',
+    fz: 'sm',
+    c: 'dimmed',
   },
 }
 
 export const HTML: Story = {
   args: {
     content: htmlContent,
-    fontSize: 'sm',
-    color: 'gray.500',
+    fz: 'sm',
+    c: 'dimmed',
   },
 }

@@ -1,4 +1,4 @@
-import { Flex, Text } from '@chakra-ui/react'
+import { Flex, Text } from '@mantine/core'
 
 export function DateDisplay({ date, highlight }: { date: string; highlight: boolean }) {
   const formattedDate = new Date(date).toISOString()
@@ -7,16 +7,11 @@ export function DateDisplay({ date, highlight }: { date: string; highlight: bool
   const fontWeight = highlight ? 'bold' : 'normal'
 
   return (
-    <Flex direction={{ base: 'column', md: 'row' }} alignItems="center" marginRight="4">
-      <Text fontSize="sm" color="gray.500" fontWeight={fontWeight}>
+    <Flex direction="row" align="center" gap="xs" wrap="wrap" mr="md">
+      <Text size="sm" c="gray" fw={fontWeight}>
         {datePart}
       </Text>
-      <Text
-        fontSize={{ base: 'xs', md: 'sm' }}
-        color={{ base: 'gray.500', md: 'gray.400' }}
-        marginLeft={{ base: '0', md: '2' }}
-        fontWeight={fontWeight}
-      >
+      <Text size="xs" c="dimmed" fw={fontWeight}>
         {timePart}
       </Text>
     </Flex>

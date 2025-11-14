@@ -3,3 +3,5 @@ target
 types
 coverage
 dist
+*storybook.log
+storybook-static

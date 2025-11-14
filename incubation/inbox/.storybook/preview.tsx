@@ -1,5 +1,9 @@
-import { ChakraProvider, defaultSystem } from '@chakra-ui/react'
+import { createTheme, MantineProvider } from '@mantine/core'
+import '@mantine/core/styles.css'
 import type { Preview } from '@storybook/react-vite'
+
+export const theme = createTheme({})
+
 const preview: Preview = {
   parameters: {
     controls: {
@@ -11,9 +15,9 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <ChakraProvider value={defaultSystem}>
+      <MantineProvider theme={theme}>
         <Story />
-      </ChakraProvider>
+      </MantineProvider>
     ),
   ],
 }
