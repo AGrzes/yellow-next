@@ -23,16 +23,11 @@ export function ItemLine({ item, ...flexProps }: { item: Item } & FlexProps) {
           </Group>
         )}
         {item.summary && (
-          <ContentDisplay
-            content={item.summary}
-            style={{ flexShrink: 1, minWidth: 0 }}
-            c="dimmed"
-            fz="sm"
-          />
+          <ContentDisplay content={item.summary} style={{ flexShrink: 1, minWidth: 0 }} c="dimmed" fz="sm" />
         )}
       </Flex>
       <ActionIcon.Group>
-        <ActionIcon variant="subtle" color="green" radius="md">
+        <ActionIcon variant="subtle" radius="md">
           <Check size={16} />
         </ActionIcon>
         <ActionIcon variant="subtle" radius="md">

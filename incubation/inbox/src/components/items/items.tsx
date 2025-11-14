@@ -6,11 +6,7 @@ export function ItemsList({ items }: { items: Item[] }) {
   return (
     <Stack gap="xs">
       {items.map((item) => (
-        <ItemLine
-          key={item.id}
-          item={item}
-          style={{ borderTop: '1px solid var(--mantine-color-gray-3)' }}
-        />
+        <ItemLine key={item.id} item={item} style={{ borderTop: '1px solid var(--mantine-color-gray-3)' }} />
       ))}
     </Stack>
   )
