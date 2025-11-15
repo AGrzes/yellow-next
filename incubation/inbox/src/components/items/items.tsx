@@ -4,9 +4,13 @@ import { ItemLine } from '../item/item.tsx'
 
 export function ItemsList({ items }: { items: Item[] }) {
   return (
-    <Stack gap="xs">
+    <Stack gap={0} style={{ width: '100%' }}>
       {items.map((item) => (
-        <ItemLine key={item.id} item={item} style={{ borderTop: '1px solid var(--mantine-color-gray-3)' }} />
+        <ItemLine
+          key={item.id}
+          item={item}
+          style={{ width: '100%', borderTop: '1px solid var(--mantine-color-gray-3)', padding: '0' }}
+        />
       ))}
     </Stack>
   )

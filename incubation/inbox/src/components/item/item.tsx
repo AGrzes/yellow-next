@@ -9,9 +9,9 @@ import { LabelDisplay } from '../label-display/label-display'
 export function ItemLine({ item, ...flexProps }: { item: Item } & FlexProps) {
   const fontWeight = item.read ? 'normal' : 'bold'
   return (
-    <Flex {...flexProps} p="xs" align="center" wrap="wrap" gap="sm">
+    <Flex {...flexProps} align="center" wrap="wrap" gap="sm">
       <DateDisplay date={item.captured} highlight={!item.read} />
-      <Flex direction="row" wrap="wrap" flex="1" gap="sm" align="center">
+      <Flex direction="row" wrap="wrap" flex="1" gap="0" align="center">
         <Text size="lg" fw={fontWeight} style={{ flexShrink: 0 }}>
           {item.title}
         </Text>
