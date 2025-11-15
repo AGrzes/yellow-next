@@ -1,0 +1,9 @@
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;       /* spacing between paragraphs only */
+}
+
+.block p {
+  margin: 0;       /* paragraphs themselves have no outer margins */
+}
