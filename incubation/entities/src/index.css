@@ -1,0 +1,11 @@
+.horizontal-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  /* optional */
+}
+
+.vertical-layout {
+  display: flex;
+  flex-direction: column;
+}
