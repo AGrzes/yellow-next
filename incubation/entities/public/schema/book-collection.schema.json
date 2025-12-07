@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "Book",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Internal identifier of the book"
+    },
+    "title": {
+      "type": "string",
+      "title": "Title",
+      "minLength": 1
+    },
+    "author": {
+      "type": "string",
+      "title": "Author",
+      "minLength": 1
+    },
+    "genre": {
+      "type": "string",
+      "title": "Genre",
+      "enum": [
+        "Fiction",
+        "Non-fiction",
+        "Science Fiction",
+        "Fantasy",
+        "Mystery",
+        "Biography",
+        "History",
+        "Technology",
+        "Other"
+      ],
+      "default": "Fiction"
+    },
+    "pages": {
+      "type": "integer",
+      "title": "Number of pages",
+      "minimum": 1
+    },
+    "publishedYear": {
+      "type": "integer",
+      "title": "Published year",
+      "minimum": 0,
+      "maximum": 2100
+    },
+    "isbn": {
+      "type": "string",
+      "title": "ISBN"
+    },
+    "available": {
+      "type": "boolean",
+      "title": "Available"
+    }
+  },
+  "required": ["title", "author", "genre", "pages"]
+}
