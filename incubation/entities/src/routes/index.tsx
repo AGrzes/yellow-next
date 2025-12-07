@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router'
-import { Collection } from './Collection.tsx'
+import { Collection, collectionLoader } from './Collection.tsx'
 import { Item, itemLoader } from './Item.tsx'
 
 export const router = createBrowserRouter([
@@ -11,5 +11,6 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <Collection />,
+    loader: collectionLoader,
   },
 ])
