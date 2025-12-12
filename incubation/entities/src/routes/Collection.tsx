@@ -1,6 +1,6 @@
 import { JsonForms } from '@jsonforms/react'
 import { vanillaCells, vanillaRenderers } from '@jsonforms/vanilla-renderers'
-import { useLoaderData, type LoaderFunction } from 'react-router'
+import { Link, useLoaderData, type LoaderFunction } from 'react-router'
 
 type CollectionLoaderData = {
   schema: any
@@ -23,6 +23,7 @@ export function Collection() {
             cells={vanillaCells}
             readonly={true}
           />
+          <Link to={{ pathname: `/${item.id}` }}>Details</Link>
         </li>
       ))}
     </ul>

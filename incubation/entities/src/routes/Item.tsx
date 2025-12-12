@@ -1,20 +1,23 @@
 import { JsonForms } from '@jsonforms/react'
 import { vanillaCells, vanillaRenderers } from '@jsonforms/vanilla-renderers'
 import { useState } from 'react'
-import { useLoaderData, type LoaderFunction } from 'react-router'
+import { Link, useLoaderData, type LoaderFunction } from 'react-router'
 
 export function Item() {
   const { schema, uiSchema, item } = useLoaderData()
   const [data, setData] = useState(item)
   return (
-    <JsonForms
-      schema={schema}
-      uischema={uiSchema}
-      data={data}
-      renderers={vanillaRenderers}
-      cells={vanillaCells}
-      onChange={({ data }) => setData(data)}
-    />
+    <>
+      <Link to={{ pathname: `/` }}>Back</Link>
+      <JsonForms
+        schema={schema}
+        uischema={uiSchema}
+        data={data}
+        renderers={vanillaRenderers}
+        cells={vanillaCells}
+        onChange={({ data }) => setData(data)}
+      />
+    </>
   )
 }
 
@@ -37,5 +40,5 @@ export const itemLoader: LoaderFunction = async ({ params }) => {
     })(),
   ])
   console.log('itemLoader', { params, schema, uiSchema, data })
-  return { schema, uiSchema, item: data[Number.parseInt(params.id!)] }
+  return { schema, uiSchema, item: data.find((item) => item.id === params.id) }
 }
