@@ -410,6 +410,9 @@ importers:
       '@emotion/react':
         specifier: 11.11.4
         version: 11.11.4(@types/react@19.2.2)(react@19.2.0)
+      '@jsonforms/core':
+        specifier: ^3.7.0
+        version: 3.7.0
       '@jsonforms/react':
         specifier: ^3.7.0
         version: 3.7.0(@jsonforms/core@3.7.0)(react@19.2.0)
