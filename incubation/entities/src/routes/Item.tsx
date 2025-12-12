@@ -3,6 +3,7 @@ import { vanillaRenderers } from '@jsonforms/vanilla-renderers'
 import { useState } from 'react'
 import { Link, useLoaderData, type LoaderFunction } from 'react-router'
 import { mantineCells } from '../json-forms/index.ts'
+import { entityManager, schemaManager, uiSchemaManager } from '../service/index.ts'
 
 export function Item() {
   const { schema, uiSchema, item } = useLoaderData()
@@ -24,22 +25,10 @@ export function Item() {
 
 export const itemLoader: LoaderFunction = async ({ params }) => {
   const [schema, uiSchema, data] = await Promise.all([
-    (async () => {
-      const response = await fetch('/schema/book-collection.schema.json')
-      const schema = await response.json()
-      return schema
-    })(),
-    (async () => {
-      const response = await fetch('/ui-schema/book-item.uischema.json')
-      const uiSchema = await response.json()
-      return uiSchema
-    })(),
-    (async () => {
-      const response = await fetch('/data/book-collection.data.json')
-      const data: any[] = await response.json()
-      return data
-    })(),
+    schemaManager.getSchema('book'),
+    uiSchemaManager.getUiSchema('book', 'collection'),
+    entityManager.get('book', params.id!),
   ])
   console.log('itemLoader', { params, schema, uiSchema, data })
-  return { schema, uiSchema, item: data.find((item) => item.id === params.id) }
+  return { schema, uiSchema, item: data }
 }
