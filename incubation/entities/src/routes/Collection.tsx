@@ -1,6 +1,7 @@
 import { JsonForms } from '@jsonforms/react'
-import { vanillaCells, vanillaRenderers } from '@jsonforms/vanilla-renderers'
+import { vanillaRenderers } from '@jsonforms/vanilla-renderers'
 import { Link, useLoaderData, type LoaderFunction } from 'react-router'
+import { mantineCells } from '../json-forms/index.ts'
 
 type CollectionLoaderData = {
   schema: any
@@ -20,7 +21,7 @@ export function Collection() {
             uischema={uiSchema}
             data={item}
             renderers={vanillaRenderers}
-            cells={vanillaCells}
+            cells={mantineCells}
             readonly={true}
           />
           <Link to={{ pathname: `/${item.id}` }}>Details</Link>

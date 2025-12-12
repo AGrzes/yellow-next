@@ -1,7 +1,8 @@
 import { JsonForms } from '@jsonforms/react'
-import { vanillaCells, vanillaRenderers } from '@jsonforms/vanilla-renderers'
+import { vanillaRenderers } from '@jsonforms/vanilla-renderers'
 import { useState } from 'react'
 import { Link, useLoaderData, type LoaderFunction } from 'react-router'
+import { mantineCells } from '../json-forms/index.ts'
 
 export function Item() {
   const { schema, uiSchema, item } = useLoaderData()
@@ -14,7 +15,7 @@ export function Item() {
         uischema={uiSchema}
         data={data}
         renderers={vanillaRenderers}
-        cells={vanillaCells}
+        cells={mantineCells}
         onChange={({ data }) => setData(data)}
       />
     </>
