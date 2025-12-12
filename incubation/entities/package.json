@@ -15,8 +15,12 @@
   "license": "MIT",
   "packageManager": "pnpm@10.13.1",
   "dependencies": {
+    "@emotion/react": "11.11.4",
     "@jsonforms/react": "^3.7.0",
     "@jsonforms/vanilla-renderers": "^3.7.0",
+    "@mantine/core": "^8.3.7",
+    "@mantine/hooks": "^8.3.7",
+    "lucide-react": "^0.553.0",
     "pouchdb-browser": "^9.0.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

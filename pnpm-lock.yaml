@@ -407,12 +407,24 @@ importers:
 
   incubation/entities:
     dependencies:
+      '@emotion/react':
+        specifier: 11.11.4
+        version: 11.11.4(@types/react@19.2.2)(react@19.2.0)
       '@jsonforms/react':
         specifier: ^3.7.0
         version: 3.7.0(@jsonforms/core@3.7.0)(react@19.2.0)
       '@jsonforms/vanilla-renderers':
         specifier: ^3.7.0
         version: 3.7.0(@jsonforms/core@3.7.0)(@jsonforms/react@3.7.0(@jsonforms/core@3.7.0)(react@19.2.0))(react@19.2.0)
+      '@mantine/core':
+        specifier: ^8.3.7
+        version: 8.3.7(@mantine/hooks@8.3.7(react@19.2.0))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@mantine/hooks':
+        specifier: ^8.3.7
+        version: 8.3.7(react@19.2.0)
+      lucide-react:
+        specifier: ^0.553.0
+        version: 0.553.0(react@19.2.0)
       pouchdb-browser:
         specifier: ^9.0.0
         version: 9.0.0
@@ -1569,10 +1581,6 @@ packages:
 
   '@babel/template@7.27.2':
     resolution: {integrity: sha512-LPDZ85aEJyYSd18/DkjNh4/y1ntkE5KwUHWTiqgRxruuZL2F1yuHligVHLvcHY2vMHXttKFpJn6LwfI7cw7ODw==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/traverse@7.27.4':
-    resolution: {integrity: sha512-oNcu2QbHqts9BtOWJosOVJapWjBDSxGCpFvikNR5TGDYDQf3JwpIoMzIKrvfoti93cLfPJEG4tH9SPVeyCGgdA==}
     engines: {node: '>=6.9.0'}
 
   '@babel/traverse@7.28.5':
@@ -4558,10 +4566,6 @@ packages:
     resolution: {integrity: sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==}
     engines: {node: '>=12'}
     deprecated: Glob versions prior to v9 are no longer supported
-
-  globals@11.12.0:
-    resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
-    engines: {node: '>=4'}
 
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
@@ -7632,8 +7636,8 @@ snapshots:
 
   '@babel/helper-module-imports@7.27.1':
     dependencies:
-      '@babel/traverse': 7.27.4
-      '@babel/types': 7.27.6
+      '@babel/traverse': 7.28.5
+      '@babel/types': 7.28.5
     transitivePeerDependencies:
       - supports-color
 
@@ -7785,18 +7789,6 @@ snapshots:
       '@babel/code-frame': 7.27.1
       '@babel/parser': 7.27.5
       '@babel/types': 7.27.6
-
-  '@babel/traverse@7.27.4':
-    dependencies:
-      '@babel/code-frame': 7.27.1
-      '@babel/generator': 7.27.5
-      '@babel/parser': 7.27.5
-      '@babel/template': 7.27.2
-      '@babel/types': 7.28.5
-      debug: 4.4.1(supports-color@8.1.1)
-      globals: 11.12.0
-    transitivePeerDependencies:
-      - supports-color
 
   '@babel/traverse@7.28.5':
     dependencies:
@@ -11458,8 +11450,6 @@ snapshots:
       inherits: 2.0.4
       minimatch: 5.1.6
       once: 1.4.0
-
-  globals@11.12.0: {}
 
   globals@14.0.0: {}
 
