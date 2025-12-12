@@ -1,65 +1,30 @@
 {
-  "type": "Control",
-  "label": "Books",
-  "scope": "#",
-  "options": {
-    "elementLabelProp": "title",
-    "showSortButtons": true,
-    "detail": {
-      "type": "VerticalLayout",
-      "elements": [
-        {
-          "type": "HorizontalLayout",
-          "elements": [
-            {
-              "type": "Control",
-              "scope": "#/properties/title",
-              "label": "Title"
-            },
-            {
-              "type": "Control",
-              "scope": "#/properties/author",
-              "label": "Author"
-            }
-          ]
-        },
-        {
-          "type": "HorizontalLayout",
-          "elements": [
-            {
-              "type": "Control",
-              "scope": "#/properties/genre",
-              "label": "Genre"
-            },
-            {
-              "type": "Control",
-              "scope": "#/properties/pages",
-              "label": "Pages"
-            }
-          ]
-        },
-        {
-          "type": "HorizontalLayout",
-          "elements": [
-            {
-              "type": "Control",
-              "scope": "#/properties/publishedYear",
-              "label": "Published year"
-            },
-            {
-              "type": "Control",
-              "scope": "#/properties/isbn",
-              "label": "ISBN"
-            }
-          ]
-        },
-        {
-          "type": "Control",
-          "scope": "#/properties/available",
-          "label": "Available"
-        }
-      ]
+  "type": "HorizontalLayout",
+  "elements": [
+    {
+      "type": "Control",
+      "scope": "#/properties/title",
+      "label": "Title"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/author",
+      "label": "Author"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/genre",
+      "label": "Genre"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/pages",
+      "label": "Pages"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/available",
+      "label": "Available"
     }
-  }
+  ]
 }
-
