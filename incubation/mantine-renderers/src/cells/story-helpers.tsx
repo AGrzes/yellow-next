@@ -39,7 +39,7 @@ export function makeCellStory<TValue, TValueSchema extends JsonSchema7 = JsonSch
             {
               tester: () => 1,
               renderer: () => (
-                <Cell path={path} visible={visible} enabled={enabled} schema={schema} uischema={uischema} />
+                <Cell path={path} visible={visible} enabled={enabled} schema={valueSchema} uischema={uischema} />
               ),
             },
           ]}
