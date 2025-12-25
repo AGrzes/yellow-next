@@ -72,12 +72,12 @@ const uischema = {
     { type: 'Control', scope: '#/properties/boolean', label: 'Boolean' },
     { type: 'Control', scope: '#/properties/integer', label: 'Integer' },
     { type: 'Control', scope: '#/properties/number', label: 'Number' },
-    {
+    /*{
       type: 'Control',
       scope: '#/properties/numberFormat',
       label: 'Number (formatted)',
       options: { format: true },
-    },
+    },*/
     {
       type: 'Control',
       scope: '#/properties/slider',
