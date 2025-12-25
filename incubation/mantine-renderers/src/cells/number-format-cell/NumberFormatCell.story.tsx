@@ -1,7 +1,7 @@
 import type { OwnPropsOfCell } from '@jsonforms/core'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { NumberFormatCell } from './NumberFormatCell'
-import { makeCellStory } from './story-helpers'
+import { makeCellStory } from '../story-helpers'
 
 type FormatProps = OwnPropsOfCell & {
   toFormatted: (value: number | undefined) => string

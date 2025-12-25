@@ -1,7 +1,7 @@
 import type { OwnPropsOfCell } from '@jsonforms/core'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import TextCell from './TextCell'
-import { makeCellStory } from './story-helpers'
+import { makeCellStory } from '../story-helpers'
 
 const meta = {
   component: TextCell,
