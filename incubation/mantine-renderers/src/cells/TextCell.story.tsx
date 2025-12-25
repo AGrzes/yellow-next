@@ -1,6 +1,6 @@
 import type { OwnPropsOfCell } from '@jsonforms/core'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { TextCell } from './TextCell'
+import TextCell from './TextCell'
 import { makeCellStory } from './story-helpers'
 
 const meta = {
@@ -18,6 +18,7 @@ export const Default: Story = makeCellStory(TextCell, {
 export const EmptyWithPlaceholder: Story = makeCellStory(TextCell, {
   value: undefined,
   schema: { type: 'string' },
+  uischemaOptions: { placeholder: 'Enter text here...' },
 })
 
 export const Disabled: Story = makeCellStory(TextCell, {
