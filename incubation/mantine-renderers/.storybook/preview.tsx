@@ -1,5 +1,6 @@
 import { createTheme, MantineProvider } from '@mantine/core'
 import '@mantine/core/styles.css'
+import '@mantine/dates/styles.css'
 import type { Preview } from '@storybook/react-vite'
 
 export const theme = createTheme({})
