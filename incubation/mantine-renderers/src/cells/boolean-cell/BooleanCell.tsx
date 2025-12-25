@@ -11,5 +11,25 @@ Implementation notes (Mantine)
   - focus option -> autoFocus
   - visibility/label/errors -> handled by control wrapper, not the cell
 */
-export { BooleanCell, booleanCellTester } from '@jsonforms/vanilla-renderers'
-export { BooleanCell as default } from '@jsonforms/vanilla-renderers'
+import type { CellProps } from '@jsonforms/core'
+import { withJsonFormsCellProps } from '@jsonforms/react'
+import { Checkbox } from '@mantine/core'
+
+export { booleanCellTester } from '@jsonforms/vanilla-renderers'
+
+export const BooleanCell = (props: CellProps) => {
+  const { config, data, id, enabled, uischema, path, handleChange } = props
+  const appliedUiSchemaOptions = Object.assign({}, config, uischema.options)
+
+  return (
+    <Checkbox
+      id={id}
+      checked={data ?? false}
+      disabled={!enabled}
+      autoFocus={appliedUiSchemaOptions.focus}
+      onChange={(event) => handleChange(path, event.currentTarget.checked)}
+    />
+  )
+}
+
+export default withJsonFormsCellProps(BooleanCell)
