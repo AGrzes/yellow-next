@@ -11,5 +11,27 @@ Implementation notes (Mantine)
   - focus option -> autoFocus (may require focus handling)
   - visibility/label/errors -> handled by control wrapper, not the cell
 */
-export { SliderCell, sliderCellTester } from '@jsonforms/vanilla-renderers'
-export { SliderCell as default } from '@jsonforms/vanilla-renderers'
+import type { CellProps } from '@jsonforms/core'
+import { withJsonFormsCellProps } from '@jsonforms/react'
+import { Slider } from '@mantine/core'
+
+export { sliderCellTester } from '@jsonforms/vanilla-renderers'
+
+export const SliderCell = (props: CellProps) => {
+  const { data, enabled, id, schema, path, handleChange } = props
+  const fallbackValue = schema.default ?? schema.minimum ?? 0
+
+  return (
+    <Slider
+      id={id}
+      value={data ?? fallbackValue}
+      onChange={(value) => handleChange(path, value)}
+      min={schema.minimum}
+      max={schema.maximum}
+      step={schema.multipleOf ?? 1}
+      disabled={!enabled}
+    />
+  )
+}
+
+export default withJsonFormsCellProps(SliderCell)
