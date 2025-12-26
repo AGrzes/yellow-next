@@ -9,9 +9,31 @@ Implementation notes (Mantine)
   - enabled/visible -> wrapper disabled/hidden handling
   - cell selection -> keep JsonForms cell dispatch logic
 */
-import { type ControlProps, isControl, NOT_APPLICABLE, type RankedTester, rankWith } from '@jsonforms/core'
+import {
+  type ControlElement,
+  type ControlProps,
+  isControl,
+  type JsonSchema,
+  type RankedTester,
+  rankWith,
+  type TesterContext,
+} from '@jsonforms/core'
 import { withJsonFormsControlProps } from '@jsonforms/react'
 import type { MantineCellRenderer } from '../../cells/types'
+
+type CellEntry = { tester: RankedTester; cell: MantineCellRenderer }
+
+const getBestCell = (
+  cells: CellEntry[],
+  uischema: ControlElement,
+  schema: JsonSchema,
+  testerContext: TesterContext
+) => {
+  return cells
+    .map((entry) => ({ entry, rank: entry.tester(uischema, schema, testerContext) }))
+    .filter((candidate) => candidate.rank >= 0)
+    .sort((left, right) => right.rank - left.rank)[0]?.entry
+}
 
 export const InputControl = (props: ControlProps) => {
   const {
@@ -29,21 +51,11 @@ export const InputControl = (props: ControlProps) => {
     config,
     id,
   } = props
-  const appliedUiSchemaOptions = Object.assign({}, config, uischema.options)
   const testerContext = { rootSchema, config }
-  const availableCells = (cells ?? []) as { tester: RankedTester; cell: MantineCellRenderer }[]
-  let bestCell = availableCells[0]
-  let bestRank = NOT_APPLICABLE
+  const availableCells = (cells ?? []) as CellEntry[]
+  const bestCell = getBestCell(availableCells, uischema, schema, testerContext)
 
-  for (const entry of availableCells) {
-    const rank = entry.tester(uischema, schema, testerContext)
-    if (rank > bestRank) {
-      bestRank = rank
-      bestCell = entry
-    }
-  }
-
-  if (bestCell === undefined || bestRank === NOT_APPLICABLE) {
+  if (bestCell === undefined) {
     console.warn('No applicable cell found.', uischema, schema)
     return null
   }
