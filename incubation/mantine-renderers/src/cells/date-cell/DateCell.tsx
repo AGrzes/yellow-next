@@ -11,7 +11,7 @@ Implementation notes (Mantine)
   - empty value -> undefined
   - label/description/errors -> DateInput props
 */
-import { isDateControl, type RankedTester, rankWith } from '@jsonforms/core'
+import { type CellProps, isDateControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { DateInput } from '@mantine/dates'
 import type { MantineCellsProps } from '../types'
