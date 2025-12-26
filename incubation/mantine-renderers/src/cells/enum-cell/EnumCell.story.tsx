@@ -1,6 +1,6 @@
 import type { OwnPropsOfCell } from '@jsonforms/core'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { EnumCell } from './EnumCell'
+import EnumCell from './EnumCell'
 import { makeCellStory } from '../story-helpers'
 
 const meta = {
