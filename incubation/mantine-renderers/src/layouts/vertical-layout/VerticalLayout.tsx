@@ -8,11 +8,33 @@ Design notes (Mantine)
   - visibility/enabled -> wrapper hidden/disabled handling
   - child rendering -> JsonForms renderChildren equivalent
 */
-import { type RankedTester, rankWith, uiTypeIs } from '@jsonforms/core'
-import { VerticalLayout as VanillaVerticalLayout } from '@jsonforms/vanilla-renderers'
+import { memo } from 'react'
+import { type LayoutProps, type RankedTester, rankWith, uiTypeIs, type VerticalLayout as JsonFormsVerticalLayout } from '@jsonforms/core'
+import { withJsonFormsLayoutProps } from '@jsonforms/react'
+import { Stack } from '@mantine/core'
+import { renderChildren } from '../render-children'
 
-export const VerticalLayout = VanillaVerticalLayout
+export const VerticalLayout = (props: LayoutProps) => {
+  const { data: _data, ...otherProps } = props
+  return <VerticalLayoutRendererComponent {...otherProps} />
+}
+
+const VerticalLayoutRendererComponent = memo(function VerticalLayoutRendererComponent({
+  uischema,
+  schema,
+  path,
+  visible,
+  enabled,
+}: LayoutProps) {
+  const layout = uischema as JsonFormsVerticalLayout
+
+  return (
+    <Stack hidden={!visible}>
+      {renderChildren(layout, schema, path, enabled)}
+    </Stack>
+  )
+})
 
 export const verticalLayoutTester: RankedTester = rankWith(1, uiTypeIs('VerticalLayout'))
 
-export default VerticalLayout
+export default withJsonFormsLayoutProps(VerticalLayout, false)

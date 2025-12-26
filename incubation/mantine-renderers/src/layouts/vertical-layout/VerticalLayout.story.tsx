@@ -1,7 +1,7 @@
 import type { JsonSchema7, Layout } from '@jsonforms/core'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import VerticalLayout, { verticalLayoutTester } from './VerticalLayout'
 import { type LayoutStoryArgs, makeLayoutStory } from '../story-helpers'
+import VerticalLayout, { verticalLayoutTester } from './VerticalLayout'
 
 const data = {
   firstName: 'Ada',

@@ -8,11 +8,33 @@ Design notes (Mantine)
   - visibility/enabled -> wrapper hidden/disabled handling
   - child rendering -> JsonForms renderChildren equivalent
 */
-import { type RankedTester, rankWith, uiTypeIs } from '@jsonforms/core'
-import { HorizontalLayout as VanillaHorizontalLayout } from '@jsonforms/vanilla-renderers'
+import { memo } from 'react'
+import { type HorizontalLayout as JsonFormsHorizontalLayout, type LayoutProps, type RankedTester, rankWith, uiTypeIs } from '@jsonforms/core'
+import { withJsonFormsLayoutProps } from '@jsonforms/react'
+import { Group } from '@mantine/core'
+import { renderChildren } from '../render-children'
 
-export const HorizontalLayout = VanillaHorizontalLayout
+export const HorizontalLayout = (props: LayoutProps) => {
+  const { data: _data, ...otherProps } = props
+  return <HorizontalLayoutRendererComponent {...otherProps} />
+}
+
+const HorizontalLayoutRendererComponent = memo(function HorizontalLayoutRendererComponent({
+  uischema,
+  schema,
+  path,
+  visible,
+  enabled,
+}: LayoutProps) {
+  const layout = uischema as JsonFormsHorizontalLayout
+
+  return (
+    <Group hidden={!visible}>
+      {renderChildren(layout, schema, path, enabled)}
+    </Group>
+  )
+})
 
 export const horizontalLayoutTester: RankedTester = rankWith(1, uiTypeIs('HorizontalLayout'))
 
-export default HorizontalLayout
+export default withJsonFormsLayoutProps(HorizontalLayout, false)

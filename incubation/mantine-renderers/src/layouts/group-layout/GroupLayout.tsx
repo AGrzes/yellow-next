@@ -9,11 +9,37 @@ Design notes (Mantine)
   - visibility/enabled -> Fieldset disabled + hidden handling
   - child rendering -> JsonForms renderChildren equivalent
 */
-import { type RankedTester, rankWith, uiTypeIs } from '@jsonforms/core'
-import { GroupLayout as VanillaGroupLayout } from '@jsonforms/vanilla-renderers'
+import { memo } from 'react'
+import { type GroupLayout as JsonFormsGroupLayout, type LayoutProps, type RankedTester, rankWith, uiTypeIs } from '@jsonforms/core'
+import { withJsonFormsLayoutProps } from '@jsonforms/react'
+import { Fieldset, Stack } from '@mantine/core'
+import { renderChildren } from '../render-children'
 
-export const GroupLayout = VanillaGroupLayout
+export const GroupLayout = (props: LayoutProps) => {
+  const { data: _data, ...otherProps } = props
+  return <GroupLayoutRendererComponent {...otherProps} />
+}
+
+const GroupLayoutRendererComponent = memo(function GroupLayoutRendererComponent({
+  uischema,
+  schema,
+  path,
+  visible,
+  enabled,
+  label,
+}: LayoutProps) {
+  const layout = uischema as JsonFormsGroupLayout
+  const legend = label || undefined
+
+  return (
+    <Fieldset legend={legend} disabled={!enabled} hidden={!visible}>
+      <Stack>
+        {renderChildren(layout, schema, path, enabled)}
+      </Stack>
+    </Fieldset>
+  )
+})
 
 export const groupLayoutTester: RankedTester = rankWith(1, uiTypeIs('Group'))
 
-export default GroupLayout
+export default withJsonFormsLayoutProps(GroupLayout)
