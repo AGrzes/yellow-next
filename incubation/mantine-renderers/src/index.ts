@@ -13,8 +13,6 @@ import {
   integerCellTester,
   NumberCell,
   numberCellTester,
-  NumberFormatCell,
-  numberFormatCellTester,
   OneOfEnumCell,
   oneOfEnumCellTester,
   SliderCell,
@@ -26,6 +24,14 @@ import {
   TimeCell,
   timeCellTester,
 } from './cells'
+import {
+  InputControl,
+  inputControlTester,
+  OneOfRadioGroupControl,
+  oneOfRadioGroupControlTester,
+  RadioGroupControl,
+  radioGroupControlTester,
+} from './controls'
 
 export const mantineCells: { tester: RankedTester; cell: any }[] = [
   { tester: booleanCellTester, cell: BooleanCell },
@@ -34,7 +40,6 @@ export const mantineCells: { tester: RankedTester; cell: any }[] = [
   { tester: enumCellTester, cell: EnumCell },
   { tester: integerCellTester, cell: IntegerCell },
   { tester: numberCellTester, cell: NumberCell },
-  { tester: numberFormatCellTester, cell: NumberFormatCell },
   { tester: oneOfEnumCellTester, cell: OneOfEnumCell },
   { tester: sliderCellTester, cell: SliderCell },
   { tester: textAreaCellTester, cell: TextAreaCell },
@@ -42,4 +47,15 @@ export const mantineCells: { tester: RankedTester; cell: any }[] = [
   { tester: timeCellTester, cell: TimeCell },
 ]
 
-export const mantineRenderers: { tester: RankedTester; renderer: any }[] = [...vanillaRenderers]
+const controlRenderers: { tester: RankedTester; renderer: any }[] = [
+  { tester: inputControlTester, renderer: InputControl },
+  { tester: radioGroupControlTester, renderer: RadioGroupControl },
+  { tester: oneOfRadioGroupControlTester, renderer: OneOfRadioGroupControl },
+]
+
+const nonControlRenderers = vanillaRenderers.filter(
+  (entry) =>
+    entry.renderer !== InputControl && entry.renderer !== RadioGroupControl && entry.renderer !== OneOfRadioGroupControl
+)
+
+export const mantineRenderers: { tester: RankedTester; renderer: any }[] = [...controlRenderers, ...nonControlRenderers]
