@@ -9,16 +9,32 @@ Implementation notes (Mantine)
   - clear -> handleChange(path, undefined) (use clearable or explicit empty option)
   - enabled -> disabled
   - focus option -> autoFocus
-  - visibility/label/errors -> handled by control wrapper, not the cell
+  - label/description/errors -> Select props
 */
 import { type EnumCellProps, isOneOfEnumControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { type TranslateProps, withJsonFormsOneOfEnumCellProps, withTranslateProps } from '@jsonforms/react'
 import { Select } from '@mantine/core'
+import type { MantineCellsProps } from '../types'
 
 const enumNoneLabelFallback = 'None'
 
-export const OneOfEnumCell = (props: EnumCellProps & TranslateProps) => {
-  const { config, data, enabled, id, options, schema, uischema, path, handleChange, t } = props
+export const OneOfEnumCell = (props: EnumCellProps & MantineCellsProps & TranslateProps) => {
+  const {
+    config,
+    data,
+    enabled,
+    id,
+    options,
+    schema,
+    uischema,
+    path,
+    handleChange,
+    t,
+    label,
+    description,
+    errors,
+    required,
+  } = props
   const appliedUiSchemaOptions = Object.assign({}, config, uischema.options)
   const enumOptions = options ?? []
   const emptyValue = ''
@@ -37,9 +53,11 @@ export const OneOfEnumCell = (props: EnumCellProps & TranslateProps) => {
       id={id}
       data={selectData}
       value={selectedValue}
-      onChange={(value) =>
-        handleChange(path, value == null || value === emptyValue ? undefined : value)
-      }
+      onChange={(value) => handleChange(path, value == null || value === emptyValue ? undefined : value)}
+      label={label}
+      description={description}
+      error={errors}
+      required={required}
       disabled={!enabled}
       autoFocus={appliedUiSchemaOptions.focus}
       placeholder={appliedUiSchemaOptions.placeholder}

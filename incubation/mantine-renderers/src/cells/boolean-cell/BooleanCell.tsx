@@ -9,20 +9,25 @@ Implementation notes (Mantine)
   - onChange -> handleChange(path, checked)
   - enabled -> disabled
   - focus option -> autoFocus
-  - visibility/label/errors -> handled by control wrapper, not the cell
+  - label/description/errors -> Checkbox props
 */
 import { type CellProps, isBooleanControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { Checkbox } from '@mantine/core'
+import type { MantineCellsProps } from '../types'
 
-export const BooleanCell = (props: CellProps) => {
-  const { config, data, id, enabled, uischema, path, handleChange } = props
+export const BooleanCell = (props: CellProps & MantineCellsProps) => {
+  const { config, data, id, enabled, uischema, path, handleChange, label, description, errors, required } = props
   const appliedUiSchemaOptions = Object.assign({}, config, uischema.options)
 
   return (
     <Checkbox
       id={id}
       checked={data ?? false}
+      label={label}
+      description={description}
+      error={errors}
+      required={required}
       disabled={!enabled}
       autoFocus={appliedUiSchemaOptions.focus}
       onChange={(event) => handleChange(path, event.currentTarget.checked)}

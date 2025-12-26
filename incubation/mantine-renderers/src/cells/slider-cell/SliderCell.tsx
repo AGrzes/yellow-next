@@ -9,26 +9,29 @@ Implementation notes (Mantine)
   - onChange -> handleChange(path, number)
   - enabled -> disabled
   - focus option -> autoFocus (may require focus handling)
-  - visibility/label/errors -> handled by control wrapper, not the cell
+  - label/description/errors -> Input.Wrapper props
 */
 import { type CellProps, isRangeControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
-import { Slider } from '@mantine/core'
+import { Input, Slider } from '@mantine/core'
+import type { MantineCellsProps } from '../types'
 
-export const SliderCell = (props: CellProps) => {
-  const { data, enabled, id, schema, path, handleChange } = props
+export const SliderCell = (props: CellProps & MantineCellsProps) => {
+  const { data, enabled, id, schema, path, handleChange, label, description, errors, required } = props
   const fallbackValue = schema.default ?? schema.minimum ?? 0
 
   return (
-    <Slider
-      id={id}
-      value={data ?? fallbackValue}
-      onChange={(value) => handleChange(path, value)}
-      min={schema.minimum}
-      max={schema.maximum}
-      step={schema.multipleOf ?? 1}
-      disabled={!enabled}
-    />
+    <Input.Wrapper id={id} label={label} description={description} error={errors} required={required}>
+      <Slider
+        id={id}
+        value={data ?? fallbackValue}
+        onChange={(value) => handleChange(path, value)}
+        min={schema.minimum}
+        max={schema.maximum}
+        step={schema.multipleOf ?? 1}
+        disabled={!enabled}
+      />
+    </Input.Wrapper>
   )
 }
 

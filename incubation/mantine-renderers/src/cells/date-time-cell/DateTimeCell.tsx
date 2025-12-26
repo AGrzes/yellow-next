@@ -9,11 +9,12 @@ Implementation notes (Mantine)
   - enabled -> disabled
   - focus option -> autoFocus
   - empty value -> undefined
-  - visibility/label/errors -> handled by control wrapper, not the cell
+  - label/description/errors -> DateTimePicker props
 */
 import { type CellProps, isDateTimeControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { DateTimePicker } from '@mantine/dates'
+import type { MantineCellsProps } from '../types'
 
 const toIsoDateTime = (value: string | null) => {
   if (!value) {
@@ -23,8 +24,8 @@ const toIsoDateTime = (value: string | null) => {
   }
 }
 
-export const DateTimeCell = (props: CellProps) => {
-  const { config, data, enabled, id, uischema, path, handleChange } = props
+export const DateTimeCell = (props: CellProps & MantineCellsProps) => {
+  const { config, data, enabled, id, uischema, path, handleChange, label, description, errors, required } = props
   const appliedUiSchemaOptions = Object.assign({}, config, uischema.options)
 
   return (
@@ -32,6 +33,10 @@ export const DateTimeCell = (props: CellProps) => {
       id={id}
       value={data ?? null}
       onChange={(value) => handleChange(path, toIsoDateTime(value))}
+      label={label}
+      description={description}
+      error={errors}
+      required={required}
       disabled={!enabled}
       autoFocus={appliedUiSchemaOptions.focus}
       placeholder={appliedUiSchemaOptions.placeholder}

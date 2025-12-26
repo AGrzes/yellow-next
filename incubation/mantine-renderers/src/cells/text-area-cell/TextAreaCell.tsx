@@ -10,24 +10,27 @@ Implementation notes (Mantine)
   - focus option -> autoFocus
   - enabled -> disabled
   - empty string -> undefined
-  - visibility/label/errors -> handled by control wrapper, not the cell
+  - label/description/errors -> Textarea props
 */
 import { type CellProps, isMultiLineControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { Textarea } from '@mantine/core'
+import type { MantineCellsProps } from '../types'
 
-export const TextAreaCell = (props: CellProps) => {
-  const { config, data, enabled, id, uischema, path, handleChange } = props
+export const TextAreaCell = (props: CellProps & MantineCellsProps) => {
+  const { config, data, enabled, id, uischema, path, handleChange, label, description, errors, required } = props
   const appliedUiSchemaOptions = Object.assign({}, config, uischema.options)
 
   return (
     <Textarea
       id={id}
       value={data ?? ''}
-      onChange={(event) =>
-        handleChange(path, event.currentTarget.value === '' ? undefined : event.currentTarget.value)
-      }
+      onChange={(event) => handleChange(path, event.currentTarget.value === '' ? undefined : event.currentTarget.value)}
       disabled={!enabled}
+      label={label}
+      description={description}
+      error={errors}
+      required={required}
       autoFocus={appliedUiSchemaOptions.focus}
       placeholder={appliedUiSchemaOptions.placeholder}
     />

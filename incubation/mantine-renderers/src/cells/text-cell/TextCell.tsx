@@ -1,9 +1,11 @@
 import { type CellProps, isStringControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { TextInput } from '@mantine/core'
+import type { MantineCellsProps } from '../types'
 
-export const TextCell = (props: CellProps) => {
-  const { config, data, id, enabled, uischema, schema, path, handleChange } = props
+export const TextCell = (props: CellProps & MantineCellsProps) => {
+  const { config, data, id, enabled, uischema, schema, path, handleChange, label, description, errors, required } =
+    props
   const maxLength = schema.maxLength
   const appliedUiSchemaOptions = Object.assign({}, config, uischema.options)
   return (
@@ -12,6 +14,10 @@ export const TextCell = (props: CellProps) => {
       value={data || ''}
       onChange={(ev) => handleChange(path, ev.target.value === '' ? undefined : ev.target.value)}
       id={id}
+      label={label}
+      description={description}
+      error={errors}
+      required={required}
       disabled={!enabled}
       autoFocus={appliedUiSchemaOptions.focus}
       placeholder={appliedUiSchemaOptions.placeholder}

@@ -9,11 +9,12 @@ Implementation notes (Mantine)
   - schema.minimum/maximum -> NumberInput min/max
   - enabled -> disabled
   - focus option -> autoFocus
-  - visibility/label/errors -> handled by control wrapper, not the cell
+  - label/description/errors -> NumberInput props
 */
 import { type CellProps, isNumberControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { NumberInput } from '@mantine/core'
+import type { MantineCellsProps } from '../types'
 
 const toNumberValue = (value: number | string) => {
   if (value === '') {
@@ -22,8 +23,9 @@ const toNumberValue = (value: number | string) => {
   return Number(value)
 }
 
-export const NumberCell = (props: CellProps) => {
-  const { config, data, enabled, id, uischema, schema, path, handleChange } = props
+export const NumberCell = (props: CellProps & MantineCellsProps) => {
+  const { config, data, enabled, id, uischema, schema, path, handleChange, label, description, errors, required } =
+    props
   const appliedUiSchemaOptions = Object.assign({}, config, uischema.options)
 
   return (
@@ -34,6 +36,10 @@ export const NumberCell = (props: CellProps) => {
       min={schema.minimum}
       max={schema.maximum}
       step={schema.multipleOf ?? 0.1}
+      label={label}
+      description={description}
+      error={errors}
+      required={required}
       disabled={!enabled}
       autoFocus={appliedUiSchemaOptions.focus}
       placeholder={appliedUiSchemaOptions.placeholder}

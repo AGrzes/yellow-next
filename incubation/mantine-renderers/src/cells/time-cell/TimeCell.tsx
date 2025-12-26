@@ -9,14 +9,15 @@ Implementation notes (Mantine)
   - enabled -> disabled
   - focus option -> autoFocus
   - empty value -> undefined
-  - visibility/label/errors -> handled by control wrapper, not the cell
+  - label/description/errors -> TimeInput props
 */
 import { type CellProps, isTimeControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { TimeInput } from '@mantine/dates'
+import type { MantineCellsProps } from '../types'
 
-export const TimeCell = (props: CellProps) => {
-  const { config, data, enabled, id, uischema, path, handleChange } = props
+export const TimeCell = (props: CellProps & MantineCellsProps) => {
+  const { config, data, enabled, id, uischema, path, handleChange, label, description, errors, required } = props
   const appliedUiSchemaOptions = Object.assign({}, config, uischema.options)
 
   return (
@@ -24,6 +25,10 @@ export const TimeCell = (props: CellProps) => {
       id={id}
       value={data ?? ''}
       onChange={(event) => handleChange(path, event.currentTarget.value || undefined)}
+      label={label}
+      description={description}
+      error={errors}
+      required={required}
       disabled={!enabled}
       autoFocus={appliedUiSchemaOptions.focus}
       withSeconds

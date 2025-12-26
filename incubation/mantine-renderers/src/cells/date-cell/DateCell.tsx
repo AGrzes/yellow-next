@@ -9,14 +9,15 @@ Implementation notes (Mantine)
   - enabled -> disabled
   - focus option -> autoFocus
   - empty value -> undefined
-  - visibility/label/errors -> handled by control wrapper, not the cell
+  - label/description/errors -> DateInput props
 */
-import { type CellProps, isDateControl, type RankedTester, rankWith } from '@jsonforms/core'
+import { isDateControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { DateInput } from '@mantine/dates'
+import type { MantineCellsProps } from '../types'
 
-export const DateCell = (props: CellProps) => {
-  const { config, data, id, enabled, uischema, path, handleChange } = props
+export const DateCell = (props: CellProps & MantineCellsProps) => {
+  const { config, data, id, enabled, uischema, path, handleChange, label, description, errors, required } = props
   const appliedUiSchemaOptions = Object.assign({}, config, uischema.options)
 
   return (
@@ -24,6 +25,10 @@ export const DateCell = (props: CellProps) => {
       id={id}
       value={data ?? null}
       onChange={(value) => handleChange(path, value ?? undefined)}
+      label={label}
+      description={description}
+      error={errors}
+      required={required}
       disabled={!enabled}
       autoFocus={appliedUiSchemaOptions.focus}
       placeholder={appliedUiSchemaOptions.placeholder}

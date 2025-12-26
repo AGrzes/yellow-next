@@ -10,11 +10,12 @@ Implementation notes (Mantine)
   - integer -> set precision=0 and step=1
   - enabled -> disabled
   - focus option -> autoFocus
-  - visibility/label/errors -> handled by control wrapper, not the cell
+  - label/description/errors -> NumberInput props
 */
 import { type CellProps, isIntegerControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { NumberInput } from '@mantine/core'
+import type { MantineCellsProps } from '../types'
 
 const toInteger = (value: string | number) => {
   if (value === '') {
@@ -26,8 +27,9 @@ const toInteger = (value: string | number) => {
   return parseInt(value, 10)
 }
 
-export const IntegerCell = (props: CellProps) => {
-  const { config, data, enabled, id, uischema, schema, path, handleChange } = props
+export const IntegerCell = (props: CellProps & MantineCellsProps) => {
+  const { config, data, enabled, id, uischema, schema, path, handleChange, label, description, errors, required } =
+    props
   const appliedUiSchemaOptions = Object.assign({}, config, uischema.options)
 
   return (
@@ -39,6 +41,10 @@ export const IntegerCell = (props: CellProps) => {
       max={schema.maximum}
       step={schema.multipleOf ?? 1}
       allowDecimal={false}
+      label={label}
+      description={description}
+      error={errors}
+      required={required}
       disabled={!enabled}
       autoFocus={appliedUiSchemaOptions.focus}
       placeholder={appliedUiSchemaOptions.placeholder}
