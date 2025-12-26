@@ -12,11 +12,9 @@ Implementation notes (Mantine)
   - empty string -> undefined
   - visibility/label/errors -> handled by control wrapper, not the cell
 */
-import type { CellProps } from '@jsonforms/core'
+import { type CellProps, isMultiLineControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { Textarea } from '@mantine/core'
-
-export { textAreaCellTester } from '@jsonforms/vanilla-renderers'
 
 export const TextAreaCell = (props: CellProps) => {
   const { config, data, enabled, id, uischema, path, handleChange } = props
@@ -35,5 +33,11 @@ export const TextAreaCell = (props: CellProps) => {
     />
   )
 }
+
+/**
+ * Tester for a multi-line string control.
+ * @type {RankedTester}
+ */
+export const textAreaCellTester: RankedTester = rankWith(2, isMultiLineControl)
 
 export default withJsonFormsCellProps(TextAreaCell)

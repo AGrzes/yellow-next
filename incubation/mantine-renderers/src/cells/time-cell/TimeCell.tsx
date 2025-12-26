@@ -11,11 +11,9 @@ Implementation notes (Mantine)
   - empty value -> undefined
   - visibility/label/errors -> handled by control wrapper, not the cell
 */
-import type { CellProps } from '@jsonforms/core'
+import { type CellProps, isTimeControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { TimeInput } from '@mantine/dates'
-
-export { timeCellTester } from '@jsonforms/vanilla-renderers'
 
 export const TimeCell = (props: CellProps) => {
   const { config, data, enabled, id, uischema, path, handleChange } = props
@@ -32,5 +30,11 @@ export const TimeCell = (props: CellProps) => {
     />
   )
 }
+
+/**
+ * Default tester for time controls.
+ * @type {RankedTester}
+ */
+export const timeCellTester: RankedTester = rankWith(2, isTimeControl)
 
 export default withJsonFormsCellProps(TimeCell)

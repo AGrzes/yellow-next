@@ -13,4 +13,15 @@ Implementation notes (Mantine)
   - focus option -> autoFocus
   - visibility/label/errors -> handled by control wrapper, not the cell
 */
-export { NumberFormatCell as default, NumberFormatCell, numberFormatCellTester } from '@jsonforms/vanilla-renderers'
+import { isNumberFormatControl, type RankedTester, rankWith } from '@jsonforms/core'
+import { NumberFormatCell as VanillaNumberFormatCell } from '@jsonforms/vanilla-renderers'
+
+export const NumberFormatCell = VanillaNumberFormatCell
+
+/**
+ * Default tester for formatted number controls.
+ * @type {RankedTester}
+ */
+export const numberFormatCellTester: RankedTester = rankWith(4, isNumberFormatControl)
+
+export default NumberFormatCell

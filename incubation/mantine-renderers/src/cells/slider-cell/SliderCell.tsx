@@ -11,11 +11,9 @@ Implementation notes (Mantine)
   - focus option -> autoFocus (may require focus handling)
   - visibility/label/errors -> handled by control wrapper, not the cell
 */
-import type { CellProps } from '@jsonforms/core'
+import { type CellProps, isRangeControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { Slider } from '@mantine/core'
-
-export { sliderCellTester } from '@jsonforms/vanilla-renderers'
 
 export const SliderCell = (props: CellProps) => {
   const { data, enabled, id, schema, path, handleChange } = props
@@ -33,5 +31,11 @@ export const SliderCell = (props: CellProps) => {
     />
   )
 }
+
+/**
+ * Default tester for range controls.
+ * @type {RankedTester}
+ */
+export const sliderCellTester: RankedTester = rankWith(4, isRangeControl)
 
 export default withJsonFormsCellProps(SliderCell)

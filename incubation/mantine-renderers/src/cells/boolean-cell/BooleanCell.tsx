@@ -11,11 +11,9 @@ Implementation notes (Mantine)
   - focus option -> autoFocus
   - visibility/label/errors -> handled by control wrapper, not the cell
 */
-import type { CellProps } from '@jsonforms/core'
+import { type CellProps, isBooleanControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { Checkbox } from '@mantine/core'
-
-export { booleanCellTester } from '@jsonforms/vanilla-renderers'
 
 export const BooleanCell = (props: CellProps) => {
   const { config, data, id, enabled, uischema, path, handleChange } = props
@@ -31,5 +29,11 @@ export const BooleanCell = (props: CellProps) => {
     />
   )
 }
+
+/**
+ * Default tester for boolean controls.
+ * @type {RankedTester}
+ */
+export const booleanCellTester: RankedTester = rankWith(2, isBooleanControl)
 
 export default withJsonFormsCellProps(BooleanCell)

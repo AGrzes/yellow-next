@@ -11,12 +11,10 @@ Implementation notes (Mantine)
   - focus option -> autoFocus
   - visibility/label/errors -> handled by control wrapper, not the cell
 */
-import type { EnumCellProps } from '@jsonforms/core'
+import { type EnumCellProps, isOneOfEnumControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsOneOfEnumCellProps } from '@jsonforms/react'
 import { Select } from '@mantine/core'
-import { i18nDefaults, oneOfEnumCellTester } from '@jsonforms/vanilla-renderers'
-
-export { oneOfEnumCellTester }
+import { i18nDefaults } from '@jsonforms/vanilla-renderers'
 
 export const OneOfEnumCell = (props: EnumCellProps) => {
   const { config, data, enabled, id, options, uischema, path, handleChange } = props
@@ -46,5 +44,11 @@ export const OneOfEnumCell = (props: EnumCellProps) => {
     />
   )
 }
+
+/**
+ * Default tester for oneOf enum controls.
+ * @type {RankedTester}
+ */
+export const oneOfEnumCellTester: RankedTester = rankWith(2, isOneOfEnumControl)
 
 export default withJsonFormsOneOfEnumCellProps(OneOfEnumCell)

@@ -11,11 +11,9 @@ Implementation notes (Mantine)
   - focus option -> autoFocus
   - visibility/label/errors -> handled by control wrapper, not the cell
 */
-import type { CellProps } from '@jsonforms/core'
+import { type CellProps, isNumberControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { NumberInput } from '@mantine/core'
-
-export { numberCellTester } from '@jsonforms/vanilla-renderers'
 
 const toNumberValue = (value: number | string) => {
   if (value === '') {
@@ -42,5 +40,11 @@ export const NumberCell = (props: CellProps) => {
     />
   )
 }
+
+/**
+ * Default tester for number controls.
+ * @type {RankedTester}
+ */
+export const numberCellTester: RankedTester = rankWith(2, isNumberControl)
 
 export default withJsonFormsCellProps(NumberCell)

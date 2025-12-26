@@ -11,11 +11,9 @@ Implementation notes (Mantine)
   - empty value -> undefined
   - visibility/label/errors -> handled by control wrapper, not the cell
 */
-import type { CellProps } from '@jsonforms/core'
+import { type CellProps, isDateTimeControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { DateTimePicker } from '@mantine/dates'
-
-export { dateTimeCellTester } from '@jsonforms/vanilla-renderers'
 
 const toIsoDateTime = (value: string | null) => {
   if (!value) {
@@ -41,5 +39,11 @@ export const DateTimeCell = (props: CellProps) => {
     />
   )
 }
+
+/**
+ * Default tester for datetime controls.
+ * @type {RankedTester}
+ */
+export const dateTimeCellTester: RankedTester = rankWith(2, isDateTimeControl)
 
 export default withJsonFormsCellProps(DateTimeCell)
