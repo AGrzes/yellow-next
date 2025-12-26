@@ -18,11 +18,14 @@ import { NumberInput } from '@mantine/core'
 
 export { integerCellTester } from '@jsonforms/vanilla-renderers'
 
-const toInteger = (value: number | string) => {
+const toInteger = (value: string | number) => {
   if (value === '') {
     return undefined
   }
-  return Number(value)
+  if (typeof value === 'number') {
+    return Math.floor(value)
+  }
+  return parseInt(value, 10)
 }
 
 export const IntegerCell = (props: CellProps) => {
