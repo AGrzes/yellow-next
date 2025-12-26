@@ -6,7 +6,7 @@ import {
   type Layout,
   type RankedTester,
 } from '@jsonforms/core'
-import { JsonForms } from '@jsonforms/react'
+import { JsonForms, withJsonFormsControlProps } from '@jsonforms/react'
 import type { StoryObj } from '@storybook/react-vite'
 
 type AnyComponent<P = any> = ((props: P) => any) | (new (props: P) => any)
@@ -23,21 +23,23 @@ export type LayoutStoryArgs = {
   uischema: Layout
 }
 
-const FakeControl = ({ path }: ControlProps) => (
-  <div
-    style={{
-      background: '#ededed',
-      border: '1px dashed #b0b0b0',
-      borderRadius: 4,
-      color: '#4a4a4a',
-      padding: '8px 12px',
-      maxWidth: 300,
-    }}
-  >
-    Foo
-    {path}
-  </div>
-)
+const FakeControl = ({ path, uischema }: ControlProps) => {
+  console.log(path, uischema.scope)
+  return (
+    <div
+      style={{
+        background: '#ededed',
+        border: '1px dashed #b0b0b0',
+        borderRadius: 4,
+        color: '#4a4a4a',
+        padding: '8px 12px',
+        width: 300,
+      }}
+    >
+      {path}
+    </div>
+  )
+}
 
 const fakeControlTester: RankedTester = rankWith(1, isControl)
 
@@ -59,7 +61,7 @@ export function makeLayoutStory<TSchema extends JsonSchema7 = JsonSchema7>(
         uischema={uischema}
         renderers={[
           { tester: layoutTester, renderer: LayoutRenderer },
-          { tester: fakeControlTester, renderer: FakeControl },
+          { tester: fakeControlTester, renderer: withJsonFormsControlProps(FakeControl) },
         ]}
       />
     ),
