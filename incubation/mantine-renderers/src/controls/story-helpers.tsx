@@ -9,18 +9,25 @@ export type ControlStoryOptions<TValue, TValueSchema extends JsonSchema7 = JsonS
   uischemaOptions?: ControlElement['options']
   enabled?: boolean
   visible?: boolean
+  required?: boolean
 }
 
 type AnyComponent<P = any> = ((props: P) => any) | (new (props: P) => any)
 
 export function makeControlStory<TValue, TValueSchema extends JsonSchema7 = JsonSchema7>(
   Control: AnyComponent<OwnPropsOfControl>,
-  { value, schema: valueSchema, uischemaOptions, enabled, visible }: ControlStoryOptions<TValue, TValueSchema>
+  { value, schema: valueSchema, uischemaOptions, enabled, visible, required }: ControlStoryOptions<TValue, TValueSchema>
 ): StoryObj<OwnPropsOfControl> {
   return {
     args: {
-      enabled: enabled,
-      visible: visible,
+      enabled,
+      visible,
+      path: 'value',
+      uischema: { type: 'Control', scope: '#/properties/value', options: uischemaOptions },
+      schema: {
+        type: 'object',
+        properties: { value: valueSchema },
+      },
     },
     render: ({ enabled, visible }: OwnPropsOfControl) => {
       return (
@@ -29,14 +36,13 @@ export function makeControlStory<TValue, TValueSchema extends JsonSchema7 = Json
           schema={{
             type: 'object',
             properties: { value: valueSchema },
+            required: required ? ['value'] : [],
           }}
           uischema={{ type: 'Control', scope: '#/properties/value', options: uischemaOptions }}
           renderers={[
             {
               tester: () => 1,
-              renderer: (props: OwnPropsOfControl) => (
-                <Control {...props} enabled={enabled} visible={visible} />
-              ),
+              renderer: (props: OwnPropsOfControl) => <Control {...props} enabled={enabled} visible={visible} />,
             },
           ]}
           cells={mantineCells}

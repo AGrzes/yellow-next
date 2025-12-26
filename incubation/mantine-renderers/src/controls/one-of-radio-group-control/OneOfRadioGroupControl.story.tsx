@@ -1,7 +1,7 @@
 import type { OwnPropsOfControl } from '@jsonforms/core'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import OneOfRadioGroupControl from './OneOfRadioGroupControl'
 import { makeControlStory } from '../story-helpers'
+import OneOfRadioGroupControl from './OneOfRadioGroupControl'
 
 const meta = {
   component: OneOfRadioGroupControl,
@@ -18,6 +18,7 @@ const schema = {
     { const: 'beta', title: 'Beta' },
     { const: 'gamma', title: 'Gamma' },
   ],
+  description: 'Select one option',
 }
 const uischemaOptions = { format: 'radio' }
 
@@ -38,4 +39,18 @@ export const Disabled: Story = makeControlStory(OneOfRadioGroupControl, {
   schema,
   uischemaOptions,
   enabled: false,
+})
+
+export const Hidden: Story = makeControlStory(OneOfRadioGroupControl, {
+  value: 'Gamma',
+  schema,
+  uischemaOptions,
+  visible: false,
+})
+
+export const Reqired: Story = makeControlStory(OneOfRadioGroupControl, {
+  value: undefined,
+  schema,
+  uischemaOptions,
+  required: true,
 })

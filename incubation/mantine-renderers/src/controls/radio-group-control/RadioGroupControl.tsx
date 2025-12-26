@@ -13,11 +13,22 @@ Implementation notes (Mantine)
   - Use mantine Radio.Group to implement equivalent of https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/controls/RadioGroup.tsx
   Create shared file 
 */
-import { and, isEnumControl, optionIs, type RankedTester, rankWith } from '@jsonforms/core'
-import { RadioGroupControl as VanillaRadioGroupControl } from '@jsonforms/vanilla-renderers'
+import {
+  and,
+  type ControlProps,
+  isEnumControl,
+  optionIs,
+  type OwnPropsOfEnum,
+  type RankedTester,
+  rankWith,
+} from '@jsonforms/core'
+import { withJsonFormsEnumProps } from '@jsonforms/react'
+import { RadioGroupControlBase } from '../radio-group/RadioGroup'
 
-export const RadioGroupControl = VanillaRadioGroupControl
+export const RadioGroupControl = (props: ControlProps & OwnPropsOfEnum) => {
+  return <RadioGroupControlBase {...props} />
+}
 
 export const radioGroupControlTester: RankedTester = rankWith(3, and(isEnumControl, optionIs('format', 'radio')))
 
-export default RadioGroupControl
+export default withJsonFormsEnumProps(RadioGroupControl)
