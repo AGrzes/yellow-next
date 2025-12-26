@@ -12,4 +12,37 @@ Implementation notes (Mantine)
   - focus option -> autoFocus
   - visibility/label/errors -> handled by control wrapper, not the cell
 */
-export { IntegerCell as default, IntegerCell, integerCellTester } from '@jsonforms/vanilla-renderers'
+import type { CellProps } from '@jsonforms/core'
+import { withJsonFormsCellProps } from '@jsonforms/react'
+import { NumberInput } from '@mantine/core'
+
+export { integerCellTester } from '@jsonforms/vanilla-renderers'
+
+const toInteger = (value: number | string) => {
+  if (value === '') {
+    return undefined
+  }
+  return Number(value)
+}
+
+export const IntegerCell = (props: CellProps) => {
+  const { config, data, enabled, id, uischema, schema, path, handleChange } = props
+  const appliedUiSchemaOptions = Object.assign({}, config, uischema.options)
+
+  return (
+    <NumberInput
+      id={id}
+      value={data ?? ''}
+      onChange={(value) => handleChange(path, toInteger(value))}
+      min={schema.minimum}
+      max={schema.maximum}
+      step={schema.multipleOf ?? 1}
+      allowDecimal={false}
+      disabled={!enabled}
+      autoFocus={appliedUiSchemaOptions.focus}
+      placeholder={appliedUiSchemaOptions.placeholder}
+    />
+  )
+}
+
+export default withJsonFormsCellProps(IntegerCell)
