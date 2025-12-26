@@ -12,17 +12,19 @@ Implementation notes (Mantine)
   - visibility/label/errors -> handled by control wrapper, not the cell
 */
 import { type EnumCellProps, isOneOfEnumControl, type RankedTester, rankWith } from '@jsonforms/core'
-import { withJsonFormsOneOfEnumCellProps } from '@jsonforms/react'
+import { type TranslateProps, withJsonFormsOneOfEnumCellProps, withTranslateProps } from '@jsonforms/react'
 import { Select } from '@mantine/core'
-import { i18nDefaults } from '@jsonforms/vanilla-renderers'
 
-export const OneOfEnumCell = (props: EnumCellProps) => {
-  const { config, data, enabled, id, options, uischema, path, handleChange } = props
+const enumNoneLabelFallback = 'None'
+
+export const OneOfEnumCell = (props: EnumCellProps & TranslateProps) => {
+  const { config, data, enabled, id, options, schema, uischema, path, handleChange, t } = props
   const appliedUiSchemaOptions = Object.assign({}, config, uischema.options)
   const enumOptions = options ?? []
   const emptyValue = ''
+  const noneOptionLabel = t('enum.none', enumNoneLabelFallback, { schema, uischema, path })
   const selectData = [
-    { value: emptyValue, label: i18nDefaults['enum.none'] },
+    { value: emptyValue, label: noneOptionLabel },
     ...enumOptions.map((option) => ({
       value: String(option.value),
       label: option.label,
@@ -51,4 +53,4 @@ export const OneOfEnumCell = (props: EnumCellProps) => {
  */
 export const oneOfEnumCellTester: RankedTester = rankWith(2, isOneOfEnumControl)
 
-export default withJsonFormsOneOfEnumCellProps(OneOfEnumCell)
+export default withJsonFormsOneOfEnumCellProps(withTranslateProps(OneOfEnumCell))
