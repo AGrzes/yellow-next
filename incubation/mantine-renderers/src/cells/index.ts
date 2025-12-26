@@ -4,7 +4,6 @@ import DateTimeCell, { dateTimeCellTester } from './date-time-cell/DateTimeCell'
 import EnumCell, { enumCellTester } from './enum-cell/EnumCell'
 import IntegerCell, { integerCellTester } from './integer-cell/IntegerCell'
 import NumberCell, { numberCellTester } from './number-cell/NumberCell'
-import NumberFormatCell, { numberFormatCellTester } from './number-format-cell/NumberFormatCell'
 import OneOfEnumCell, { oneOfEnumCellTester } from './one-of-enum-cell/OneOfEnumCell'
 import SliderCell, { sliderCellTester } from './slider-cell/SliderCell'
 import TextAreaCell, { textAreaCellTester } from './text-area-cell/TextAreaCell'
@@ -24,8 +23,6 @@ export {
   integerCellTester,
   NumberCell,
   numberCellTester,
-  NumberFormatCell,
-  numberFormatCellTester,
   OneOfEnumCell,
   oneOfEnumCellTester,
   SliderCell,
@@ -37,3 +34,4 @@ export {
   TimeCell,
   timeCellTester,
 }
+
