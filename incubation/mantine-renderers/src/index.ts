@@ -33,6 +33,14 @@ import {
   RadioGroupControl,
   radioGroupControlTester,
 } from './controls'
+import {
+  GroupLayout,
+  groupLayoutTester,
+  HorizontalLayout,
+  horizontalLayoutTester,
+  VerticalLayout,
+  verticalLayoutTester,
+} from './layouts'
 
 type MantineCellEntry = { tester: RankedTester; cell: MantineCellRenderer }
 const asMantineCell = (cell: unknown) => cell as MantineCellRenderer
@@ -57,9 +65,24 @@ const controlRenderers: { tester: RankedTester; renderer: any }[] = [
   { tester: oneOfRadioGroupControlTester, renderer: OneOfRadioGroupControl },
 ]
 
+const layoutRenderers: { tester: RankedTester; renderer: any }[] = [
+  { tester: groupLayoutTester, renderer: GroupLayout },
+  { tester: horizontalLayoutTester, renderer: HorizontalLayout },
+  { tester: verticalLayoutTester, renderer: VerticalLayout },
+]
+
 const nonControlRenderers = vanillaRenderers.filter(
   (entry) =>
-    entry.renderer !== InputControl && entry.renderer !== RadioGroupControl && entry.renderer !== OneOfRadioGroupControl
+    entry.renderer !== InputControl &&
+    entry.renderer !== RadioGroupControl &&
+    entry.renderer !== OneOfRadioGroupControl &&
+    entry.renderer !== GroupLayout &&
+    entry.renderer !== HorizontalLayout &&
+    entry.renderer !== VerticalLayout
 )
 
-export const mantineRenderers: { tester: RankedTester; renderer: any }[] = [...controlRenderers, ...nonControlRenderers]
+export const mantineRenderers: { tester: RankedTester; renderer: any }[] = [
+  ...controlRenderers,
+  ...layoutRenderers,
+  ...nonControlRenderers,
+]
