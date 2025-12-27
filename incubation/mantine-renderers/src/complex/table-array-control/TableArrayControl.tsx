@@ -26,14 +26,187 @@ Planning notes (Mantine)
   - getColumnDefinitions(schema, rootSchema)
   - buildRowPath(path, index)
 */
-import { isObjectArrayControl, isPrimitiveArrayControl, or, type RankedTester, rankWith } from '@jsonforms/core'
-import { TableArrayControl as VanillaTableArrayControl } from '@jsonforms/vanilla-renderers'
+import { useMemo } from 'react'
+import {
+  type ArrayControlProps,
+  type ArrayTranslations,
+  composePaths,
+  type ControlElement,
+  createDefaultValue,
+  encode,
+  getControlPath,
+  isObjectArrayControl,
+  isPrimitiveArrayControl,
+  or,
+  type RankedTester,
+  rankWith,
+  Resolve,
+} from '@jsonforms/core'
+import { DispatchCell, withArrayTranslationProps, withJsonFormsArrayControlProps, withTranslateProps } from '@jsonforms/react'
+import { ActionIcon, Badge, Button, Group, ScrollArea, Stack, Table, Text } from '@mantine/core'
+import { ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react'
 
-export const TableArrayControl = VanillaTableArrayControl
+const getRowErrors = (childErrors: ArrayControlProps['childErrors'], rowPath: string) => {
+  if (!childErrors?.length) {
+    return []
+  }
+  return childErrors.filter((error) => getControlPath(error).startsWith(rowPath))
+}
+
+const getColumns = (schema: ArrayControlProps['schema']) => {
+  if (schema.type !== 'object' || !schema.properties) {
+    return []
+  }
+  return Object.keys(schema.properties).filter((prop) => schema.properties?.[prop]?.type !== 'array')
+}
+
+const createControlElement = (schema: ArrayControlProps['schema'], key?: string): ControlElement => ({
+  type: 'Control',
+  label: false,
+  scope: schema.type === 'object' ? `#/properties/${key}` : '#',
+})
+
+export const TableArrayControl = (props: ArrayControlProps & { translations: ArrayTranslations }) => {
+  const {
+    data,
+    label,
+    description,
+    path,
+    schema,
+    errors,
+    addItem,
+    removeItems,
+    moveUp,
+    moveDown,
+    rootSchema,
+    enabled,
+    visible,
+    translations,
+    childErrors,
+  } = props
+  const items = Array.isArray(data) ? data : []
+  const columns = useMemo(() => getColumns(schema), [schema])
+  const addLabel = translations.addTooltip
+  const hasObjectColumns = columns.length > 0
+
+  return (
+    <Stack hidden={!visible}>
+      <Group justify="space-between" align="center">
+        <Text fw={600}>{label}</Text>
+        <Button
+          size="xs"
+          onClick={addItem(path, createDefaultValue(schema, rootSchema))}
+          disabled={!enabled}
+          aria-label={translations.addAriaLabel}
+          leftSection={<Plus size={14} />}
+        >
+          {addLabel}
+        </Button>
+      </Group>
+      {description ? (
+        <Text size="sm" c="dimmed">
+          {description}
+        </Text>
+      ) : null}
+      {errors ? (
+        <Text size="sm" c="red">
+          {errors}
+        </Text>
+      ) : null}
+      {items.length ? (
+        <ScrollArea>
+          <Table>
+            <Table.Thead>
+              <Table.Tr>
+                {hasObjectColumns ? (
+                  columns.map((column) => <Table.Th key={column}>{column}</Table.Th>)
+                ) : (
+                  <Table.Th>Value</Table.Th>
+                )}
+                <Table.Th>Status</Table.Th>
+                <Table.Th></Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>
+              {items.map((_, index) => {
+                const rowPath = composePaths(path, `${index}`)
+                const rowErrors = getRowErrors(childErrors, rowPath)
+                const statusLabel = rowErrors.length ? `${rowErrors.length} errors` : 'OK'
+                return (
+                  <Table.Tr key={rowPath}>
+                    {hasObjectColumns ? (
+                      columns.map((column) => {
+                        const childPath = composePaths(rowPath, column)
+                        return (
+                          <Table.Td key={childPath}>
+                            <DispatchCell
+                              schema={Resolve.schema(schema, `#/properties/${encode(column)}`, rootSchema)}
+                              uischema={createControlElement(schema, encode(column))}
+                              path={childPath}
+                            />
+                          </Table.Td>
+                        )
+                      })
+                    ) : (
+                      <Table.Td>
+                        <DispatchCell schema={schema} uischema={createControlElement(schema)} path={rowPath} />
+                      </Table.Td>
+                    )}
+                    <Table.Td>
+                      <Badge color={rowErrors.length ? 'red' : 'green'} variant="light">
+                        {statusLabel}
+                      </Badge>
+                    </Table.Td>
+                    <Table.Td>
+                      <Group gap="xs" justify="flex-end" wrap="nowrap">
+                        <ActionIcon
+                          size="sm"
+                          variant="subtle"
+                          disabled={!enabled}
+                          aria-label={translations.upAriaLabel}
+                          onClick={() => moveUp!(path, index)()}
+                        >
+                          <ChevronUp size={14} />
+                        </ActionIcon>
+                        <ActionIcon
+                          size="sm"
+                          variant="subtle"
+                          disabled={!enabled}
+                          aria-label={translations.downAriaLabel}
+                          onClick={() => moveDown!(path, index)()}
+                        >
+                          <ChevronDown size={14} />
+                        </ActionIcon>
+                        <ActionIcon
+                          size="sm"
+                          variant="subtle"
+                          color="red"
+                          disabled={!enabled}
+                          aria-label={translations.removeAriaLabel}
+                          onClick={() => removeItems!(path, [index])()}
+                        >
+                          <Trash2 size={14} />
+                        </ActionIcon>
+                      </Group>
+                    </Table.Td>
+                  </Table.Tr>
+                )
+              })}
+            </Table.Tbody>
+          </Table>
+        </ScrollArea>
+      ) : (
+        <Text size="sm" c="dimmed">
+          {translations.noDataMessage}
+        </Text>
+      )}
+    </Stack>
+  )
+}
 
 export const tableArrayControlTester: RankedTester = rankWith(
   3,
   or(isObjectArrayControl, isPrimitiveArrayControl)
 )
 
-export default TableArrayControl
+export default withJsonFormsArrayControlProps(withTranslateProps(withArrayTranslationProps(TableArrayControl)))

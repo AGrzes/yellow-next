@@ -1,7 +1,7 @@
 import type { ControlElement, JsonSchema7 } from '@jsonforms/core'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import ArrayControl, { arrayControlTester } from './ArrayControl'
 import { makeArrayStory, type ArrayStoryArgs } from '../story-helpers'
+import ArrayControl, { arrayControlTester } from './ArrayControl'
 
 const data = {
   items: [
@@ -35,6 +35,7 @@ const uiSchema: ControlElement = {
   scope: '#/properties/items',
   label: 'Items',
   options: {
+    elementLabelProp: 'name',
     detail: {
       type: 'VerticalLayout',
       elements: [
