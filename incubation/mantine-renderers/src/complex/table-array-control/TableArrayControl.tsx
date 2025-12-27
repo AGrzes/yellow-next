@@ -31,21 +31,18 @@ import {
   type ArrayControlProps,
   type ArrayTranslations,
   composePaths,
-  type ControlElement,
   createDefaultValue,
-  encode,
   getControlPath,
   isObjectArrayControl,
   isPrimitiveArrayControl,
   or,
   type RankedTester,
   rankWith,
-  Resolve,
 } from '@jsonforms/core'
-import { DispatchCell, withArrayTranslationProps, withJsonFormsArrayControlProps, withTranslateProps } from '@jsonforms/react'
-import { ActionIcon, Badge, Group, ScrollArea, Table, Text } from '@mantine/core'
-import { ChevronDown, ChevronUp, Trash2 } from 'lucide-react'
+import { withArrayTranslationProps, withJsonFormsArrayControlProps, withTranslateProps } from '@jsonforms/react'
+import { ScrollArea, Table, Text } from '@mantine/core'
 import { ArrayControlWrapper } from '../array-wrapper'
+import { TableArrayRow } from './TableArrayRow'
 
 const getRowErrors = (childErrors: ArrayControlProps['childErrors'], rowPath: string) => {
   if (!childErrors?.length) {
@@ -60,12 +57,6 @@ const getColumns = (schema: ArrayControlProps['schema']) => {
   }
   return Object.keys(schema.properties).filter((prop) => schema.properties?.[prop]?.type !== 'array')
 }
-
-const createControlElement = (schema: ArrayControlProps['schema'], key?: string): ControlElement => ({
-  type: 'Control',
-  label: false,
-  scope: schema.type === 'object' ? `#/properties/${key}` : '#',
-})
 
 export const TableArrayControl = (props: ArrayControlProps & { translations: ArrayTranslations }) => {
   const {
@@ -118,65 +109,26 @@ export const TableArrayControl = (props: ArrayControlProps & { translations: Arr
               {items.map((_, index) => {
                 const rowPath = composePaths(path, `${index}`)
                 const rowErrors = getRowErrors(childErrors, rowPath)
-                const statusLabel = rowErrors.length ? `${rowErrors.length} errors` : 'OK'
+                const errorCount = rowErrors.length
+                const statusLabel = errorCount ? `${errorCount} errors` : 'OK'
                 return (
-                  <Table.Tr key={rowPath}>
-                    {hasObjectColumns ? (
-                      columns.map((column) => {
-                        const childPath = composePaths(rowPath, column)
-                        return (
-                          <Table.Td key={childPath}>
-                            <DispatchCell
-                              schema={Resolve.schema(schema, `#/properties/${encode(column)}`, rootSchema)}
-                              uischema={createControlElement(schema, encode(column))}
-                              path={childPath}
-                            />
-                          </Table.Td>
-                        )
-                      })
-                    ) : (
-                      <Table.Td>
-                        <DispatchCell schema={schema} uischema={createControlElement(schema)} path={rowPath} />
-                      </Table.Td>
-                    )}
-                    <Table.Td>
-                      <Badge color={rowErrors.length ? 'red' : 'green'} variant="light">
-                        {statusLabel}
-                      </Badge>
-                    </Table.Td>
-                    <Table.Td>
-                      <Group gap="xs" justify="flex-end" wrap="nowrap">
-                        <ActionIcon
-                          size="sm"
-                          variant="subtle"
-                          disabled={!enabled}
-                          aria-label={translations.upAriaLabel}
-                          onClick={() => moveUp!(path, index)()}
-                        >
-                          <ChevronUp size={14} />
-                        </ActionIcon>
-                        <ActionIcon
-                          size="sm"
-                          variant="subtle"
-                          disabled={!enabled}
-                          aria-label={translations.downAriaLabel}
-                          onClick={() => moveDown!(path, index)()}
-                        >
-                          <ChevronDown size={14} />
-                        </ActionIcon>
-                        <ActionIcon
-                          size="sm"
-                          variant="subtle"
-                          color="red"
-                          disabled={!enabled}
-                          aria-label={translations.removeAriaLabel}
-                          onClick={() => removeItems!(path, [index])()}
-                        >
-                          <Trash2 size={14} />
-                        </ActionIcon>
-                      </Group>
-                    </Table.Td>
-                  </Table.Tr>
+                  <TableArrayRow
+                    key={rowPath}
+                    rowPath={rowPath}
+                    path={path}
+                    index={index}
+                    schema={schema}
+                    rootSchema={rootSchema}
+                    columns={columns}
+                    hasObjectColumns={hasObjectColumns}
+                    enabled={enabled}
+                    translations={translations}
+                    errorCount={errorCount}
+                    statusLabel={statusLabel}
+                    moveUp={moveUp}
+                    moveDown={moveDown}
+                    removeItems={removeItems}
+                  />
                 )
               })}
             </Table.Tbody>
