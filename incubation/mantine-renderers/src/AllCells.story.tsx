@@ -1,105 +1,9 @@
+import type { ControlElement, JsonSchema7 } from '@jsonforms/core'
 import { JsonForms } from '@jsonforms/react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { mantineCells, mantineRenderers } from './index'
 
-const data = {
-  text: 'Sample text',
-  textPassword: 's3cr3t',
-  textArea: 'Line one\nLine two',
-  enum: 'Beta',
-  oneOfEnum: 'beta',
-  boolean: true,
-  integer: 42,
-  number: 3.14,
-  numberFormat: 12000,
-  slider: 40,
-  date: '2025-01-15',
-  time: '13:45:00',
-  dateTime: '2025-01-15T13:45:00Z',
-}
-
-const schema = {
-  type: 'object',
-  properties: {
-    text: { type: 'string' },
-    textPassword: { type: 'string' },
-    textWithPlaceholder: { type: 'string' },
-    textArea: { type: 'string' },
-    enum: { type: 'string', enum: ['Alpha', 'Beta', 'Gamma'] },
-    oneOfEnum: {
-      type: 'string',
-      oneOf: [
-        { const: 'alpha', title: 'Alpha' },
-        { const: 'beta', title: 'Beta' },
-        { const: 'gamma', title: 'Gamma' },
-      ],
-    },
-    boolean: { type: 'boolean' },
-    integer: { type: 'integer' },
-    number: { type: 'number' },
-    numberFormat: { type: 'integer' },
-    slider: { type: 'number', minimum: 0, maximum: 100, default: 25 },
-    date: { type: 'string', format: 'date' },
-    time: { type: 'string', format: 'time' },
-    dateTime: { type: 'string', format: 'date-time' },
-  },
-}
-
-const uischema = {
-  type: 'VerticalLayout',
-  elements: [
-    { type: 'Control', scope: '#/properties/text', label: 'Text' },
-    {
-      type: 'Control',
-      scope: '#/properties/textPassword',
-      label: 'Password',
-      options: { format: 'password' },
-    },
-    {
-      type: 'Control',
-      scope: '#/properties/textWithPlaceholder',
-      label: 'Text (placeholder)',
-      options: { placeholder: 'Enter text here...' },
-    },
-    {
-      type: 'Control',
-      scope: '#/properties/textArea',
-      label: 'Text Area',
-      options: { multi: true, placeholder: 'Write a few lines...' },
-    },
-    { type: 'Control', scope: '#/properties/enum', label: 'Enum' },
-    { type: 'Control', scope: '#/properties/oneOfEnum', label: 'One Of Enum' },
-    { type: 'Control', scope: '#/properties/boolean', label: 'Boolean' },
-    { type: 'Control', scope: '#/properties/integer', label: 'Integer' },
-    { type: 'Control', scope: '#/properties/number', label: 'Number' },
-    /*{
-      type: 'Control',
-      scope: '#/properties/numberFormat',
-      label: 'Number (formatted)',
-      options: { format: true },
-    },*/
-    {
-      type: 'Control',
-      scope: '#/properties/slider',
-      label: 'Slider',
-      options: { slider: true },
-    },
-    { type: 'Control', scope: '#/properties/date', label: 'Date' },
-    { type: 'Control', scope: '#/properties/time', label: 'Time' },
-    { type: 'Control', scope: '#/properties/dateTime', label: 'Date Time' },
-  ],
-}
-
-const meta = {
-  title: 'Forms/All Cells',
-  component: JsonForms,
-} satisfies Meta<typeof JsonForms>
-
-export default meta
-
-type Story = StoryObj<typeof meta>
-
-export const AllCells: Story = {
+const makeStory = (schema: JsonSchema7, uischema: ControlElement, data: Record<string, unknown>) => ({
   args: {
     data,
     schema,
@@ -107,4 +11,108 @@ export const AllCells: Story = {
     renderers: mantineRenderers,
     cells: mantineCells,
   },
-}
+})
+
+const meta = {
+  title: 'Forms/Cells',
+  component: JsonForms,
+} satisfies Meta<typeof JsonForms>
+
+export default meta
+
+type Story = StoryObj<typeof meta>
+
+export const Text: Story = makeStory(
+  { type: 'object', properties: { value: { type: 'string' } } },
+  { type: 'Control', scope: '#/properties/value', label: 'Text' },
+  { value: 'Sample text' }
+)
+
+export const Password: Story = makeStory(
+  { type: 'object', properties: { value: { type: 'string' } } },
+  { type: 'Control', scope: '#/properties/value', label: 'Password', options: { format: 'password' } },
+  { value: 's3cr3t' }
+)
+
+export const TextWithPlaceholder: Story = makeStory(
+  { type: 'object', properties: { value: { type: 'string' } } },
+  { type: 'Control', scope: '#/properties/value', label: 'Text (placeholder)', options: { placeholder: 'Enter text...' } },
+  { value: '' }
+)
+
+export const TextArea: Story = makeStory(
+  { type: 'object', properties: { value: { type: 'string' } } },
+  {
+    type: 'Control',
+    scope: '#/properties/value',
+    label: 'Text Area',
+    options: { multi: true, placeholder: 'Write a few lines...' },
+  },
+  { value: 'Line one\nLine two' }
+)
+
+export const Enum: Story = makeStory(
+  { type: 'object', properties: { value: { type: 'string', enum: ['Alpha', 'Beta', 'Gamma'] } } },
+  { type: 'Control', scope: '#/properties/value', label: 'Enum' },
+  { value: 'Beta' }
+)
+
+export const OneOfEnum: Story = makeStory(
+  {
+    type: 'object',
+    properties: {
+      value: {
+        type: 'string',
+        oneOf: [
+          { const: 'alpha', title: 'Alpha' },
+          { const: 'beta', title: 'Beta' },
+          { const: 'gamma', title: 'Gamma' },
+        ],
+      },
+    },
+  },
+  { type: 'Control', scope: '#/properties/value', label: 'One Of Enum' },
+  { value: 'beta' }
+)
+
+export const Boolean: Story = makeStory(
+  { type: 'object', properties: { value: { type: 'boolean' } } },
+  { type: 'Control', scope: '#/properties/value', label: 'Boolean' },
+  { value: true }
+)
+
+export const Integer: Story = makeStory(
+  { type: 'object', properties: { value: { type: 'integer' } } },
+  { type: 'Control', scope: '#/properties/value', label: 'Integer' },
+  { value: 42 }
+)
+
+export const Number: Story = makeStory(
+  { type: 'object', properties: { value: { type: 'number' } } },
+  { type: 'Control', scope: '#/properties/value', label: 'Number' },
+  { value: 3.14 }
+)
+
+export const Slider: Story = makeStory(
+  { type: 'object', properties: { value: { type: 'number', minimum: 0, maximum: 100, default: 25 } } },
+  { type: 'Control', scope: '#/properties/value', label: 'Slider', options: { slider: true } },
+  { value: 40 }
+)
+
+export const Date: Story = makeStory(
+  { type: 'object', properties: { value: { type: 'string', format: 'date' } } },
+  { type: 'Control', scope: '#/properties/value', label: 'Date' },
+  { value: '2025-01-15' }
+)
+
+export const Time: Story = makeStory(
+  { type: 'object', properties: { value: { type: 'string', format: 'time' } } },
+  { type: 'Control', scope: '#/properties/value', label: 'Time' },
+  { value: '13:45:00' }
+)
+
+export const DateTime: Story = makeStory(
+  { type: 'object', properties: { value: { type: 'string', format: 'date-time' } } },
+  { type: 'Control', scope: '#/properties/value', label: 'Date Time' },
+  { value: '2025-01-15T13:45:00Z' }
+)
