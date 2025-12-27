@@ -8,6 +8,7 @@
  * - mantineRenderers: Mantine control/layout/complex renderers plus vanilla fallbacks.
  * Deviations:
  * - Falls back to vanilla renderers for unimplemented renderer types.
+ * - Categorization and NumberFormatCell are intentionally omitted for now.
  */
 import type { RankedTester } from '@jsonforms/core'
 import { vanillaRenderers } from '@jsonforms/vanilla-renderers'

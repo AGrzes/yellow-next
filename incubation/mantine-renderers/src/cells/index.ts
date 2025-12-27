@@ -17,6 +17,7 @@
  * - TimeCell: Time input cell.
  * Deviations:
  * - EnumCell and OneOfEnumCell always show an explicit empty option.
+ * - NumberFormatCell is intentionally omitted for now.
  */
 import BooleanCell, { booleanCellTester } from './boolean-cell/BooleanCell'
 import DateCell, { dateCellTester } from './date-cell/DateCell'

@@ -9,6 +9,7 @@
  * Deviations:
  * - Array remove actions are immediate (no confirmation dialog).
  * - TableArrayControl omits the status/error column.
+ * - Categorization is intentionally omitted for now.
  */
 import ArrayControl, { arrayControlTester } from './array-control/ArrayControl'
 import TableArrayControl, { tableArrayControlTester } from './table-array-control/TableArrayControl'
