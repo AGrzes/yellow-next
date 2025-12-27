@@ -39,8 +39,9 @@ import {
   rankWith,
 } from '@jsonforms/core'
 import { JsonFormsDispatch, withArrayTranslationProps, withJsonFormsArrayControlProps, withTranslateProps } from '@jsonforms/react'
-import { Accordion, ActionIcon, Button, Group, Stack, Text } from '@mantine/core'
-import { ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react'
+import { Accordion, ActionIcon, Group, Text } from '@mantine/core'
+import { ChevronDown, ChevronUp, Trash2 } from 'lucide-react'
+import { ArrayControlWrapper } from '../array-wrapper'
 
 const getItemLabel = (item: unknown, index: number, labelProp?: string) => {
   if (labelProp && item && typeof item === 'object' && labelProp in item) {
@@ -82,30 +83,16 @@ export const ArrayControl = (props: ArrayControlProps & { translations: ArrayTra
   const addLabel = translations.addTooltip
   const elementLabelProp = controlElement.options?.elementLabelProp as string | undefined
 
-  return (
-    <Stack hidden={!visible}>
-      <Group justify="space-between" align="center">
-        <Text fw={600}>{label}</Text>
-        <Button
-          size="xs"
-          onClick={addItem(path, createDefaultValue(schema, rootSchema))}
-          disabled={!enabled}
-          aria-label={translations.addAriaLabel}
-          leftSection={<Plus size={14} />}
-        >
-          {addLabel}
-        </Button>
-      </Group>
-      {description ? (
-        <Text size="sm" c="dimmed">
-          {description}
-        </Text>
-      ) : null}
-      {errors ? (
-        <Text size="sm" c="red">
-          {errors}
-        </Text>
-      ) : null}
+  return visible ? (
+    <ArrayControlWrapper
+      label={label}
+      description={description}
+      errors={errors}
+      enabled={enabled}
+      addLabel={addLabel}
+      addAriaLabel={translations.addAriaLabel}
+      onAdd={addItem(path, createDefaultValue(schema, rootSchema))}
+    >
       {items.length ? (
         <Accordion multiple>
           {items.map((item, index) => {
@@ -178,8 +165,8 @@ export const ArrayControl = (props: ArrayControlProps & { translations: ArrayTra
           {translations.noDataMessage}
         </Text>
       )}
-    </Stack>
-  )
+    </ArrayControlWrapper>
+  ) : null
 }
 
 export const arrayControlTester: RankedTester = rankWith(4, isObjectArrayWithNesting)

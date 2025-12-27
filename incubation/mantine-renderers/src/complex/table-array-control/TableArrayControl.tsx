@@ -43,8 +43,9 @@ import {
   Resolve,
 } from '@jsonforms/core'
 import { DispatchCell, withArrayTranslationProps, withJsonFormsArrayControlProps, withTranslateProps } from '@jsonforms/react'
-import { ActionIcon, Badge, Button, Group, ScrollArea, Stack, Table, Text } from '@mantine/core'
-import { ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react'
+import { ActionIcon, Badge, Group, ScrollArea, Table, Text } from '@mantine/core'
+import { ChevronDown, ChevronUp, Trash2 } from 'lucide-react'
+import { ArrayControlWrapper } from '../array-wrapper'
 
 const getRowErrors = (childErrors: ArrayControlProps['childErrors'], rowPath: string) => {
   if (!childErrors?.length) {
@@ -89,30 +90,16 @@ export const TableArrayControl = (props: ArrayControlProps & { translations: Arr
   const addLabel = translations.addTooltip
   const hasObjectColumns = columns.length > 0
 
-  return (
-    <Stack hidden={!visible}>
-      <Group justify="space-between" align="center">
-        <Text fw={600}>{label}</Text>
-        <Button
-          size="xs"
-          onClick={addItem(path, createDefaultValue(schema, rootSchema))}
-          disabled={!enabled}
-          aria-label={translations.addAriaLabel}
-          leftSection={<Plus size={14} />}
-        >
-          {addLabel}
-        </Button>
-      </Group>
-      {description ? (
-        <Text size="sm" c="dimmed">
-          {description}
-        </Text>
-      ) : null}
-      {errors ? (
-        <Text size="sm" c="red">
-          {errors}
-        </Text>
-      ) : null}
+  return visible ? (
+    <ArrayControlWrapper
+      label={label}
+      description={description}
+      errors={errors}
+      enabled={enabled}
+      addLabel={addLabel}
+      addAriaLabel={translations.addAriaLabel}
+      onAdd={addItem(path, createDefaultValue(schema, rootSchema))}
+    >
       {items.length ? (
         <ScrollArea>
           <Table>
@@ -200,8 +187,8 @@ export const TableArrayControl = (props: ArrayControlProps & { translations: Arr
           {translations.noDataMessage}
         </Text>
       )}
-    </Stack>
-  )
+    </ArrayControlWrapper>
+  ) : null
 }
 
 export const tableArrayControlTester: RankedTester = rankWith(
