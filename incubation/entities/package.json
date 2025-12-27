@@ -15,11 +15,13 @@
   "license": "MIT",
   "packageManager": "pnpm@10.13.1",
   "dependencies": {
+    "@agrzes/mantine-renderers": "workspace:*",
     "@emotion/react": "11.11.4",
     "@jsonforms/core": "^3.7.0",
     "@jsonforms/react": "^3.7.0",
     "@jsonforms/vanilla-renderers": "^3.7.0",
     "@mantine/core": "^8.3.7",
+    "@mantine/dates": "^8.3.10",
     "@mantine/hooks": "^8.3.7",
     "lucide-react": "^0.553.0",
     "pouchdb-browser": "^9.0.0",
