@@ -34,7 +34,7 @@ import {
   TimeCell,
   timeCellTester,
 } from './cells'
-import type { MantineCellRenderer } from './cells/types'
+import { ArrayControl, arrayControlTester, TableArrayControl, tableArrayControlTester } from './complex'
 import {
   InputControl,
   inputControlTester,
@@ -44,12 +44,6 @@ import {
   radioGroupControlTester,
 } from './controls'
 import {
-  ArrayControl,
-  arrayControlTester,
-  TableArrayControl,
-  tableArrayControlTester,
-} from './complex'
-import {
   GroupLayout,
   groupLayoutTester,
   HorizontalLayout,
@@ -58,21 +52,18 @@ import {
   verticalLayoutTester,
 } from './layouts'
 
-type MantineCellEntry = { tester: RankedTester; cell: MantineCellRenderer }
-const asMantineCell = (cell: unknown) => cell as MantineCellRenderer
-
-export const mantineCells: MantineCellEntry[] = [
-  { tester: booleanCellTester, cell: asMantineCell(BooleanCell) },
-  { tester: dateCellTester, cell: asMantineCell(DateCell) },
-  { tester: dateTimeCellTester, cell: asMantineCell(DateTimeCell) },
-  { tester: enumCellTester, cell: asMantineCell(EnumCell) },
-  { tester: integerCellTester, cell: asMantineCell(IntegerCell) },
-  { tester: numberCellTester, cell: asMantineCell(NumberCell) },
-  { tester: oneOfEnumCellTester, cell: asMantineCell(OneOfEnumCell) },
-  { tester: sliderCellTester, cell: asMantineCell(SliderCell) },
-  { tester: textAreaCellTester, cell: asMantineCell(TextAreaCell) },
-  { tester: textCellTester, cell: asMantineCell(TextCell) },
-  { tester: timeCellTester, cell: asMantineCell(TimeCell) },
+export const mantineCells: { tester: RankedTester; cell: any }[] = [
+  { tester: booleanCellTester, cell: BooleanCell },
+  { tester: dateCellTester, cell: DateCell },
+  { tester: dateTimeCellTester, cell: DateTimeCell },
+  { tester: enumCellTester, cell: EnumCell },
+  { tester: integerCellTester, cell: IntegerCell },
+  { tester: numberCellTester, cell: NumberCell },
+  { tester: oneOfEnumCellTester, cell: OneOfEnumCell },
+  { tester: sliderCellTester, cell: SliderCell },
+  { tester: textAreaCellTester, cell: TextAreaCell },
+  { tester: textCellTester, cell: TextCell },
+  { tester: timeCellTester, cell: TimeCell },
 ]
 
 const controlRenderers: { tester: RankedTester; renderer: any }[] = [
