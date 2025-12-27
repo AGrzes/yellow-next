@@ -70,4 +70,7 @@ export const OneOfEnumCell = (props: EnumCellProps & MantineCellsProps & Transla
  */
 export const oneOfEnumCellTester: RankedTester = rankWith(2, isOneOfEnumControl)
 
-export default withJsonFormsOneOfEnumCellProps(withTranslateProps(OneOfEnumCell))
+const _default: ReturnType<typeof withJsonFormsOneOfEnumCellProps> = withJsonFormsOneOfEnumCellProps(
+  withTranslateProps(OneOfEnumCell)
+)
+export default _default

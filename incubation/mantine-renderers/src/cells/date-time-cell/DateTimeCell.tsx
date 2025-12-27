@@ -48,4 +48,5 @@ export const DateTimeCell = (props: CellProps & MantineCellsProps) => {
  */
 export const dateTimeCellTester: RankedTester = rankWith(2, isDateTimeControl)
 
-export default withJsonFormsCellProps(DateTimeCell)
+const _default: ReturnType<typeof withJsonFormsCellProps> = withJsonFormsCellProps(DateTimeCell)
+export default _default

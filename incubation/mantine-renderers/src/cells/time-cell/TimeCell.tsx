@@ -37,4 +37,5 @@ export const TimeCell = (props: CellProps & MantineCellsProps) => {
  */
 export const timeCellTester: RankedTester = rankWith(2, isTimeControl)
 
-export default withJsonFormsCellProps(TimeCell)
+const _default: ReturnType<typeof withJsonFormsCellProps> = withJsonFormsCellProps(TimeCell)
+export default _default

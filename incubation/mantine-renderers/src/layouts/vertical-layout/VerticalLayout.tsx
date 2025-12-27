@@ -38,4 +38,5 @@ const VerticalLayoutRendererComponent = memo(function VerticalLayoutRendererComp
 
 export const verticalLayoutTester: RankedTester = rankWith(1, uiTypeIs('VerticalLayout'))
 
-export default withJsonFormsLayoutProps(VerticalLayout, false)
+const _default: ReturnType<typeof withJsonFormsLayoutProps> = withJsonFormsLayoutProps(VerticalLayout, false)
+export default _default

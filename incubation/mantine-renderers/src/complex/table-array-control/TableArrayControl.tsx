@@ -102,4 +102,7 @@ export const tableArrayControlTester: RankedTester = rankWith(
   or(isObjectArrayControl, isPrimitiveArrayControl)
 )
 
-export default withJsonFormsArrayControlProps(withTranslateProps(withArrayTranslationProps(TableArrayControl)))
+const _default: ReturnType<typeof withJsonFormsArrayControlProps> = withJsonFormsArrayControlProps(
+  withTranslateProps(withArrayTranslationProps(TableArrayControl))
+)
+export default _default

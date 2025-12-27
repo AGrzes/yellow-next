@@ -36,4 +36,5 @@ export const BooleanCell = (props: CellProps & MantineCellsProps) => {
  */
 export const booleanCellTester: RankedTester = rankWith(2, isBooleanControl)
 
-export default withJsonFormsCellProps(BooleanCell)
+const _default: ReturnType<typeof withJsonFormsCellProps> = withJsonFormsCellProps(BooleanCell)
+export default _default

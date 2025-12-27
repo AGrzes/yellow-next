@@ -38,4 +38,5 @@ const HorizontalLayoutRendererComponent = memo(function HorizontalLayoutRenderer
 
 export const horizontalLayoutTester: RankedTester = rankWith(1, uiTypeIs('HorizontalLayout'))
 
-export default withJsonFormsLayoutProps(HorizontalLayout, false)
+const _default: ReturnType<typeof withJsonFormsLayoutProps> = withJsonFormsLayoutProps(HorizontalLayout, false)
+export default _default

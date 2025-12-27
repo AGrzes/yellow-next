@@ -54,4 +54,5 @@ export const IntegerCell = (props: CellProps & MantineCellsProps) => {
  */
 export const integerCellTester: RankedTester = rankWith(2, isIntegerControl)
 
-export default withJsonFormsCellProps(IntegerCell)
+const _default: ReturnType<typeof withJsonFormsCellProps> = withJsonFormsCellProps(IntegerCell)
+export default _default

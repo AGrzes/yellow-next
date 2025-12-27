@@ -38,4 +38,5 @@ export const SliderCell = (props: CellProps & MantineCellsProps) => {
  */
 export const sliderCellTester: RankedTester = rankWith(4, isRangeControl)
 
-export default withJsonFormsCellProps(SliderCell)
+const _default: ReturnType<typeof withJsonFormsCellProps> = withJsonFormsCellProps(SliderCell)
+export default _default

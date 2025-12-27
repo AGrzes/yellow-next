@@ -29,4 +29,6 @@ export const oneOfRadioGroupControlTester: RankedTester = rankWith(
   and(isOneOfEnumControl, optionIs('format', 'radio'))
 )
 
-export default withJsonFormsOneOfEnumProps(OneOfRadioGroupControl)
+const _default: ReturnType<typeof withJsonFormsOneOfEnumProps> =
+  withJsonFormsOneOfEnumProps(OneOfRadioGroupControl)
+export default _default

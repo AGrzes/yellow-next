@@ -42,4 +42,5 @@ const GroupLayoutRendererComponent = memo(function GroupLayoutRendererComponent(
 
 export const groupLayoutTester: RankedTester = rankWith(1, uiTypeIs('Group'))
 
-export default withJsonFormsLayoutProps(GroupLayout)
+const _default: ReturnType<typeof withJsonFormsLayoutProps> = withJsonFormsLayoutProps(GroupLayout)
+export default _default

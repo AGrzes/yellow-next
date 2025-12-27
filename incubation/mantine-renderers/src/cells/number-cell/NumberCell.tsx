@@ -50,4 +50,5 @@ export const NumberCell = (props: CellProps & MantineCellsProps) => {
  */
 export const numberCellTester: RankedTester = rankWith(2, isNumberControl)
 
-export default withJsonFormsCellProps(NumberCell)
+const _default: ReturnType<typeof withJsonFormsCellProps> = withJsonFormsCellProps(NumberCell)
+export default _default

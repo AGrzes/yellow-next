@@ -82,4 +82,5 @@ export const InputControl = (props: ControlProps) => {
 
 export const inputControlTester: RankedTester = rankWith(1, isControl)
 
-export default withJsonFormsControlProps(InputControl)
+const _default: ReturnType<typeof withJsonFormsControlProps> = withJsonFormsControlProps(InputControl)
+export default _default

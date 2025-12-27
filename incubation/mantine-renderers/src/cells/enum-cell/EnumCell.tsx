@@ -70,4 +70,5 @@ export const EnumCell = (props: EnumCellProps & MantineCellsProps & TranslatePro
  */
 export const enumCellTester: RankedTester = rankWith(2, isEnumControl)
 
-export default withJsonFormsEnumCellProps(withTranslateProps(EnumCell))
+const _default: ReturnType<typeof withJsonFormsEnumCellProps> = withJsonFormsEnumCellProps(withTranslateProps(EnumCell))
+export default _default

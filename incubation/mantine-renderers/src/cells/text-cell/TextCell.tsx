@@ -40,4 +40,5 @@ export const TextCell = (props: CellProps & MantineCellsProps) => {
  */
 export const textCellTester: RankedTester = rankWith(1, isStringControl)
 
-export default withJsonFormsCellProps(TextCell)
+const _default: ReturnType<typeof withJsonFormsCellProps> = withJsonFormsCellProps(TextCell)
+export default _default

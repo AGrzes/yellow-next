@@ -37,4 +37,5 @@ export const TextAreaCell = (props: CellProps & MantineCellsProps) => {
  */
 export const textAreaCellTester: RankedTester = rankWith(2, isMultiLineControl)
 
-export default withJsonFormsCellProps(TextAreaCell)
+const _default: ReturnType<typeof withJsonFormsCellProps> = withJsonFormsCellProps(TextAreaCell)
+export default _default

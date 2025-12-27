@@ -92,4 +92,7 @@ export const ArrayControl = (props: ArrayControlProps & { translations: ArrayTra
 
 export const arrayControlTester: RankedTester = rankWith(4, isObjectArrayWithNesting)
 
-export default withJsonFormsArrayControlProps(withTranslateProps(withArrayTranslationProps(ArrayControl)))
+const _default: ReturnType<typeof withJsonFormsArrayControlProps> = withJsonFormsArrayControlProps(
+  withTranslateProps(withArrayTranslationProps(ArrayControl))
+)
+export default _default
