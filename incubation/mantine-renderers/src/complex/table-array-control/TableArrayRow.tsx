@@ -25,30 +25,17 @@ const createControlElement = (schema: ArrayControlProps['schema'], key?: string)
   scope: schema.type === 'object' ? `#/properties/${key}` : '#',
 })
 
-export const TableArrayRow = ({
-  rowPath,
-  path,
-  index,
-  schema,
-  rootSchema,
-  columns,
-  hasObjectColumns,
-  enabled,
-  translations,
-  moveUp,
-  moveDown,
-  removeItems,
-}: TableArrayRowProps) => {
+export const TableArrayRow = (props: TableArrayRowProps) => {
   return (
     <Table.Tr>
-      {hasObjectColumns ? (
-        columns.map((column) => {
-          const childPath = composePaths(rowPath, column)
+      {props.hasObjectColumns ? (
+        props.columns.map((column) => {
+          const childPath = composePaths(props.rowPath, column)
           return (
             <Table.Td key={childPath}>
               <DispatchCell
-                schema={Resolve.schema(schema, `#/properties/${encode(column)}`, rootSchema)}
-                uischema={createControlElement(schema, encode(column))}
+                schema={Resolve.schema(props.schema, `#/properties/${encode(column)}`, props.rootSchema)}
+                uischema={createControlElement(props.schema, encode(column))}
                 path={childPath}
               />
             </Table.Td>
@@ -56,25 +43,25 @@ export const TableArrayRow = ({
         })
       ) : (
         <Table.Td>
-          <DispatchCell schema={schema} uischema={createControlElement(schema)} path={rowPath} />
+          <DispatchCell schema={props.schema} uischema={createControlElement(props.schema)} path={props.rowPath} />
         </Table.Td>
       )}
       <Table.Td>
         <Group gap="xs" justify="flex-end" wrap="nowrap">
           <ArrayMoveUpButton
-            disabled={!enabled}
-            ariaLabel={translations.upAriaLabel}
-            onClick={() => moveUp!(path, index)()}
+            disabled={!props.enabled}
+            ariaLabel={props.translations.upAriaLabel}
+            onClick={() => props.moveUp!(props.path, props.index)()}
           />
           <ArrayMoveDownButton
-            disabled={!enabled}
-            ariaLabel={translations.downAriaLabel}
-            onClick={() => moveDown!(path, index)()}
+            disabled={!props.enabled}
+            ariaLabel={props.translations.downAriaLabel}
+            onClick={() => props.moveDown!(props.path, props.index)()}
           />
           <ArrayRemoveButton
-            disabled={!enabled}
-            ariaLabel={translations.removeAriaLabel}
-            onClick={() => removeItems!(path, [index])()}
+            disabled={!props.enabled}
+            ariaLabel={props.translations.removeAriaLabel}
+            onClick={() => props.removeItems!(props.path, [props.index])()}
           />
         </Group>
       </Table.Td>

@@ -50,36 +50,20 @@ const getColumns = (schema: ArrayControlProps['schema']) => {
 }
 
 export const TableArrayControl = (props: ArrayControlProps & { translations: ArrayTranslations }) => {
-  const {
-    data,
-    label,
-    description,
-    path,
-    schema,
-    errors,
-    addItem,
-    removeItems,
-    moveUp,
-    moveDown,
-    rootSchema,
-    enabled,
-    visible,
-    translations,
-  } = props
-  const items = Array.isArray(data) ? data : []
-  const columns = useMemo(() => getColumns(schema), [schema])
-  const addLabel = translations.addTooltip
+  const items = Array.isArray(props.data) ? props.data : []
+  const columns = useMemo(() => getColumns(props.schema), [props.schema])
+  const addLabel = props.translations.addTooltip
   const hasObjectColumns = columns.length > 0
 
-  return visible ? (
+  return props.visible ? (
     <ArrayControlWrapper
-      label={label}
-      description={description}
-      errors={errors}
-      enabled={enabled}
+      label={props.label}
+      description={props.description}
+      errors={props.errors}
+      enabled={props.enabled}
       addLabel={addLabel}
-      addAriaLabel={translations.addAriaLabel}
-      onAdd={addItem(path, createDefaultValue(schema, rootSchema))}
+      addAriaLabel={props.translations.addAriaLabel}
+      onAdd={props.addItem(props.path, createDefaultValue(props.schema, props.rootSchema))}
     >
       {items.length ? (
         <ScrollArea>
@@ -96,22 +80,22 @@ export const TableArrayControl = (props: ArrayControlProps & { translations: Arr
             </Table.Thead>
             <Table.Tbody>
               {items.map((_, index) => {
-                const rowPath = composePaths(path, `${index}`)
+                const rowPath = composePaths(props.path, `${index}`)
                 return (
                   <TableArrayRow
                     key={rowPath}
                     rowPath={rowPath}
-                    path={path}
+                    path={props.path}
                     index={index}
-                    schema={schema}
-                    rootSchema={rootSchema}
+                    schema={props.schema}
+                    rootSchema={props.rootSchema}
                     columns={columns}
                     hasObjectColumns={hasObjectColumns}
-                    enabled={enabled}
-                    translations={translations}
-                    moveUp={moveUp}
-                    moveDown={moveDown}
-                    removeItems={removeItems}
+                    enabled={props.enabled}
+                    translations={props.translations}
+                    moveUp={props.moveUp}
+                    moveDown={props.moveDown}
+                    removeItems={props.removeItems}
                   />
                 )
               })}
@@ -120,7 +104,7 @@ export const TableArrayControl = (props: ArrayControlProps & { translations: Arr
         </ScrollArea>
       ) : (
         <Text size="sm" c="dimmed">
-          {translations.noDataMessage}
+          {props.translations.noDataMessage}
         </Text>
       )}
     </ArrayControlWrapper>

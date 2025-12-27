@@ -44,73 +44,62 @@ import { ArrayControlWrapper } from '../array-wrapper'
 import { ArrayControlRow } from './ArrayControlRow'
 
 export const ArrayControl = (props: ArrayControlProps & { translations: ArrayTranslations }) => {
-  const {
-    data,
-    label,
-    path,
-    schema,
-    errors,
-    description,
-    addItem,
-    removeItems,
-    moveUp,
-    moveDown,
-    uischema,
-    uischemas,
-    rootSchema,
-    renderers,
-    cells,
-    enabled,
-    visible,
-    translations,
-  } = props
-  const controlElement = uischema as ControlElement
-  const items = Array.isArray(data) ? data : []
+  const controlElement = props.uischema as ControlElement
+  const items = Array.isArray(props.data) ? props.data : []
   const childUiSchema = useMemo(
-    () => findUISchema(uischemas ?? [], schema, uischema.scope, path, undefined, uischema, rootSchema),
-    [uischemas, schema, uischema, path, rootSchema]
+    () =>
+      findUISchema(
+        props.uischemas ?? [],
+        props.schema,
+        props.uischema.scope,
+        props.path,
+        undefined,
+        props.uischema,
+        props.rootSchema
+      ),
+    [props.uischemas, props.schema, props.uischema, props.path, props.rootSchema]
   )
-  const addLabel = translations.addTooltip
+  const addLabel = props.translations.addTooltip
   const elementLabelProp = controlElement.options?.elementLabelProp as string | undefined
 
-  return visible ? (
+  return props.visible ? (
     <ArrayControlWrapper
-      label={label}
-      description={description}
-      errors={errors}
-      enabled={enabled}
+      label={props.label}
+      description={props.description}
+      errors={props.errors}
+      enabled={props.enabled}
       addLabel={addLabel}
-      addAriaLabel={translations.addAriaLabel}
-      onAdd={addItem(path, createDefaultValue(schema, rootSchema))}
+      addAriaLabel={props.translations.addAriaLabel}
+      onAdd={props.addItem(props.path, createDefaultValue(props.schema, props.rootSchema))}
     >
       {items.length ? (
         <Accordion multiple>
           {items.map((item, index) => {
-            const itemPath = composePaths(path, `${index}`)
+            const itemPath = composePaths(props.path, `${index}`)
             return (
               <ArrayControlRow
                 key={itemPath}
                 item={item}
                 index={index}
-                path={path}
+                path={props.path}
                 itemPath={itemPath}
                 elementLabelProp={elementLabelProp}
-                schema={schema}
+                schema={props.schema}
                 childUiSchema={childUiSchema}
-                renderers={renderers}
-                cells={cells}
-                enabled={enabled}
-                translations={translations}
-                moveUp={moveUp}
-                moveDown={moveDown}
-                removeItems={removeItems}
+                renderers={props.renderers}
+                cells={props.cells}
+                enabled={props.enabled}
+                translations={props.translations}
+                moveUp={props.moveUp}
+                moveDown={props.moveDown}
+                removeItems={props.removeItems}
               />
             )
           })}
         </Accordion>
       ) : (
         <Text size="sm" c="dimmed">
-          {translations.noDataMessage}
+          {props.translations.noDataMessage}
         </Text>
       )}
     </ArrayControlWrapper>

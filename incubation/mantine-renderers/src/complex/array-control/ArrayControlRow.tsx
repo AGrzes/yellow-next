@@ -30,26 +30,11 @@ const getItemLabel = (item: unknown, index: number, labelProp?: string) => {
   return `Item ${index + 1}`
 }
 
-export const ArrayControlRow = ({
-  item,
-  index,
-  path,
-  itemPath,
-  elementLabelProp,
-  schema,
-  childUiSchema,
-  renderers,
-  cells,
-  enabled,
-  translations,
-  moveUp,
-  moveDown,
-  removeItems,
-}: ArrayControlRowProps) => {
-  const itemLabel = getItemLabel(item, index, elementLabelProp)
+export const ArrayControlRow = (props: ArrayControlRowProps) => {
+  const itemLabel = getItemLabel(props.item, props.index, props.elementLabelProp)
 
   return (
-    <Accordion.Item value={itemPath}>
+    <Accordion.Item value={props.itemPath}>
       <Accordion.Control>
         <Group justify="space-between" align="center" wrap="nowrap">
           <Text size="sm" fw={500}>
@@ -57,31 +42,31 @@ export const ArrayControlRow = ({
           </Text>
           <Group gap="xs" wrap="nowrap">
             <ArrayMoveUpButton
-              disabled={!enabled}
-              ariaLabel={translations.upAriaLabel}
-              onClick={() => moveUp!(path, index)()}
+              disabled={!props.enabled}
+              ariaLabel={props.translations.upAriaLabel}
+              onClick={() => props.moveUp!(props.path, props.index)()}
             />
             <ArrayMoveDownButton
-              disabled={!enabled}
-              ariaLabel={translations.downAriaLabel}
-              onClick={() => moveDown!(path, index)()}
+              disabled={!props.enabled}
+              ariaLabel={props.translations.downAriaLabel}
+              onClick={() => props.moveDown!(props.path, props.index)()}
             />
             <ArrayRemoveButton
-              disabled={!enabled}
-              ariaLabel={translations.removeAriaLabel}
-              onClick={() => removeItems!(path, [index])()}
+              disabled={!props.enabled}
+              ariaLabel={props.translations.removeAriaLabel}
+              onClick={() => props.removeItems!(props.path, [props.index])()}
             />
           </Group>
         </Group>
       </Accordion.Control>
       <Accordion.Panel>
         <JsonFormsDispatch
-          schema={schema}
-          uischema={childUiSchema}
-          path={itemPath}
-          renderers={renderers}
-          cells={cells}
-          enabled={enabled}
+          schema={props.schema}
+          uischema={props.childUiSchema}
+          path={props.itemPath}
+          renderers={props.renderers}
+          cells={props.cells}
+          enabled={props.enabled}
         />
       </Accordion.Panel>
     </Accordion.Item>
