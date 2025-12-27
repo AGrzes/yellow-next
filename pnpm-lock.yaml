@@ -583,9 +583,6 @@ importers:
       '@jsonforms/react':
         specifier: ^3.7.0
         version: 3.7.0(@jsonforms/core@3.7.0)(react@19.2.0)
-      '@jsonforms/vanilla-renderers':
-        specifier: ^3.7.0
-        version: 3.7.0(@jsonforms/core@3.7.0)(@jsonforms/react@3.7.0(@jsonforms/core@3.7.0)(react@19.2.0))(react@19.2.0)
       '@mantine/core':
         specifier: ^8.3.7
         version: 8.3.7(@mantine/hooks@8.3.7(react@19.2.0))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)

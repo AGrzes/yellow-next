@@ -18,7 +18,6 @@
     "@emotion/react": "11.11.4",
     "@jsonforms/core": "^3.7.0",
     "@jsonforms/react": "^3.7.0",
-    "@jsonforms/vanilla-renderers": "^3.7.0",
     "lucide-react": "^0.553.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
