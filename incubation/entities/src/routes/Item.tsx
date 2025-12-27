@@ -25,9 +25,8 @@ export function Item() {
 export const itemLoader: LoaderFunction = async ({ params }) => {
   const [schema, uiSchema, data] = await Promise.all([
     schemaManager.getSchema('book'),
-    uiSchemaManager.getUiSchema('book', 'collection'),
+    uiSchemaManager.getUiSchema('book', 'item'),
     entityManager.get('book', params.id!),
   ])
-  console.log('itemLoader', { params, schema, uiSchema, data })
-  return { schema, uiSchema, item: data }
+  return { schema: schema.properties.books.items, uiSchema, item: data }
 }

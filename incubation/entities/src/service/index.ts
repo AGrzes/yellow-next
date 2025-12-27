@@ -21,7 +21,7 @@ export const uiSchemaManager = new UiSchemaManager()
 export class EntityManager {
   async get(type: string, id: string) {
     const response = await fetch(`/data/${type}.data.json`)
-    const list: any[] = await response.json()
+    const list: any[] = (await response.json()).books
     return list.find((item)=> item.id === id)
   }
   async list(type: string) {
