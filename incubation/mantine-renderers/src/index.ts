@@ -5,13 +5,11 @@
  * Implementing: https://jsonforms.io/docs/custom-renderers
  * Includes:
  * - mantineCells: Mantine-backed cell renderers with testers.
- * - mantineRenderers: Mantine control/layout/complex renderers plus vanilla fallbacks.
+ * - mantineRenderers: Mantine control/layout/complex renderers.
  * Deviations:
- * - Falls back to vanilla renderers for unimplemented renderer types.
  * - Categorization and NumberFormatCell are intentionally omitted for now.
  */
 import type { RankedTester } from '@jsonforms/core'
-import { vanillaRenderers } from '@jsonforms/vanilla-renderers'
 import {
   BooleanCell,
   booleanCellTester,
@@ -94,21 +92,8 @@ const complexRenderers: { tester: RankedTester; renderer: any }[] = [
   { tester: tableArrayControlTester, renderer: TableArrayControl },
 ]
 
-const nonControlRenderers = vanillaRenderers.filter(
-  (entry) =>
-    entry.renderer !== InputControl &&
-    entry.renderer !== RadioGroupControl &&
-    entry.renderer !== OneOfRadioGroupControl &&
-    entry.renderer !== GroupLayout &&
-    entry.renderer !== HorizontalLayout &&
-    entry.renderer !== VerticalLayout &&
-    entry.renderer !== ArrayControl &&
-    entry.renderer !== TableArrayControl
-)
-
 export const mantineRenderers: { tester: RankedTester; renderer: any }[] = [
   ...controlRenderers,
   ...layoutRenderers,
   ...complexRenderers,
-  ...nonControlRenderers,
 ]
