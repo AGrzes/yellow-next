@@ -1,16 +1,13 @@
-/*
-Implementation notes (Mantine)
-- Vanilla reference: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/cells/NumberCell.tsx
-- Mantine component: https://mantine.dev/core/number-input/
-- JsonForms expectations: data is number | undefined, enabled, path, uischema options (focus), and handleChange with a numeric value.
-- Functionality mapping:
-  - value -> NumberInput value
-  - onChange -> handleChange(path, number | undefined)
-  - schema.minimum/maximum -> NumberInput min/max
-  - enabled -> disabled
-  - focus option -> autoFocus
-  - label/description/errors -> NumberInput props
-*/
+/**
+ * NumberCell
+ *
+ * Numeric input cell backed by Mantine NumberInput.
+ *
+ * Implementing: https://jsonforms.io/docs/uischema/controls
+ * Inspired By: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/cells/NumberCell.tsx
+ * Implementation Notes:
+ * - Uses `schema.multipleOf` as the step value with a 0.1 fallback.
+ */
 import { type CellProps, isNumberControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { NumberInput } from '@mantine/core'

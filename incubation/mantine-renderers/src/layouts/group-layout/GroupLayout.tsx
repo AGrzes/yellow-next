@@ -1,14 +1,14 @@
-/*
-Design notes (Mantine)
-- Vanilla reference: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/layouts/GroupLayout.tsx
-- Mantine components: https://mantine.dev/core/fieldset/ and https://mantine.dev/core/stack/
-- JsonForms expectations: renders a Group layout with optional label, respects visibility/enabled, and renders child elements in order.
-- Functionality mapping:
-  - label -> Fieldset legend (use Mantine Fieldset)
-  - child layout -> Stack for vertical spacing
-  - visibility/enabled -> Fieldset disabled + hidden handling
-  - child rendering -> JsonForms renderChildren equivalent
-*/
+/**
+ * GroupLayout
+ *
+ * Layout renderer that groups children under an optional legend.
+ *
+ * Implementing: https://jsonforms.io/docs/uischema/layouts
+ * Inspired By: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/layouts/GroupLayout.tsx
+ * Implementation Notes:
+ * - Drops `data` before passing props to the memoized renderer.
+ * - Uses Mantine Fieldset for the group container and `renderChildren` for content.
+ */
 import { memo } from 'react'
 import { type GroupLayout as JsonFormsGroupLayout, type LayoutProps, type RankedTester, rankWith, uiTypeIs } from '@jsonforms/core'
 import { withJsonFormsLayoutProps } from '@jsonforms/react'

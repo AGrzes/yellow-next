@@ -1,3 +1,8 @@
+/**
+ * Array Action Buttons
+ *
+ * Shared add/move/remove button components for array controls.
+ */
 import { ActionIcon, Button } from '@mantine/core'
 import { ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react'
 

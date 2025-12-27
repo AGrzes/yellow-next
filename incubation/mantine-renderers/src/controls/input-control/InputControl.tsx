@@ -1,14 +1,15 @@
-/*
-Implementation notes (Mantine)
-- Vanilla reference: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/controls/InputControl.tsx
-- Mantine component: https://mantine.dev/core/input/#input-wrapper
-- JsonForms expectations: wraps a selected cell, renders label, description/errors, uses visibility/enabled/required, and selects the best cell based on testers.
-- Functionality mapping:
-  - label/required -> pass label/required to Mantine cells for native rendering
-  - description/errors -> pass description/errors to Mantine cells and respect focus rules
-  - enabled/visible -> wrapper disabled/hidden handling
-  - cell selection -> keep JsonForms cell dispatch logic
-*/
+/**
+ * InputControl
+ *
+ * Wrapper control that selects the best matching cell and forwards control metadata.
+ *
+ * Implementing: https://jsonforms.io/docs/uischema/controls
+ * Inspired By: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/controls/InputControl.tsx
+ * Deviations:
+ * - Returns `null` (with a warning) when no applicable cell is found.
+ * Implementation Notes:
+ * - Ranks available cells with testers and picks the highest non-negative score.
+ */
 import {
   type ControlElement,
   type ControlProps,

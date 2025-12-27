@@ -1,3 +1,8 @@
+/**
+ * Cell Types
+ *
+ * Shared type definitions for Mantine cell renderers.
+ */
 export interface MantineCellsProps {
   label?: string
   description?: string

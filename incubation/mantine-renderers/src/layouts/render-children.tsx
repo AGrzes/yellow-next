@@ -1,3 +1,8 @@
+/**
+ * renderChildren
+ *
+ * Shared helper to render layout elements with JsonFormsDispatch.
+ */
 import type { JsonSchema, Layout } from '@jsonforms/core'
 import { JsonFormsDispatch, useJsonForms } from '@jsonforms/react'
 

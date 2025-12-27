@@ -1,3 +1,14 @@
+/**
+ * Mantine Renderers
+ *
+ * Entry point exporting Mantine cells and renderer sets for JSONForms.
+ * Implementing: https://jsonforms.io/docs/custom-renderers
+ * Includes:
+ * - mantineCells: Mantine-backed cell renderers with testers.
+ * - mantineRenderers: Mantine control/layout/complex renderers plus vanilla fallbacks.
+ * Deviations:
+ * - Falls back to vanilla renderers for unimplemented renderer types.
+ */
 import type { RankedTester } from '@jsonforms/core'
 import { vanillaRenderers } from '@jsonforms/vanilla-renderers'
 import {

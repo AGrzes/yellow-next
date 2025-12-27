@@ -1,30 +1,16 @@
-/*
-Planning notes (Mantine)
-- Vanilla reference: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/complex/TableArrayControl.tsx
-- Mantine components to use:
-  - Table for rows/cells
-  - Group + Button/ActionIcon for add/remove
-  - Text for empty state
-  - ScrollArea for wide tables
-- JsonForms expectations to keep:
-  - object + primitive array handling (table layout)
-  - DispatchCell for each cell rendering
-  - add/remove with array control props
-  - label/description/errors/visibility/enabled handling
-- Vanilla behaviors to skip/simplify:
-  - default confirm dialog (direct remove)
-  - vanilla className styling hooks
-  - per-cell error summary string concatenation
-- Component split proposal:
-  - TableArrayHeader (label + add button)
-  - TableArrayRow (DispatchCell row)
-  - TableArrayActions (remove button)
-  - TableArrayEmptyState
-- Shared helpers:
-  - getRowSchema(schema, rootSchema)
-  - getColumnDefinitions(schema, rootSchema)
-  - buildRowPath(path, index)
-*/
+/**
+ * TableArrayControl
+ *
+ * Array control that renders items in a table layout.
+ *
+ * Implementing: https://jsonforms.io/docs/uischema/controls
+ * Inspired By: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/complex/TableArrayControl.tsx
+ * Deviations:
+ * - Delete confirmation dialog is omitted (direct remove).
+ * - Status/error column is not rendered.
+ * Implementation Notes:
+ * - Derives columns from object schema properties, excluding array-typed properties.
+ */
 import { useMemo } from 'react'
 import {
   type ArrayControlProps,

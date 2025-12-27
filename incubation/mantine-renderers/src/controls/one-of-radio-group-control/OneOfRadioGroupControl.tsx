@@ -1,18 +1,13 @@
-/*
-Implementation notes (Mantine)
-- Vanilla reference: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/controls/OneOfRadioGroupControl.tsx
-- Mantine component: https://mantine.dev/core/radio/
-- JsonForms expectations: handles oneOf enum controls with format=radio, reads oneOf options, and updates the bound value.
-- Functionality mapping:
-  - oneOf options -> Radio.Group data
-  - value -> selected radio value
-  - onChange -> handleChange path update
-  - enabled/visible -> disable or hide group
-  - description/errors/label -> use native Mantine functionality
-  Implementation approach:
-  - Use mantine Radio.Group to implement equivalent of https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/controls/RadioGroup.tsx
-  Create shared file 
-*/
+/**
+ * OneOfRadioGroupControl
+ *
+ * OneOf enum radio control backed by Mantine Radio.Group.
+ *
+ * Implementing: https://jsonforms.io/docs/uischema/controls
+ * Inspired By: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/controls/OneOfRadioGroupControl.tsx
+ * Implementation Notes:
+ * - Delegates rendering to `RadioGroupControlBase` for shared layout logic.
+ */
 import {
   and,
   type ControlProps,

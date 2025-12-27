@@ -1,3 +1,23 @@
+/**
+ * Cells
+ *
+ * Mantine cell renderer exports for JSONForms.
+ * Implementing: https://jsonforms.io/docs/uischema/controls
+ * Includes:
+ * - BooleanCell: Boolean checkbox cell.
+ * - DateCell: Date input cell.
+ * - DateTimeCell: Date-time input cell.
+ * - EnumCell: Enum select cell.
+ * - IntegerCell: Integer input cell.
+ * - NumberCell: Numeric input cell.
+ * - OneOfEnumCell: OneOf enum select cell.
+ * - SliderCell: Range slider cell.
+ * - TextAreaCell: Multiline text input cell.
+ * - TextCell: Text input cell.
+ * - TimeCell: Time input cell.
+ * Deviations:
+ * - EnumCell and OneOfEnumCell always show an explicit empty option.
+ */
 import BooleanCell, { booleanCellTester } from './boolean-cell/BooleanCell'
 import DateCell, { dateCellTester } from './date-cell/DateCell'
 import DateTimeCell, { dateTimeCellTester } from './date-time-cell/DateTimeCell'
@@ -34,4 +54,3 @@ export {
   TimeCell,
   timeCellTester,
 }
-

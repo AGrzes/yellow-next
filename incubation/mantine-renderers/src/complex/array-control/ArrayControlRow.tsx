@@ -1,3 +1,8 @@
+/**
+ * ArrayControlRow
+ *
+ * Helper renderer for a single array item row.
+ */
 import type { ArrayControlProps, ArrayTranslations, UISchemaElement } from '@jsonforms/core'
 import { JsonFormsDispatch } from '@jsonforms/react'
 import { Accordion, Group, Text } from '@mantine/core'

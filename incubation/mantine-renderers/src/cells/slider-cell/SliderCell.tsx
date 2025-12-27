@@ -1,16 +1,13 @@
-/*
-Implementation notes (Mantine)
-- Vanilla reference: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/cells/SliderCell.tsx
-- Mantine component: https://mantine.dev/core/slider/
-- JsonForms expectations: data is number | undefined, enabled, path, uischema option slider=true, and schema has min/max/default.
-- Functionality mapping:
-  - value -> Slider value (fallback to schema.default)
-  - schema.minimum/maximum -> Slider min/max
-  - onChange -> handleChange(path, number)
-  - enabled -> disabled
-  - focus option -> autoFocus (may require focus handling)
-  - label/description/errors -> Input.Wrapper props
-*/
+/**
+ * SliderCell
+ *
+ * Range input cell backed by Mantine Slider.
+ *
+ * Implementing: https://jsonforms.io/docs/uischema/controls
+ * Inspired By: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/cells/SliderCell.tsx
+ * Implementation Notes:
+ * - Falls back to `schema.default`, then `schema.minimum`, then 0 when data is undefined.
+ */
 import { type CellProps, isRangeControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { Input, Slider } from '@mantine/core'

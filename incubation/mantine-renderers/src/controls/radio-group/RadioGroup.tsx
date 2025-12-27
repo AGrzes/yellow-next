@@ -1,3 +1,13 @@
+/**
+ * RadioGroupControlBase
+ *
+ * Shared radio group renderer for enum-based controls.
+ *
+ * Implementing: https://jsonforms.io/docs/uischema/controls
+ * Inspired By: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/controls/RadioGroup.tsx
+ * Implementation Notes:
+ * - Uses `Group` for horizontal layout and `Stack` for vertical layout.
+ */
 import { type ControlProps, type OwnPropsOfEnum } from '@jsonforms/core'
 import { Group, Radio, Stack } from '@mantine/core'
 

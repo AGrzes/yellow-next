@@ -1,16 +1,11 @@
-/*
-Implementation notes (Mantine)
-- Vanilla reference: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/cells/TimeCell.tsx
-- Mantine component: https://mantine.dev/dates/time-input/
-- JsonForms expectations: data is a time string (HH:mm:ss), enabled, path, uischema options (focus), and handleChange with a string value.
-- Functionality mapping:
-  - value -> TimeInput value
-  - onChange -> handleChange(path, time string)
-  - enabled -> disabled
-  - focus option -> autoFocus
-  - empty value -> undefined
-  - label/description/errors -> TimeInput props
-*/
+/**
+ * TimeCell
+ *
+ * Time input cell backed by Mantine TimeInput.
+ *
+ * Implementing: https://jsonforms.io/docs/uischema/controls
+ * Inspired By: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/cells/TimeCell.tsx
+ */
 import { type CellProps, isTimeControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { TimeInput } from '@mantine/dates'

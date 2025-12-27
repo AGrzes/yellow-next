@@ -1,16 +1,11 @@
-/*
-Implementation notes (Mantine)
-- Vanilla reference: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/cells/BooleanCell.tsx
-- Mantine component: https://mantine.dev/core/checkbox/
-- JsonForms expectations: uses data (boolean | undefined), enabled, path, uischema options (focus), and calls handleChange with the new boolean value.
-- Functionality mapping:
-  - value -> Checkbox checked
-  - undefined -> unchecked
-  - onChange -> handleChange(path, checked)
-  - enabled -> disabled
-  - focus option -> autoFocus
-  - label/description/errors -> Checkbox props
-*/
+/**
+ * BooleanCell
+ *
+ * Boolean input cell backed by Mantine Checkbox.
+ *
+ * Implementing: https://jsonforms.io/docs/uischema/controls
+ * Inspired By: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/cells/BooleanCell.tsx
+ */
 import { type CellProps, isBooleanControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { Checkbox } from '@mantine/core'

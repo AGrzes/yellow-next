@@ -1,16 +1,15 @@
-/*
-Implementation notes (Mantine)
-- Vanilla reference: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/cells/OneOfEnumCell.tsx
-- Mantine component: https://mantine.dev/core/select/
-- JsonForms expectations: receives options derived from oneOf, data (string | undefined), enabled, path, and uischema options (focus).
-- Functionality mapping:
-  - value -> Select value
-  - options -> Select data (map { label, value })
-  - clear -> handleChange(path, undefined) (use clearable or explicit empty option)
-  - enabled -> disabled
-  - focus option -> autoFocus
-  - label/description/errors -> Select props
-*/
+/**
+ * OneOfEnumCell
+ *
+ * OneOf enum select cell backed by Mantine Select.
+ *
+ * Implementing: https://jsonforms.io/docs/uischema/controls
+ * Inspired By: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/cells/OneOfEnumCell.tsx
+ * Deviations:
+ * - Always renders an explicit empty option; vanilla `hideEmptyOption` is not supported.
+ * Implementation Notes:
+ * - Empty option label uses `t('enum.none', 'None', ...)`.
+ */
 import { type EnumCellProps, isOneOfEnumControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { type TranslateProps, withJsonFormsOneOfEnumCellProps, withTranslateProps } from '@jsonforms/react'
 import { Select } from '@mantine/core'

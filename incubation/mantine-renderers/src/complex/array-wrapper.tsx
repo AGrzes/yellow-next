@@ -1,3 +1,8 @@
+/**
+ * ArrayControlWrapper
+ *
+ * Shared header and metadata layout for array controls.
+ */
 import { Group, Stack, Text } from '@mantine/core'
 import { ArrayAddButton } from './array-action-buttons'
 

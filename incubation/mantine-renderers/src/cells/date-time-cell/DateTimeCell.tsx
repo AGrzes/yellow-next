@@ -1,16 +1,13 @@
-/*
-Implementation notes (Mantine)
-- Vanilla reference: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/cells/DateTimeCell.tsx
-- Mantine component: https://mantine.dev/dates/datetime-picker/
-- JsonForms expectations: data is a date-time string (ISO), enabled, path, uischema options (focus), and handleChange with a string value.
-- Functionality mapping:
-  - value -> DateTimePicker value
-  - onChange -> handleChange(path, ISO string)
-  - enabled -> disabled
-  - focus option -> autoFocus
-  - empty value -> undefined
-  - label/description/errors -> DateTimePicker props
-*/
+/**
+ * DateTimeCell
+ *
+ * Date-time input cell backed by Mantine DateTimePicker.
+ *
+ * Implementing: https://jsonforms.io/docs/uischema/controls
+ * Inspired By: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/cells/DateTimeCell.tsx
+ * Implementation Notes:
+ * - Normalizes the picker value to an ISO-like string via `toIsoDateTime`.
+ */
 import { type CellProps, isDateTimeControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { DateTimePicker } from '@mantine/dates'

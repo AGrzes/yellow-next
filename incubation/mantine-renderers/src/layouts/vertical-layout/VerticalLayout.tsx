@@ -1,13 +1,14 @@
-/*
-Design notes (Mantine)
-- Vanilla reference: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/layouts/VerticalLayout.tsx
-- Mantine component: https://mantine.dev/core/stack/
-- JsonForms expectations: renders a VerticalLayout with children top-to-bottom, respects visibility/enabled.
-- Functionality mapping:
-  - children -> Stack with spacing
-  - visibility/enabled -> wrapper hidden/disabled handling
-  - child rendering -> JsonForms renderChildren equivalent
-*/
+/**
+ * VerticalLayout
+ *
+ * Layout renderer that stacks children vertically.
+ *
+ * Implementing: https://jsonforms.io/docs/uischema/layouts
+ * Inspired By: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/layouts/VerticalLayout.tsx
+ * Implementation Notes:
+ * - Drops `data` before passing props to the memoized renderer.
+ * - Renders children through the shared `renderChildren` helper.
+ */
 import { memo } from 'react'
 import { type LayoutProps, type RankedTester, rankWith, uiTypeIs, type VerticalLayout as JsonFormsVerticalLayout } from '@jsonforms/core'
 import { withJsonFormsLayoutProps } from '@jsonforms/react'

@@ -1,3 +1,8 @@
+/**
+ * TableArrayRow
+ *
+ * Helper renderer for a single table array row.
+ */
 import type { ArrayControlProps, ArrayTranslations, ControlElement } from '@jsonforms/core'
 import { composePaths, encode, Resolve } from '@jsonforms/core'
 import { DispatchCell } from '@jsonforms/react'

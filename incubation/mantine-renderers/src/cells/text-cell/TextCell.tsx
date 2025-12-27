@@ -1,3 +1,11 @@
+/**
+ * TextCell
+ *
+ * String input cell backed by Mantine TextInput.
+ *
+ * Implementing: https://jsonforms.io/docs/uischema/controls
+ * Inspired By: https://github.com/eclipsesource/jsonforms/blob/master/packages/vanilla-renderers/src/cells/TextCell.tsx
+ */
 import { type CellProps, isStringControl, type RankedTester, rankWith } from '@jsonforms/core'
 import { withJsonFormsCellProps } from '@jsonforms/react'
 import { TextInput } from '@mantine/core'
