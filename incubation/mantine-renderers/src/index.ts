@@ -34,6 +34,12 @@ import {
   radioGroupControlTester,
 } from './controls'
 import {
+  ArrayControl,
+  arrayControlTester,
+  TableArrayControl,
+  tableArrayControlTester,
+} from './complex'
+import {
   GroupLayout,
   groupLayoutTester,
   HorizontalLayout,
@@ -71,6 +77,11 @@ const layoutRenderers: { tester: RankedTester; renderer: any }[] = [
   { tester: verticalLayoutTester, renderer: VerticalLayout },
 ]
 
+const complexRenderers: { tester: RankedTester; renderer: any }[] = [
+  { tester: arrayControlTester, renderer: ArrayControl },
+  { tester: tableArrayControlTester, renderer: TableArrayControl },
+]
+
 const nonControlRenderers = vanillaRenderers.filter(
   (entry) =>
     entry.renderer !== InputControl &&
@@ -78,11 +89,14 @@ const nonControlRenderers = vanillaRenderers.filter(
     entry.renderer !== OneOfRadioGroupControl &&
     entry.renderer !== GroupLayout &&
     entry.renderer !== HorizontalLayout &&
-    entry.renderer !== VerticalLayout
+    entry.renderer !== VerticalLayout &&
+    entry.renderer !== ArrayControl &&
+    entry.renderer !== TableArrayControl
 )
 
 export const mantineRenderers: { tester: RankedTester; renderer: any }[] = [
   ...controlRenderers,
   ...layoutRenderers,
+  ...complexRenderers,
   ...nonControlRenderers,
 ]
