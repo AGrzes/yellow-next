@@ -1,7 +1,6 @@
+import { mantineCells, mantineRenderers } from '@agrzes/mantine-renderers'
 import { JsonForms } from '@jsonforms/react'
-import { vanillaRenderers } from '@jsonforms/vanilla-renderers'
-import { Link, useLoaderData, type LoaderFunction } from 'react-router'
-import { mantineCells } from '../json-forms/index.ts'
+import { useLoaderData, type LoaderFunction } from 'react-router'
 import { entityManager, schemaManager, uiSchemaManager } from '../service/index.ts'
 
 type CollectionLoaderData = {
@@ -14,21 +13,7 @@ export function Collection() {
   const { schema, uiSchema, items } = useLoaderData() as CollectionLoaderData
 
   return (
-    <ul>
-      {items.map((item, index) => (
-        <li key={item.id ?? index}>
-          <JsonForms
-            schema={schema}
-            uischema={uiSchema}
-            data={item}
-            renderers={vanillaRenderers}
-            cells={mantineCells}
-            readonly={true}
-          />
-          <Link to={{ pathname: `/${item.id}` }}>Details</Link>
-        </li>
-      ))}
-    </ul>
+    <JsonForms schema={schema} uischema={uiSchema} data={items} renderers={mantineRenderers} cells={mantineCells} />
   )
 }
 

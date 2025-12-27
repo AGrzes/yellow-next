@@ -1,8 +1,7 @@
+import { mantineCells, mantineRenderers } from '@agrzes/mantine-renderers'
 import { JsonForms } from '@jsonforms/react'
-import { vanillaRenderers } from '@jsonforms/vanilla-renderers'
 import { useState } from 'react'
 import { Link, useLoaderData, type LoaderFunction } from 'react-router'
-import { mantineCells } from '../json-forms/index.ts'
 import { entityManager, schemaManager, uiSchemaManager } from '../service/index.ts'
 
 export function Item() {
@@ -15,7 +14,7 @@ export function Item() {
         schema={schema}
         uischema={uiSchema}
         data={data}
-        renderers={vanillaRenderers}
+        renderers={mantineRenderers}
         cells={mantineCells}
         onChange={({ data }) => setData(data)}
       />
