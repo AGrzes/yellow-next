@@ -1,5 +1,5 @@
-import { Button, Group, Stack, Text } from '@mantine/core'
-import { Plus } from 'lucide-react'
+import { Group, Stack, Text } from '@mantine/core'
+import { ArrayAddButton } from './array-action-buttons'
 
 type ArrayWrapperProps = {
   label: string
@@ -26,9 +26,7 @@ export const ArrayControlWrapper = ({
     <Stack>
       <Group justify="space-between" align="center">
         <Text fw={600}>{label}</Text>
-        <Button size="xs" onClick={onAdd} disabled={!enabled} aria-label={addAriaLabel} leftSection={<Plus size={14} />}>
-          {addLabel}
-        </Button>
+        <ArrayAddButton label={addLabel} ariaLabel={addAriaLabel} disabled={!enabled} onClick={onAdd} />
       </Group>
       {description ? (
         <Text size="sm" c="dimmed">

@@ -4,7 +4,7 @@ Planning notes (Mantine)
 - Mantine components to use:
   - Table for rows/cells
   - Group + Button/ActionIcon for add/remove
-  - Badge/Text for validation status
+  - Text for empty state
   - ScrollArea for wide tables
 - JsonForms expectations to keep:
   - object + primitive array handling (table layout)
@@ -14,12 +14,11 @@ Planning notes (Mantine)
 - Vanilla behaviors to skip/simplify:
   - default confirm dialog (direct remove)
   - vanilla className styling hooks
-  - per-cell error summary string concatenation (show aggregate error column instead)
+  - per-cell error summary string concatenation
 - Component split proposal:
   - TableArrayHeader (label + add button)
   - TableArrayRow (DispatchCell row)
   - TableArrayActions (remove button)
-  - TableArrayStatus (row validation)
   - TableArrayEmptyState
 - Shared helpers:
   - getRowSchema(schema, rootSchema)
@@ -32,7 +31,6 @@ import {
   type ArrayTranslations,
   composePaths,
   createDefaultValue,
-  getControlPath,
   isObjectArrayControl,
   isPrimitiveArrayControl,
   or,
@@ -43,13 +41,6 @@ import { withArrayTranslationProps, withJsonFormsArrayControlProps, withTranslat
 import { ScrollArea, Table, Text } from '@mantine/core'
 import { ArrayControlWrapper } from '../array-wrapper'
 import { TableArrayRow } from './TableArrayRow'
-
-const getRowErrors = (childErrors: ArrayControlProps['childErrors'], rowPath: string) => {
-  if (!childErrors?.length) {
-    return []
-  }
-  return childErrors.filter((error) => getControlPath(error).startsWith(rowPath))
-}
 
 const getColumns = (schema: ArrayControlProps['schema']) => {
   if (schema.type !== 'object' || !schema.properties) {
@@ -74,7 +65,6 @@ export const TableArrayControl = (props: ArrayControlProps & { translations: Arr
     enabled,
     visible,
     translations,
-    childErrors,
   } = props
   const items = Array.isArray(data) ? data : []
   const columns = useMemo(() => getColumns(schema), [schema])
@@ -101,16 +91,12 @@ export const TableArrayControl = (props: ArrayControlProps & { translations: Arr
                 ) : (
                   <Table.Th>Value</Table.Th>
                 )}
-                <Table.Th>Status</Table.Th>
                 <Table.Th></Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
               {items.map((_, index) => {
                 const rowPath = composePaths(path, `${index}`)
-                const rowErrors = getRowErrors(childErrors, rowPath)
-                const errorCount = rowErrors.length
-                const statusLabel = errorCount ? `${errorCount} errors` : 'OK'
                 return (
                   <TableArrayRow
                     key={rowPath}
@@ -123,8 +109,6 @@ export const TableArrayControl = (props: ArrayControlProps & { translations: Arr
                     hasObjectColumns={hasObjectColumns}
                     enabled={enabled}
                     translations={translations}
-                    errorCount={errorCount}
-                    statusLabel={statusLabel}
                     moveUp={moveUp}
                     moveDown={moveDown}
                     removeItems={removeItems}

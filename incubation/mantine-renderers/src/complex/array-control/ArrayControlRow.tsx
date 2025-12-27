@@ -1,7 +1,7 @@
 import type { ArrayControlProps, ArrayTranslations, UISchemaElement } from '@jsonforms/core'
 import { JsonFormsDispatch } from '@jsonforms/react'
-import { Accordion, ActionIcon, Group, Text } from '@mantine/core'
-import { ChevronDown, ChevronUp, Trash2 } from 'lucide-react'
+import { Accordion, Group, Text } from '@mantine/core'
+import { ArrayMoveDownButton, ArrayMoveUpButton, ArrayRemoveButton } from '../array-action-buttons'
 
 type ArrayControlRowProps = {
   item: unknown
@@ -56,43 +56,21 @@ export const ArrayControlRow = ({
             {itemLabel}
           </Text>
           <Group gap="xs" wrap="nowrap">
-            <ActionIcon
-              size="sm"
-              variant="subtle"
+            <ArrayMoveUpButton
               disabled={!enabled}
-              aria-label={translations.upAriaLabel}
-              onClick={(event) => {
-                event.stopPropagation()
-                moveUp!(path, index)()
-              }}
-            >
-              <ChevronUp size={14} />
-            </ActionIcon>
-            <ActionIcon
-              size="sm"
-              variant="subtle"
+              ariaLabel={translations.upAriaLabel}
+              onClick={() => moveUp!(path, index)()}
+            />
+            <ArrayMoveDownButton
               disabled={!enabled}
-              aria-label={translations.downAriaLabel}
-              onClick={(event) => {
-                event.stopPropagation()
-                moveDown!(path, index)()
-              }}
-            >
-              <ChevronDown size={14} />
-            </ActionIcon>
-            <ActionIcon
-              size="sm"
-              variant="subtle"
-              color="red"
+              ariaLabel={translations.downAriaLabel}
+              onClick={() => moveDown!(path, index)()}
+            />
+            <ArrayRemoveButton
               disabled={!enabled}
-              aria-label={translations.removeAriaLabel}
-              onClick={(event) => {
-                event.stopPropagation()
-                removeItems!(path, [index])()
-              }}
-            >
-              <Trash2 size={14} />
-            </ActionIcon>
+              ariaLabel={translations.removeAriaLabel}
+              onClick={() => removeItems!(path, [index])()}
+            />
           </Group>
         </Group>
       </Accordion.Control>

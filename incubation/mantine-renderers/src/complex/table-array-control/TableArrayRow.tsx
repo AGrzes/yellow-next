@@ -1,8 +1,8 @@
 import type { ArrayControlProps, ArrayTranslations, ControlElement } from '@jsonforms/core'
 import { composePaths, encode, Resolve } from '@jsonforms/core'
 import { DispatchCell } from '@jsonforms/react'
-import { ActionIcon, Badge, Group, Table } from '@mantine/core'
-import { ChevronDown, ChevronUp, Trash2 } from 'lucide-react'
+import { Group, Table } from '@mantine/core'
+import { ArrayMoveDownButton, ArrayMoveUpButton, ArrayRemoveButton } from '../array-action-buttons'
 
 type TableArrayRowProps = {
   rowPath: string
@@ -14,8 +14,6 @@ type TableArrayRowProps = {
   hasObjectColumns: boolean
   enabled: boolean
   translations: ArrayTranslations
-  errorCount: number
-  statusLabel: string
   moveUp: ArrayControlProps['moveUp']
   moveDown: ArrayControlProps['moveDown']
   removeItems: ArrayControlProps['removeItems']
@@ -37,8 +35,6 @@ export const TableArrayRow = ({
   hasObjectColumns,
   enabled,
   translations,
-  errorCount,
-  statusLabel,
   moveUp,
   moveDown,
   removeItems,
@@ -64,40 +60,22 @@ export const TableArrayRow = ({
         </Table.Td>
       )}
       <Table.Td>
-        <Badge color={errorCount ? 'red' : 'green'} variant="light">
-          {statusLabel}
-        </Badge>
-      </Table.Td>
-      <Table.Td>
         <Group gap="xs" justify="flex-end" wrap="nowrap">
-          <ActionIcon
-            size="sm"
-            variant="subtle"
+          <ArrayMoveUpButton
             disabled={!enabled}
-            aria-label={translations.upAriaLabel}
+            ariaLabel={translations.upAriaLabel}
             onClick={() => moveUp!(path, index)()}
-          >
-            <ChevronUp size={14} />
-          </ActionIcon>
-          <ActionIcon
-            size="sm"
-            variant="subtle"
+          />
+          <ArrayMoveDownButton
             disabled={!enabled}
-            aria-label={translations.downAriaLabel}
+            ariaLabel={translations.downAriaLabel}
             onClick={() => moveDown!(path, index)()}
-          >
-            <ChevronDown size={14} />
-          </ActionIcon>
-          <ActionIcon
-            size="sm"
-            variant="subtle"
-            color="red"
+          />
+          <ArrayRemoveButton
             disabled={!enabled}
-            aria-label={translations.removeAriaLabel}
+            ariaLabel={translations.removeAriaLabel}
             onClick={() => removeItems!(path, [index])()}
-          >
-            <Trash2 size={14} />
-          </ActionIcon>
+          />
         </Group>
       </Table.Td>
     </Table.Tr>
