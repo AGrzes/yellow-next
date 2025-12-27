@@ -1,103 +1,104 @@
-[
-  {
-    "id": "1",
-    "title": "The Pragmatic Programmer",
-    "author": "Andrew Hunt, David Thomas",
-    "genre": "Technology",
-    "pages": 352,
-    "publishedYear": 1999,
-    "isbn": "978-0201616224",
-    "available": true
-  },
-  {
-    "id": "2",
-    "title": "Clean Code",
-    "author": "Robert C. Martin",
-    "genre": "Technology",
-    "pages": 464,
-    "publishedYear": 2008,
-    "isbn": "978-0132350884",
-    "available": true
-  },
-  {
-    "id": "3",
-    "title": "1984",
-    "author": "George Orwell",
-    "genre": "Fiction",
-    "pages": 328,
-    "publishedYear": 1949,
-    "isbn": "978-0451524935",
-    "available": false
-  },
-  {
-    "id": "4",
-    "title": "To Kill a Mockingbird",
-    "author": "Harper Lee",
-    "genre": "Fiction",
-    "pages": 336,
-    "publishedYear": 1960,
-    "isbn": "978-0061120084",
-    "available": true
-  },
-  {
-    "id": "5",
-    "title": "Sapiens: A Brief History of Humankind",
-    "author": "Yuval Noah Harari",
-    "genre": "History",
-    "pages": 512,
-    "publishedYear": 2011,
-    "isbn": "978-0062316097",
-    "available": true
-  },
-  {
-    "id": "6",
-    "title": "Dune",
-    "author": "Frank Herbert",
-    "genre": "Science Fiction",
-    "pages": 688,
-    "publishedYear": 1965,
-    "isbn": "978-0441172719",
-    "available": false
-  },
-  {
-    "id": "7",
-    "title": "The Hobbit",
-    "author": "J.R.R. Tolkien",
-    "genre": "Fantasy",
-    "pages": 320,
-    "publishedYear": 1937,
-    "isbn": "978-0547928227",
-    "available": true
-  },
-  {
-    "id": "8",
-    "title": "The Girl with the Dragon Tattoo",
-    "author": "Stieg Larsson",
-    "genre": "Mystery",
-    "pages": 672,
-    "publishedYear": 2005,
-    "isbn": "978-0307454546",
-    "available": true
-  },
-  {
-    "id": "9",
-    "title": "Steve Jobs",
-    "author": "Walter Isaacson",
-    "genre": "Biography",
-    "pages": 656,
-    "publishedYear": 2011,
-    "isbn": "978-1451648539",
-    "available": false
-  },
-  {
-    "id": "10",
-    "title": "Thinking, Fast and Slow",
-    "author": "Daniel Kahneman",
-    "genre": "Non-fiction",
-    "pages": 512,
-    "publishedYear": 2011,
-    "isbn": "978-0374533557",
-    "available": true
-  }
-]
-
+{
+  "books": [
+    {
+      "id": "1",
+      "title": "The Pragmatic Programmer",
+      "author": "Andrew Hunt, David Thomas",
+      "genre": "Technology",
+      "pages": 352,
+      "publishedYear": 1999,
+      "isbn": "978-0201616224",
+      "available": true
+    },
+    {
+      "id": "2",
+      "title": "Clean Code",
+      "author": "Robert C. Martin",
+      "genre": "Technology",
+      "pages": 464,
+      "publishedYear": 2008,
+      "isbn": "978-0132350884",
+      "available": true
+    },
+    {
+      "id": "3",
+      "title": "1984",
+      "author": "George Orwell",
+      "genre": "Fiction",
+      "pages": 328,
+      "publishedYear": 1949,
+      "isbn": "978-0451524935",
+      "available": false
+    },
+    {
+      "id": "4",
+      "title": "To Kill a Mockingbird",
+      "author": "Harper Lee",
+      "genre": "Fiction",
+      "pages": 336,
+      "publishedYear": 1960,
+      "isbn": "978-0061120084",
+      "available": true
+    },
+    {
+      "id": "5",
+      "title": "Sapiens: A Brief History of Humankind",
+      "author": "Yuval Noah Harari",
+      "genre": "History",
+      "pages": 512,
+      "publishedYear": 2011,
+      "isbn": "978-0062316097",
+      "available": true
+    },
+    {
+      "id": "6",
+      "title": "Dune",
+      "author": "Frank Herbert",
+      "genre": "Science Fiction",
+      "pages": 688,
+      "publishedYear": 1965,
+      "isbn": "978-0441172719",
+      "available": false
+    },
+    {
+      "id": "7",
+      "title": "The Hobbit",
+      "author": "J.R.R. Tolkien",
+      "genre": "Fantasy",
+      "pages": 320,
+      "publishedYear": 1937,
+      "isbn": "978-0547928227",
+      "available": true
+    },
+    {
+      "id": "8",
+      "title": "The Girl with the Dragon Tattoo",
+      "author": "Stieg Larsson",
+      "genre": "Mystery",
+      "pages": 672,
+      "publishedYear": 2005,
+      "isbn": "978-0307454546",
+      "available": true
+    },
+    {
+      "id": "9",
+      "title": "Steve Jobs",
+      "author": "Walter Isaacson",
+      "genre": "Biography",
+      "pages": 656,
+      "publishedYear": 2011,
+      "isbn": "978-1451648539",
+      "available": false
+    },
+    {
+      "id": "10",
+      "title": "Thinking, Fast and Slow",
+      "author": "Daniel Kahneman",
+      "genre": "Non-fiction",
+      "pages": 512,
+      "publishedYear": 2011,
+      "isbn": "978-0374533557",
+      "available": true
+    }
+  ]
+}
