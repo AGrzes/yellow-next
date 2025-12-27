@@ -20,7 +20,7 @@ export default defineConfig({
       entry: 'src/index.ts',
       name: 'MantineRenderers',
       formats: ['es'],
-      fileName: () => 'index.mjs',
+      fileName: () => 'index.js',
     },
     rollupOptions: {
       external: [
