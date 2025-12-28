@@ -16,12 +16,19 @@ import {
   type ArrayControlProps,
   type ArrayTranslations,
   composePaths,
+  type ControlElement,
   createDefaultValue,
+  createLabelDescriptionFrom,
+  encode,
+  findUISchema,
+  findUiControl,
+  isControlElement,
   isObjectArrayControl,
   isPrimitiveArrayControl,
   or,
   type RankedTester,
   rankWith,
+  Resolve,
 } from '@jsonforms/core'
 import { withArrayTranslationProps, withJsonFormsArrayControlProps, withTranslateProps } from '@jsonforms/react'
 import { ScrollArea, Table, Text } from '@mantine/core'
@@ -35,9 +42,49 @@ const getColumns = (schema: ArrayControlProps['schema']) => {
   return Object.keys(schema.properties).filter((prop) => schema.properties?.[prop]?.type !== 'array')
 }
 
+const getColumnLabel = (
+  column: string,
+  schema: ArrayControlProps['schema'],
+  rootSchema: ArrayControlProps['rootSchema'],
+  detailUiSchema?: ReturnType<typeof findUISchema>
+) => {
+  const columnSchema = Resolve.schema(schema, `#/properties/${encode(column)}`, rootSchema)
+  const uiControl = detailUiSchema ? findUiControl(detailUiSchema, column) : undefined
+  const controlElement: ControlElement =
+    uiControl && isControlElement(uiControl)
+      ? uiControl
+      : {
+          type: 'Control',
+          scope: `#/properties/${encode(column)}`,
+        }
+  const labelDesc = createLabelDescriptionFrom(controlElement, columnSchema)
+  return labelDesc.show ? labelDesc.text || column : column
+}
+
 export const TableArrayControl = (props: ArrayControlProps & { translations: ArrayTranslations }) => {
   const items = Array.isArray(props.data) ? props.data : []
   const columns = useMemo(() => getColumns(props.schema), [props.schema])
+  const detailUiSchema = useMemo(
+    () =>
+      findUISchema(
+        props.uischemas ?? [],
+        props.schema,
+        props.uischema.scope,
+        props.path,
+        undefined,
+        props.uischema,
+        props.rootSchema
+      ),
+    [props.uischemas, props.schema, props.uischema, props.path, props.rootSchema]
+  )
+  const columnDefs = useMemo(
+    () =>
+      columns.map((column) => ({
+        column,
+        label: getColumnLabel(column, props.schema, props.rootSchema, detailUiSchema),
+      })),
+    [columns, detailUiSchema, props.schema, props.rootSchema]
+  )
   const addLabel = props.translations.addTooltip
   const hasObjectColumns = columns.length > 0
 
@@ -57,7 +104,9 @@ export const TableArrayControl = (props: ArrayControlProps & { translations: Arr
             <Table.Thead>
               <Table.Tr>
                 {hasObjectColumns ? (
-                  columns.map((column) => <Table.Th key={column}>{column}</Table.Th>)
+                  columnDefs.map((columnDef) => (
+                    <Table.Th key={columnDef.column}>{columnDef.label}</Table.Th>
+                  ))
                 ) : (
                   <Table.Th>Value</Table.Th>
                 )}
