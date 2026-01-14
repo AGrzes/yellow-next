@@ -36,6 +36,29 @@ describe('MemoryStore', () => {
     expect(docs.map((doc) => doc.body.value).sort()).toEqual(['a1', 'a2'])
   })
 
+  it('lists all documents when no prefix is provided', async () => {
+    const store = new MemoryStore()
+
+    await store.merge({ key: ['a'], body: { value: 'a' } }, (body) => body)
+    await store.merge({ key: ['b'], body: { value: 'b' } }, (body) => body)
+
+    const docs = await store.list<{ value: string }>()
+
+    expect(docs.length).toBe(2)
+    const keys = docs.map((doc) => doc.key.join('/')).sort()
+    expect(keys).toEqual(['a', 'b'])
+  })
+
+  it('returns empty list when prefix is missing', async () => {
+    const store = new MemoryStore()
+
+    await store.merge({ key: ['exists'], body: { value: 1 } }, (body) => body)
+
+    const docs = await store.list<{ value: number }>(['missing'])
+
+    expect(docs).toEqual([])
+  })
+
   it('notifies subscribers on updates and stops after unsubscribe', async () => {
     const store = new MemoryStore()
     const listener = vi.fn(async (change: Change<{ value: number }, void>) => {})
