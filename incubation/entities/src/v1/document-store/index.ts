@@ -19,9 +19,12 @@ export interface Document<Body, Revision> {
    */
   body: Body
   /**
-   * Document revision for optimistic concurrency control.
+   * Document revision captured at read time, used to detect concurrent changes.
+   *
+   * If the stored revision differs from the supplied one, the store should treat
+   * the merge as a conflict and require a re-read/merge cycle.
    */
-  revision: Revision
+  revision?: Revision
 }
 /**
  * Function that merges document body.
@@ -54,7 +57,11 @@ export interface DocumentStore<Revision = string> {
   /**
    * Merges document body using the provided merge function.
    *
-   * @param document - Document to merge
+   * If the supplied document revision matches the stored revision, the merge
+   * may be applied directly. If it differs, the store should reject and the
+   * caller should re-read, merge, and retry (CouchDB-style).
+   *
+   * @param document - Document to merge (including the revision it was read with)
    * @param merge - Merge function
    */
   merge<Body>(document: Document<Body, Revision>, merge: MergeFunction<Body>): Promise<void>
