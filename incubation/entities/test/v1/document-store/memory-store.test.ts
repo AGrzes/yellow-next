@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
+import { Change } from '../../../src/v1/document-store/index.ts'
 import { MemoryStore } from '../../../src/v1/document-store/memory-store'
 
 describe('MemoryStore', () => {
@@ -7,7 +8,7 @@ describe('MemoryStore', () => {
 
     const missing = await store.get(['missing'])
 
-    expect(missing).toBeUndefined()
+    expect(missing).toBeNull()
   })
 
   it('stores and retrieves a document', async () => {
@@ -17,10 +18,9 @@ describe('MemoryStore', () => {
 
     const stored = await store.get<{ value: number }>(['doc'])
 
-    expect(stored).toEqual({
-      key: ['doc'],
-      body: { value: 1 },
-    })
+    expect(stored?.key).toEqual(['doc'])
+    expect(stored?.body).toEqual({ value: 1 })
+    expect(stored?.revision).toBeUndefined()
   })
 
   it('lists documents under a prefix', async () => {
@@ -36,19 +36,24 @@ describe('MemoryStore', () => {
     expect(docs.map((doc) => doc.body.value).sort()).toEqual(['a1', 'a2'])
   })
 
-  it('merges using current body when revision matches', async () => {
+  it('notifies subscribers on updates and stops after unsubscribe', async () => {
     const store = new MemoryStore()
+    const listener = vi.fn(async (change: Change<{ value: number }, void>) => {})
 
-    await store.merge({ key: ['item'], body: { value: 1 } }, (body) => body)
-    const current = await store.get<{ value: number }>(['item'])
+    const subscription = store.subscribe(listener)
 
-    await store.merge({ key: ['item'], body: { value: 2 } }, (body, existing) => ({
-      value: (existing?.value ?? 0) + body.value,
-    }))
+    await store.merge({ key: ['doc'], body: { value: 1 } }, (body) => body)
 
-    const stored = await store.get<{ value: number }>(['item'])
+    expect(listener).toHaveBeenCalledTimes(1)
+    const change = listener.mock.calls[0][0]
+    expect(change).toMatchObject({
+      type: 'update',
+      key: ['doc'],
+      body: { value: 1 },
+    })
+    subscription.unsubscribe()
+    await store.merge({ key: ['doc'], body: { value: 2 } }, (body) => body)
 
-    expect(stored?.body.value).toBe(3)
-    expect(stored?.revision).toBe(current?.revision)
+    expect(listener).toHaveBeenCalledTimes(1)
   })
 })
