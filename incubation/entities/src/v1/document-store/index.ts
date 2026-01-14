@@ -33,7 +33,44 @@ export interface Document<Body, Revision> {
  * @returns Merged document body
  */
 export type MergeFunction<Body> = (document: Body, current?: Body) => Body
-
+/**
+ * Base interface for document change.
+ */
+export interface ChangeBase {
+  key: DocumentKey
+  type: 'update' | 'delete'
+}
+/**
+ * Document update change.
+ */
+export interface Update<Body, Revision> extends ChangeBase {
+  type: 'update'
+  body: Body
+  revision?: Revision
+}
+/**
+ * Document delete change.
+ */
+export interface Delete extends ChangeBase {
+  type: 'delete'
+}
+/**
+ * Document change
+ */
+export type Change<Body, Revision> = Update<Body, Revision> | Delete
+/**
+ * Subscription to document changes.
+ */
+export type Subscription = { 
+  /**
+   * Unsubscribe from document changes.
+   */
+  unsubscribe: () => void 
+}
+/**
+ * Document change listener.
+ */
+export type ChangeListener<Body, Revision> = (change: Change<Body, Revision>) => Promise<void>
 /**
  * Interface for a hierarchical document store supporting optimistic concurrency control.
  */
@@ -65,4 +102,11 @@ export interface DocumentStore<Revision = string> {
    * @param merge - Merge function
    */
   merge<Body>(document: Document<Body, Revision>, merge: MergeFunction<Body>): Promise<void>
+  /**
+   * Subscribes to document changes.
+   *
+   * @param onChange - Change callback
+   * @returns Subscription
+   */
+  subscribe<Body>(onChange: ChangeListener<Body, Revision>): Subscription
 }
