@@ -4,7 +4,7 @@ import type { Change, DocumentStore } from '../document-store/index.ts'
 export interface SchemaExtensions {}
 
 export interface ExtendedSchema extends JsonSchema7 {
-  extensions: SchemaExtensions
+  extensions?: SchemaExtensions
   additionalItems?: boolean | ExtendedSchema
   items?: ExtendedSchema | ExtendedSchema[]
   additionalProperties?: boolean | ExtendedSchema
