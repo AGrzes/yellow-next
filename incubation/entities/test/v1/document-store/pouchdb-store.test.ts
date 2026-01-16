@@ -112,6 +112,72 @@ describe('PouchDBStore', () => {
     expect(put).toHaveBeenCalledTimes(5)
   })
 
+  it('deletes using provided revision', async () => {
+    const remove = vi.fn().mockResolvedValue(undefined)
+    const db = { remove, get: vi.fn() }
+    const store = new PouchDBStore(db as any)
+
+    await store.delete(['doc'], '1-x')
+
+    expect(remove).toHaveBeenCalledWith('doc', '1-x')
+  })
+
+  it('deletes after resolving revision when not provided', async () => {
+    const get = vi.fn().mockResolvedValue({ _id: 'doc', _rev: '2-x' })
+    const remove = vi.fn().mockResolvedValue(undefined)
+    const db = { get, remove }
+    const store = new PouchDBStore(db as any)
+
+    await store.delete(['doc'])
+
+    expect(get).toHaveBeenCalledWith('doc')
+    expect(remove).toHaveBeenCalledWith('doc', '2-x')
+  })
+
+  it('forces delete after conflict', async () => {
+    const remove = vi
+      .fn()
+      .mockRejectedValueOnce(Object.assign(new Error('conflict'), { status: 409 }))
+      .mockResolvedValueOnce(undefined)
+    const get = vi.fn().mockResolvedValue({ _id: 'doc', _rev: '3-x' })
+    const db = { remove, get }
+    const store = new PouchDBStore(db as any)
+
+    await store.delete(['doc'], '1-x', true)
+
+    expect(remove).toHaveBeenCalledTimes(2)
+    expect(get).toHaveBeenCalledWith('doc')
+  })
+
+  it('ignores delete when document is missing', async () => {
+    const remove = vi.fn().mockRejectedValue(Object.assign(new Error('missing'), { status: 404 }))
+    const db = { remove, get: vi.fn() }
+    const store = new PouchDBStore(db as any)
+
+    await expect(store.delete(['doc'], '1-x')).resolves.toBeUndefined()
+  })
+
+  it('throws on delete errors other than conflicts or missing docs', async () => {
+    const remove = vi.fn().mockRejectedValue(Object.assign(new Error('boom'), { status: 500 }))
+    const db = { remove, get: vi.fn() }
+    const store = new PouchDBStore(db as any)
+
+    await expect(store.delete(['doc'], '1-x')).rejects.toThrow('boom')
+  })
+
+  it('fails after repeated delete conflicts with force enabled', async () => {
+    const remove = vi.fn().mockRejectedValue(Object.assign(new Error('conflict'), { status: 409 }))
+    const get = vi.fn().mockResolvedValue({ _id: 'doc', _rev: '2-x' })
+    const db = { remove, get }
+    const store = new PouchDBStore(db as any)
+
+    await expect(store.delete(['doc'], '1-x', true)).rejects.toThrow(
+      'Failed to delete document after 5 attempts due to conflicts'
+    )
+    expect(remove).toHaveBeenCalledTimes(5)
+    expect(get).toHaveBeenCalledTimes(5)
+  })
+
   it('notifies subscribers on updates and deletes', async () => {
     const listeners = new Set<
       (change: Partial<PouchDB.Core.ChangesResponseChange<{ body: number }>>) => Promise<void>
@@ -131,6 +197,7 @@ describe('PouchDBStore', () => {
     const subscription = store.subscribe(onChange)
 
     for (const handler of listeners) {
+      await handler({})
       await handler({
         doc: { _id: 'doc', _rev: '1-x', body: 1 },
       })

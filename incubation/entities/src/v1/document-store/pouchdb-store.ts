@@ -76,6 +76,31 @@ export class PouchDBStore implements DocumentStore<string> {
     throw new Error('Failed to merge document after 5 attempts due to conflicts')
   }
 
+  async delete(key: DocumentKey, revision?: string | undefined, force?: boolean): Promise<void> {
+    const documentKey = documentKeyToPouchDbKey(key)
+    if (!revision) {
+      revision = (await this.db.get(documentKey))._rev
+    }
+    for (let attempt = 0; attempt < 5; attempt++) {
+      try {
+        await this.db.remove(documentKey, revision)
+        return
+      } catch (error: any) {
+        if (error.status === 409 && force) {
+          // Conflict, fetch current revision and delete
+          const currentDoc = await this.db.get(documentKey)
+          revision = currentDoc._rev
+        } else if (error.status === 404) {
+          // Document does not exist, nothing to do
+          return
+        } else {
+          throw error
+        }
+      }
+    }
+    throw new Error('Failed to delete document after 5 attempts due to conflicts')
+  }
+
   subscribe<Body>(onChange: (change: any) => Promise<void>): Subscription {
     const changes = this.db.changes<{ body: Body }>({
       since: 'now',
