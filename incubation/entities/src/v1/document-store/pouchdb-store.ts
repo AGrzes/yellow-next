@@ -7,7 +7,9 @@ export function pouchDbKeyToDocumentKey(pouchDbKey: string): DocumentKey {
   return pouchDbKey.split('/').map(decodeURIComponent)
 }
 
-export function pouchDbDocumentToDocument<Body>(doc: PouchDB.Core.Document<any>): Document<Body, string> {
+export function pouchDbDocumentToDocument<Body>(
+  doc: PouchDB.Core.ExistingDocument<{ body: Body }>
+): Document<Body, string> {
   return {
     key: pouchDbKeyToDocumentKey(doc._id),
     body: doc.body as Body,
@@ -15,8 +17,10 @@ export function pouchDbDocumentToDocument<Body>(doc: PouchDB.Core.Document<any>)
   }
 }
 
-export function documentToPouchDbDocument<Body>(document: Document<Body, string>): PouchDB.Core.Document<any> {
-  const pouchDbDoc: PouchDB.Core.Document<any> = {
+export function documentToPouchDbDocument<Body>(
+  document: Document<Body, string>
+): PouchDB.Core.Document<{ body: Body }> {
+  const pouchDbDoc: PouchDB.Core.Document<{ body: Body }> & Partial<PouchDB.Core.RevisionIdMeta> = {
     _id: documentKeyToPouchDbKey(document.key),
     body: document.body,
   }
@@ -30,12 +34,18 @@ export class PouchDBStore implements DocumentStore<string> {
   constructor(private readonly db: PouchDB.Database) {}
 
   async get<Body>(key: DocumentKey): Promise<Document<Body, string> | null> {
-    const document = await this.db.get<Body>(documentKeyToPouchDbKey(key))
-    return document && pouchDbDocumentToDocument<Body>(document)
+    try {
+      return pouchDbDocumentToDocument(await this.db.get<{ body: Body }>(documentKeyToPouchDbKey(key)))
+    } catch (error: any) {
+      if (error.status === 404) {
+        return null
+      }
+      throw error
+    }
   }
 
   async list<Body>(prefix?: DocumentKeyPrefix): Promise<Document<Body, string>[]> {
-    const documents = await this.db.allDocs<Body>({
+    const documents = await this.db.allDocs<{ body: Body }>({
       include_docs: true,
       startkey: prefix && documentKeyToPouchDbKey(prefix) + '/',
       endkey: prefix && documentKeyToPouchDbKey(prefix) + '/\ufff0',
@@ -51,8 +61,8 @@ export class PouchDBStore implements DocumentStore<string> {
         return
       } catch (error: any) {
         if (error.status === 409) {
-          const currentDoc = await this.db.get<Body>(pouchDbKey)
-          const mergedBody = merge(document.body, currentDoc)
+          const currentDoc = await this.db.get<{ body: Body }>(pouchDbKey)
+          const mergedBody = merge(document.body, currentDoc.body)
           document = {
             key: document.key,
             body: mergedBody,
@@ -67,7 +77,7 @@ export class PouchDBStore implements DocumentStore<string> {
   }
 
   subscribe<Body>(onChange: (change: any) => Promise<void>): Subscription {
-    const changes = this.db.changes<Body>({
+    const changes = this.db.changes<{ body: Body }>({
       since: 'now',
       live: true,
       include_docs: true,
