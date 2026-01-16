@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Change } from '../../../src/v1/document-store/index.ts'
+import { type Change } from '../../../src/v1/document-store/index.ts'
 import { MemoryStore } from '../../../src/v1/document-store/memory-store'
 
 describe('MemoryStore', () => {
@@ -61,7 +61,7 @@ describe('MemoryStore', () => {
 
   it('notifies subscribers on updates and stops after unsubscribe', async () => {
     const store = new MemoryStore()
-    const listener = vi.fn(async (change: Change<{ value: number }, void>) => {})
+    const listener = vi.fn(async (_change: Change<{ value: number }, void>) => {})
 
     const subscription = store.subscribe(listener)
 
