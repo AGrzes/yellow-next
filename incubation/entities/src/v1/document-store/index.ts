@@ -102,6 +102,14 @@ export interface DocumentStore<Revision = string> {
    * @param merge - Merge function
    */
   merge<Body>(document: Document<Body, Revision>, merge: MergeFunction<Body>): Promise<void>
+
+  /**
+   * Deletes document by its key.
+   * @param key - Document key
+   * @param revision - Document revision if known
+   * @param force - If true, deletes the document even if the revision does not match
+   */
+  delete(key: DocumentKey, revision?: Revision, force?: boolean): Promise<void>
   /**
    * Subscribes to document changes.
    *
