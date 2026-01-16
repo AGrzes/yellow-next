@@ -36,7 +36,8 @@ export class MemoryStore implements DocumentStore<void> {
 
   async merge<Body>(document: Document<Body, void>, merge: MergeFunction<Body>): Promise<void> {
     const current = await this.get<Body>(document.key)
-    const nextBody = merge(document.body, current?.body)
+
+    const nextBody = current ? merge(document.body, current.body) : document.body
     set(this.root, document.key, {
       key: document.key,
       body: nextBody,

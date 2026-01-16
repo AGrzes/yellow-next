@@ -32,7 +32,7 @@ export interface Document<Body, Revision> {
  * @param current - Current document body, or undefined if it not yet exist
  * @returns Merged document body
  */
-export type MergeFunction<Body> = (document: Body, current?: Body) => Body
+export type MergeFunction<Body> = (document: Body, current: Body) => Body
 /**
  * Base interface for document change.
  */
