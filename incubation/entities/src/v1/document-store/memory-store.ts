@@ -21,6 +21,20 @@ function set(object: Record<string, any>, path: string[], value: any): void {
   }
 }
 
+function remove(object: Record<string, any>, path: string[]): boolean {
+  if (path.length === 1) {
+    delete object[path[0]]
+    return true
+  }
+
+  const child = object[path[0]] as Record<string, any>
+  const removed = remove(child, path.slice(1))
+  if (removed && Object.keys(child).length === 0) {
+    delete object[path[0]]
+  }
+  return removed
+}
+
 export class MemoryStore implements DocumentStore<void> {
   private readonly root = {}
   subscriptions: Set<ChangeListener<any, void>> = new Set()
@@ -49,6 +63,27 @@ export class MemoryStore implements DocumentStore<void> {
       key: document.key,
       body: nextBody,
       revision: document.revision,
+    }
+
+    for (const listener of this.subscriptions) {
+      await listener(change)
+    }
+  }
+
+  async delete(key: DocumentKey, revision?: void, force?: boolean): Promise<void> {
+    const current = await this.get(key)
+    if (!current) {
+      return
+    }
+    if (!force && revision !== undefined && current.revision !== revision) {
+      throw new Error('Revision mismatch')
+    }
+
+    remove(this.root, key)
+
+    const change = {
+      type: 'delete' as const,
+      key,
     }
 
     for (const listener of this.subscriptions) {

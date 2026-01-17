@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { type Change } from '../../../src/v1/document-store/index.ts'
+import { type Change } from '../../../src/v1/document-store'
 import { MemoryStore } from '../../../src/v1/document-store/memory-store'
 
 describe('MemoryStore', () => {
@@ -78,5 +78,70 @@ describe('MemoryStore', () => {
     await store.merge({ key: ['doc'], body: { value: 2 } }, (body) => body)
 
     expect(listener).toHaveBeenCalledTimes(1)
+  })
+
+  it('deletes documents and notifies subscribers', async () => {
+    const store = new MemoryStore()
+    const listener = vi.fn(async (_change: Change<{ value: number }, void>) => {})
+
+    store.subscribe(listener)
+
+    await store.merge({ key: ['doc'], body: { value: 1 } }, (body) => body)
+    await store.delete(['doc'])
+
+    const stored = await store.get<{ value: number }>(['doc'])
+
+    expect(stored).toBeNull()
+    expect(listener).toHaveBeenCalledTimes(2)
+    expect(listener.mock.calls[1][0]).toEqual({ type: 'delete', key: ['doc'] })
+  })
+
+  it('deletes a top-level document', async () => {
+    const store = new MemoryStore()
+
+    await store.merge({ key: ['root'], body: { value: 1 } }, (body) => body)
+    await store.delete(['root'])
+
+    expect(await store.get(['root'])).toBeNull()
+  })
+
+  it('rejects delete on revision mismatch unless forced', async () => {
+    const store = new MemoryStore()
+
+    await store.merge({ key: ['doc'], body: { value: 1 } }, (body) => body)
+
+    await expect(store.delete(['doc'], 'rev' as any)).rejects.toThrow('Revision mismatch')
+    await expect(store.delete(['doc'], 'rev' as any, true)).resolves.toBeUndefined()
+  })
+
+  it('prunes empty containers after delete', async () => {
+    const store = new MemoryStore()
+
+    await store.merge({ key: ['a', 'b'], body: { value: 1 } }, (body) => body)
+    await store.delete(['a', 'b'])
+
+    expect(await store.list(['a'])).toEqual([])
+    expect(await store.list()).toEqual([])
+  })
+
+  it('keeps container when other documents remain', async () => {
+    const store = new MemoryStore()
+
+    await store.merge({ key: ['a', 'b'], body: { value: 1 } }, (body) => body)
+    await store.merge({ key: ['a', 'c'], body: { value: 2 } }, (body) => body)
+
+    await store.delete(['a', 'b'])
+
+    const docs = await store.list<{ value: number }>(['a'])
+    expect(docs.map((doc) => doc.body.value)).toEqual([2])
+  })
+
+  it('does nothing when deleting a missing document', async () => {
+    const store = new MemoryStore()
+
+    await store.delete(['missing'])
+
+    const docs = await store.list()
+    expect(docs).toEqual([])
   })
 })
