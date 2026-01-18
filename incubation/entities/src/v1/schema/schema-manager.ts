@@ -1,6 +1,8 @@
 import { type JsonSchema7 } from '@jsonforms/core'
 import type { Change, DocumentStore } from '../document-store/index.ts'
 
+export type EntityTypeID = string
+
 export interface SchemaExtensions {}
 
 export interface ExtendedSchema extends JsonSchema7 {
@@ -32,9 +34,9 @@ export interface Type {
 }
 
 export interface SerializedType {
-  name: string
+  name: EntityTypeID
   schema: ExtendedSchema
-  parent?: string
+  parent?: EntityTypeID
 }
 
 class SchemaCache {
