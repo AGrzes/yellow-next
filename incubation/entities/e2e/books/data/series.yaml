@@ -1,0 +1,30 @@
+---
+type: Series
+items:
+  - id: ebf0e357-4194-4c14-8dba-4f29fd092bcd
+    title: Lord Of The Rings
+    authors:
+      - name: J.R.R. Tolkien
+    books:
+      - title: Fellowship of the Ring
+      - title: Two Towers
+      - title: Return of The King
+  - id: ec5466a3-ab0e-402e-8ab4-88ce7ee0fb47
+    title: The Black Company
+    authors:
+      - name: Glen Cook
+    books:
+      - title: The Black Company
+  - id: 12b36f94-b4a3-450b-9644-2ae4f6c06d0c
+    title: Honor Harrington
+    authors:
+      - name: David Weber
+    books:
+      - title: On Basilisk Station
+  - id: 41efd72a-8a2d-49bc-be91-a79e0dba8709
+    title: Discworld
+    authors:
+      - name: Terry Pratchett
+    books:
+      - title: Guards! Guards!
+...

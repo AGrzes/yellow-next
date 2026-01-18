@@ -1,0 +1,16 @@
+---
+type: Author
+items:
+  - id: 56003d47-fbd4-45d0-a628-c80ce03f9fe7
+    name: J.R.R. Tolkien
+  - id: 7f9c7b82-23e5-4572-acee-bb8cd2f1599c
+    name: Glen Cook
+  - id: f7e3a877-5381-4bdd-a998-df6d69513f65
+    name: David Weber
+  - id: f3355e23-69de-46fe-b82c-12b9cd526400
+    name: Terry Pratchett
+  - id: beef730a-0721-4982-96ee-adbba8a0fa42
+    name: Tiago Forte
+  - id: 8fe41eda-d261-460c-b2d9-ae56b46e991a
+    name: Neil Gaiman
+...

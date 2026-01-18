@@ -1,0 +1,49 @@
+---
+type: Book
+items:
+  - id: c95ea5ee-2b1b-4cf1-904c-d16a076149f7
+    title: Fellowship of the Ring
+    authors:
+      - name: J.R.R. Tolkien
+    series:
+      - title: Lord Of The Rings
+  - id: 3b492e82-2ae9-4b29-af1b-14c566e664dc
+    title: Two Towers
+    authors:
+      - name: J.R.R. Tolkien
+    series:
+      - title: Lord Of The Rings
+  - id: adfb3e5a-c8a1-4546-9df8-c7a9cfa348c5
+    title: Return of The King
+    authors:
+      - name: J.R.R. Tolkien
+    series:
+      - title: Lord Of The Rings
+  - id: 5830eec6-4554-460c-9f5b-737f4b9c107a
+    title: The Black Company
+    authors:
+      - name: Glen Cook
+    series:
+      - title: The Black Company
+  - id: 8f01f6c2-89b6-43d9-90dd-162d02a4e651
+    title: On Basilisk Station
+    authors:
+      - name: David Weber
+    series:
+      - title: Honor Harrington
+  - id: f1d2ba21-9ebd-428e-9071-5287135221b0
+    title: Guards! Guards!
+    authors:
+      - name: Terry Pratchett
+    series:
+      - title: Discworld
+  - id: b0d5645f-db2e-46de-8311-d1701ec580d8
+    title: Building a Second Brain
+    authors:
+      - name: Tiago Forte
+  - id: 1f3beeb9-f5ba-4ad0-862f-895e07f7f663
+    title: Good Omens
+    authors:
+      - name: Terry Pratchett
+      - name: Neil Gaiman
+...

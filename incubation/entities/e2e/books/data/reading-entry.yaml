@@ -1,0 +1,53 @@
+---
+type: ReadingEntry
+items:
+  - id: d09034a8-f7d4-49d2-84a6-0899bc7ff383
+    book:
+      title: Building a Second Brain
+    state:
+      - date: "2024-01-02"
+        state: planned
+      - date: "2024-02-08"
+        state: finished
+    creationDate: "2024-01-02"
+    completionDate: "2024-02-08"
+    tags:
+      - book-reading
+  - id: 995a9097-9eb4-4913-a319-e79b35f9487c
+    book:
+      title: Fellowship of the Ring
+    state:
+      - date: "2023-01-10"
+        state: started
+      - date: "2023-02-02"
+        state: finished
+    creationDate: "2023-01-10"
+    completionDate: "2023-02-02"
+    tags:
+      - book-reading
+  - id: 55d697b8-b31b-451c-82c1-4d16466ac051
+    book:
+      title: Guards! Guards!
+    state:
+      - date: "2024-05-01"
+        state: planned
+    creationDate: "2024-05-01"
+    tags:
+      - book-reading
+  - id: 16c4caf1-4db2-4f65-ae83-9c5c9f28e369
+    book:
+      title: Unknown Book Title
+    state:
+      - date: "2024-06-01"
+        state: planned
+    creationDate: "2024-06-01"
+  - id: f9d1a482-dd09-441b-a495-909243648bc7
+    book:
+      title: Good Omens
+    state:
+      - date: "2024-09-11"
+        state: started
+    creationDate: "2024-09-11"
+    tags:
+      - book-reading
+...
