@@ -1,0 +1,14 @@
+- Add tests for collections
+- Extract setup to separate file
+- Create storybook to show single entity
+  - Schema/ui schema handling
+- Create storybook to show entity collection
+  - Item resolution
+- Create storybook to edit single entity
+  - UI
+  - Save handling
+  - Reference lookup
+- Create storybook to edit entity collection in bulk
+  - UI
+  - Save handling
+  - Reference lookup

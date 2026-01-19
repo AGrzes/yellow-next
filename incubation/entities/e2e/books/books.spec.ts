@@ -68,4 +68,36 @@ describe('Books E2E Test', () => {
     const doc = await entityManager.get<any>(data['reading-entry'].type, entryData.id)
     expect(doc!.body.bookId).toBe(entryData.bookId)
   })
+  it('should list all books', async () => {
+    const books = await entityManager.list<any>(data['book'].type)
+    data.book.items.forEach((bookData) => {
+      const found = books.find((b) => b.id === bookData.id)
+      expect(found).toBeDefined()
+      expect(found!.body.title).toBe(bookData.title)
+    })
+  })
+  it('should list all authors', async () => {
+    const authors = await entityManager.list<any>(data['author'].type)
+    data.author.items.forEach((authorData) => {
+      const found = authors.find((a) => a.id === authorData.id)
+      expect(found).toBeDefined()
+      expect(found!.body.name).toBe(authorData.name)
+    })
+  })
+  it('should list all series', async () => {
+    const seriesList = await entityManager.list<any>(data['series'].type)
+    data.series.items.forEach((seriesData) => {
+      const found = seriesList.find((s) => s.id === seriesData.id)
+      expect(found).toBeDefined()
+      expect(found!.body.title).toBe(seriesData.title)
+    })
+  })
+  it('should list all reading entries', async () => {
+    const entries = await entityManager.list<any>(data['reading-entry'].type)
+    data['reading-entry'].items.forEach((entryData) => {
+      const found = entries.find((e) => e.id === entryData.id)
+      expect(found).toBeDefined()
+      expect(found!.body.bookId).toBe(entryData.bookId)
+    })
+  })
 })
