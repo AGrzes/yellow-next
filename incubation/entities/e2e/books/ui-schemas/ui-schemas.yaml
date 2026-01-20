@@ -1,0 +1,14 @@
+- variant: inline
+  type: Book
+  element:
+    type: HorizontalLayout
+    elements:
+      - type: Control
+        scope: '#/properties/title'
+        label: Title
+      - type: Control
+        scope: '#/properties/authors'
+        label: Authors
+      - type: Control
+        scope: '#/properties/series'
+        label: Series

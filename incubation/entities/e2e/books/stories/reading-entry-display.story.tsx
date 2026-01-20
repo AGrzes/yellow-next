@@ -3,9 +3,10 @@ import { EntityDisplay } from './EntityDisplay.tsx'
 
 import { collections } from '../utils/data-browser.ts'
 import { schemas } from '../utils/schema-browser.ts'
-import { setupEntityManager } from '../utils/setup-entity-manager.ts'
+import { setupServices } from '../utils/setup-services.ts'
+import { uiSchemas } from '../utils/ui-schema-browser.ts'
 
-const entityManager = await setupEntityManager(collections, schemas)
+const { entityManager } = await setupServices(collections, schemas, uiSchemas)
 
 const meta = {
   component: EntityDisplay,

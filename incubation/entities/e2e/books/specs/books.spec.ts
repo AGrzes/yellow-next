@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { collections } from '../utils/data-node.ts'
 import { schemas } from '../utils/schema-node.ts'
-import { setupEntityManager } from '../utils/setup-entity-manager.ts'
+import { setupServices } from '../utils/setup-services.ts'
+import { uiSchemas } from '../utils/ui-schema-node.ts'
 
-const entityManager = await setupEntityManager(collections, schemas)
+const { entityManager } = await setupServices(collections, schemas, uiSchemas)
 
 describe('Books E2E Test', () => {
   it('should retrieve a book by id', async () => {
