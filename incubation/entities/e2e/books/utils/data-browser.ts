@@ -2,7 +2,7 @@ import yaml from 'yaml'
 import { Collection, Collections } from './types.ts'
 
 async function loadEntityCollection(entity: String): Promise<Collection> {
-  const filePath = `./data/${entity}.yaml?raw`
+  const filePath = `../data/${entity}.yaml?raw`
   /* @vite-ignore */
   const fileContent = await import(filePath)
   const parsedContent: Collection = yaml.parse(fileContent.default)

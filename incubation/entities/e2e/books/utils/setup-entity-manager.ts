@@ -1,8 +1,8 @@
-import { DocumentStore } from '../../src/v1/document-store/index'
-import { MemoryStore } from '../../src/v1/document-store/memory-store'
-import { EntityManager, EntityManagerImpl } from '../../src/v1/entity'
-import { EntitySchemaHandler } from '../../src/v1/entity/entity-schema'
-import { SchemaManager, type SerializedType } from '../../src/v1/schema/schema-manager'
+import { DocumentStore } from '../../../src/v1/document-store/index'
+import { MemoryStore } from '../../../src/v1/document-store/memory-store'
+import { EntityManager, EntityManagerImpl } from '../../../src/v1/entity'
+import { EntitySchemaHandler } from '../../../src/v1/entity/entity-schema'
+import { SchemaManager, type SerializedType } from '../../../src/v1/schema/schema-manager'
 import { Collection, Collections } from './types.ts'
 
 async function insertItem(store: DocumentStore, type: string, id: string, body: any) {

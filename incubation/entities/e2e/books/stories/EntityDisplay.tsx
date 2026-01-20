@@ -1,4 +1,4 @@
-import { Entity } from '../../src/v1/entity/index.ts'
+import { Entity } from '../../../src/v1/entity/index.ts'
 import { mantineCells, mantineRenderers } from '@agrzes/mantine-renderers'
 import { JsonForms } from '@jsonforms/react'
 

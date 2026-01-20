@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises'
 import yaml from 'yaml'
-import type { SerializedType } from '../../src/v1/schema/schema-manager'
+import type { SerializedType } from '../../../src/v1/schema/schema-manager'
 
 async function loadSchema(name: string): Promise<SerializedType> {
   const filePath = `./e2e/books/schemas/${name}.schema.yaml`

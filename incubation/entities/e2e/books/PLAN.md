@@ -1,7 +1,9 @@
-- Add tests for collections
-- Extract setup to separate file
+- ~~Add tests for collections~~
+- ~~Extract setup to separate file~~
+- Use @alias and separate tsconfig
 - Create storybook to show single entity
-  - Schema/ui schema handling
+  - ~~Schema handling~~
+  - Ui schema handling
 - Create storybook to show entity collection
   - Item resolution
 - Create storybook to edit single entity
