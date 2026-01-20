@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises'
 import yaml from 'yaml'
-import { Collection, Collections } from './types.ts'
+import type { Collection, Collections } from '@e2e/books/utils/types'
 
 async function loadEntityCollection(entity: String): Promise<Collection> {
   const filePath = `./e2e/books/data/${entity}.yaml`

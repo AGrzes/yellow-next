@@ -1,5 +1,5 @@
+import type { Collection, Collections } from '@e2e/books/utils/types.ts'
 import yaml from 'yaml'
-import { Collection, Collections } from './types.ts'
 
 async function loadEntityCollection(entity: String): Promise<Collection> {
   const filePath = `../data/${entity}.yaml?raw`

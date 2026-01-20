@@ -1,6 +1,6 @@
-import { Entity } from '../../../src/v1/entity/index.ts'
 import { mantineCells, mantineRenderers } from '@agrzes/mantine-renderers'
 import { JsonForms } from '@jsonforms/react'
+import type { Entity } from '@v1/entity'
 
 export function EntityDisplay({ entity }: { entity: Entity<any> }) {
   return (

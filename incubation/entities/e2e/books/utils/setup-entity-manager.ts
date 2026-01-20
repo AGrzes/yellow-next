@@ -1,9 +1,9 @@
-import { DocumentStore } from '../../../src/v1/document-store/index'
-import { MemoryStore } from '../../../src/v1/document-store/memory-store'
-import { EntityManager, EntityManagerImpl } from '../../../src/v1/entity'
-import { EntitySchemaHandler } from '../../../src/v1/entity/entity-schema'
-import { SchemaManager, type SerializedType } from '../../../src/v1/schema/schema-manager'
-import { Collection, Collections } from './types.ts'
+import type { Collection, Collections } from '@e2e/books/utils/types'
+import type { DocumentStore } from '@v1/document-store'
+import { MemoryStore } from '@v1/document-store/memory-store'
+import { type EntityManager, EntityManagerImpl } from '@v1/entity'
+import { EntitySchemaHandler } from '@v1/entity/entity-schema'
+import { SchemaManager, type SerializedType } from '@v1/schema/schema-manager'
 
 async function insertItem(store: DocumentStore, type: string, id: string, body: any) {
   await store.merge(
@@ -11,7 +11,7 @@ async function insertItem(store: DocumentStore, type: string, id: string, body: 
       key: [`entities`, type, id],
       body,
     },
-    (current, incoming) => current
+    (current, _incoming) => current
   )
 }
 
@@ -34,10 +34,7 @@ async function insertSchemas(store: DocumentStore, schemas: SerializedType[]) {
   }
 }
 
-export async function setupEntityManager(
-  collections: Collections,
-  schemas: SerializedType[]
-): Promise<EntityManager> {
+export async function setupEntityManager(collections: Collections, schemas: SerializedType[]): Promise<EntityManager> {
   const store = new MemoryStore()
   const schemaManager = new SchemaManager(store)
   const schemaHandler = new EntitySchemaHandler(schemaManager)
