@@ -1,17 +1,11 @@
 name: Book
 schema:
-  "$schema": https://json-schema.org/draft/2020-12/schema
-  "$id": book.schema.yaml
   title: Book
   type: object
   additionalProperties: false
   required:
-    - id
     - title
   properties:
-    id:
-      type: string
-      format: uuid
     title:
       type: string
       minLength: 1
