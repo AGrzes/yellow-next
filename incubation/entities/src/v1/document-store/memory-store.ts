@@ -35,20 +35,20 @@ function remove(object: Record<string, any>, path: string[]): boolean {
   return removed
 }
 
-export class MemoryStore implements DocumentStore<void> {
+export class MemoryStore implements DocumentStore<any> {
   private readonly root = {}
-  subscriptions: Set<ChangeListener<any, void>> = new Set()
+  subscriptions: Set<ChangeListener<any, any>> = new Set()
 
-  async get<Body>(key: DocumentKey): Promise<Document<Body, void> | null> {
-    return (get(this.root, key) as Document<Body, void> | undefined) ?? null
+  async get<Body>(key: DocumentKey): Promise<Document<Body, any> | null> {
+    return (get(this.root, key) as Document<Body, any> | undefined) ?? null
   }
 
-  async list<Body>(prefix?: DocumentKeyPrefix): Promise<Document<Body, void>[]> {
+  async list<Body>(prefix?: DocumentKeyPrefix): Promise<Document<Body, any>[]> {
     const node = get(this.root, prefix ?? [])
-    return node ? Object.values(node as Record<string, Document<Body, void>>) : []
+    return node ? Object.values(node as Record<string, Document<Body, any>>) : []
   }
 
-  async merge<Body>(document: Document<Body, void>, merge: MergeFunction<Body>): Promise<void> {
+  async merge<Body>(document: Document<Body, any>, merge: MergeFunction<Body>): Promise<void> {
     const current = await this.get<Body>(document.key)
 
     const nextBody = current ? merge(document.body, current.body) : document.body
@@ -70,7 +70,7 @@ export class MemoryStore implements DocumentStore<void> {
     }
   }
 
-  async delete(key: DocumentKey, revision?: void, force?: boolean): Promise<void> {
+  async delete(key: DocumentKey, revision?: any, force?: boolean): Promise<void> {
     const current = await this.get(key)
     if (!current) {
       return
@@ -90,7 +90,7 @@ export class MemoryStore implements DocumentStore<void> {
       await listener(change)
     }
   }
-  subscribe<Body>(onChange: ChangeListener<Body, void>): Subscription {
+  subscribe<Body>(onChange: ChangeListener<Body, any>): Subscription {
     this.subscriptions.add(onChange)
     return {
       unsubscribe: () => {
