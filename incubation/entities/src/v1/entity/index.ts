@@ -1,5 +1,5 @@
 import type { DocumentStore } from '../document-store/index.ts'
-import type { EntityTypeID, SchemaManager } from '../schema/schema-manager.ts'
+import type { EntityTypeID } from '../schema/schema-manager.ts'
 import type { EntitySchemaHandler } from './entity-schema.ts'
 
 export type EntityID = string
