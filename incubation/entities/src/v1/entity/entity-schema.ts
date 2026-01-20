@@ -1,12 +1,10 @@
-import type { Entity } from ".";
-import type { SchemaManager, Type } from "../schema/schema-manager";
-declare module "./index" {
+import type { Entity } from '.'
+import type { SchemaManager, Type } from '../schema/schema-manager'
+declare module './index' {
   interface EntityMeta {
-    type?: Type 
+    type?: Type
   }
 }
-
-
 
 export class EntitySchemaHandler {
   constructor(private readonly schemaManager: SchemaManager) {}

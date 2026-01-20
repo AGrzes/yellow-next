@@ -14,8 +14,6 @@ export interface Entity<Body> {
   meta?: EntityMeta
 }
 
-
-
 export interface EntityManager {
   get<Body extends Record<string, any>>(type: EntityTypeID, id: EntityID): Promise<Entity<Body> | null>
   list<Body extends Record<string, any>>(type: EntityTypeID): Promise<Entity<Body>[]>
@@ -37,7 +35,10 @@ function merge<Body extends Record<string, any>>(document: Body, current: Body):
 }
 
 export class EntityManagerImpl implements EntityManager {
-  constructor(private readonly store: DocumentStore<string>, private readonly schemaHandler: EntitySchemaHandler) {}
+  constructor(
+    private readonly store: DocumentStore<string>,
+    private readonly schemaHandler: EntitySchemaHandler
+  ) {}
   async get<Body extends Record<string, any>>(type: EntityTypeID, id: EntityID): Promise<Entity<Body> | null> {
     const document = await this.store.get<Body>(['entities', type, id])
     if (document) {
