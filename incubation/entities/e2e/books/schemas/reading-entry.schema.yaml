@@ -1,49 +1,51 @@
-"$schema": https://json-schema.org/draft/2020-12/schema
-"$id": reading-entry.schema.yaml
-title: ReadingEntry
-type: object
-additionalProperties: false
-required:
-  - id
-  - book
-  - state
-  - creationDate
-properties:
-  id:
-    type: string
-    format: uuid
-  book:
-    type: object
-    additionalProperties: false
-    required:
-      - title
-    properties:
-      title:
-        type: string
-        minLength: 1
-  state:
-    type: array
-    items:
+name: ReadingEntry
+schema:
+  "$schema": https://json-schema.org/draft/2020-12/schema
+  "$id": reading-entry.schema.yaml
+  title: ReadingEntry
+  type: object
+  additionalProperties: false
+  required:
+    - id
+    - book
+    - state
+    - creationDate
+  properties:
+    id:
+      type: string
+      format: uuid
+    book:
       type: object
       additionalProperties: false
       required:
-        - date
-        - state
+        - title
       properties:
-        date:
+        title:
           type: string
           minLength: 1
-        state:
-          type: string
-          minLength: 1
-  creationDate:
-    type: string
-    minLength: 1
-  completionDate:
-    type: string
-    minLength: 1
-  tags:
-    type: array
-    items:
+    state:
+      type: array
+      items:
+        type: object
+        additionalProperties: false
+        required:
+          - date
+          - state
+        properties:
+          date:
+            type: string
+            minLength: 1
+          state:
+            type: string
+            minLength: 1
+    creationDate:
       type: string
       minLength: 1
+    completionDate:
+      type: string
+      minLength: 1
+    tags:
+      type: array
+      items:
+        type: string
+        minLength: 1
