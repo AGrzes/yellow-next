@@ -1,0 +1,2 @@
+- After changing code run `pnpm test` to make sure tests pass.
+- After making finishing bigger changes run `pnpm coverage` to make sure you did not introduce uncovered paths.
