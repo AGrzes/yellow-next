@@ -1,14 +1,20 @@
 import type { DocumentStore } from '../document-store/index.ts'
-import type { EntityTypeID } from '../schema/schema-manager.ts'
+import type { EntityTypeID, SchemaManager } from '../schema/schema-manager.ts'
+import type { EntitySchemaHandler } from './entity-schema.ts'
 
 export type EntityID = string
 export type Query = Record<string, any>
+
+export interface EntityMeta {}
 
 export interface Entity<Body> {
   type: EntityTypeID
   id: EntityID
   body: Body
+  meta?: EntityMeta
 }
+
+
 
 export interface EntityManager {
   get<Body extends Record<string, any>>(type: EntityTypeID, id: EntityID): Promise<Entity<Body> | null>
@@ -31,26 +37,30 @@ function merge<Body extends Record<string, any>>(document: Body, current: Body):
 }
 
 export class EntityManagerImpl implements EntityManager {
-  constructor(private readonly store: DocumentStore<string>) {}
+  constructor(private readonly store: DocumentStore<string>, private readonly schemaHandler: EntitySchemaHandler) {}
   async get<Body extends Record<string, any>>(type: EntityTypeID, id: EntityID): Promise<Entity<Body> | null> {
     const document = await this.store.get<Body>(['entities', type, id])
     if (document) {
-      return {
+      const entity: Entity<Body> = {
         type,
         id,
         body: document.body,
       }
+      await this.schemaHandler.apply(entity)
+      return entity
     }
     return null
   }
 
   async list<Body extends Record<string, any>>(type: EntityTypeID): Promise<Entity<Body>[]> {
     const documents = await this.store.list<Body>(['entities', type])
-    return documents.map((doc) => ({
+    const entities = documents.map((doc) => ({
       type,
       id: doc.key[2],
       body: doc.body,
     }))
+    await Promise.all(entities.map((entity) => this.schemaHandler.apply(entity)))
+    return entities
   }
 
   async save<Body extends Record<string, any>>(entity: Entity<Body>): Promise<void> {

@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import type { DocumentStore } from '../../../src/v1/document-store'
 import { EntityManagerImpl, type Entity } from '../../../src/v1/entity'
+import type { EntitySchemaHandler } from '../../../src/v1/entity/entity-schema'
 import type { EntityTypeID } from '../../../src/v1/schema/schema-manager'
 
 type StoredDoc<Body> = { key: string[]; body: Body; revision?: string }
@@ -24,22 +25,28 @@ describe('EntityManagerImpl', () => {
   it('gets an entity by type and id', async () => {
     const type = 'book' as EntityTypeID
     const store = makeStore([{ key: ['entities', type, '1'], body: { title: 'Dune' } }])
-    const manager = new EntityManagerImpl(store)
+    const schemaHandler = {
+      apply: vi.fn(async (_entity: Entity<{ title: string }>) => undefined),
+    } as unknown as EntitySchemaHandler
+    const manager = new EntityManagerImpl(store, schemaHandler)
 
     const entity = await manager.get<{ title: string }>(type, '1')
 
     expect(entity).toEqual({ type, id: '1', body: { title: 'Dune' } })
     expect(store.get).toHaveBeenCalledWith(['entities', type, '1'])
+    expect(schemaHandler.apply).toHaveBeenCalledWith({ type, id: '1', body: { title: 'Dune' } })
   })
 
   it('returns null when entity is missing', async () => {
     const type = 'book' as EntityTypeID
     const store = makeStore([])
-    const manager = new EntityManagerImpl(store)
+    const schemaHandler = { apply: vi.fn() } as unknown as EntitySchemaHandler
+    const manager = new EntityManagerImpl(store, schemaHandler)
 
     const entity = await manager.get(type, 'missing')
 
     expect(entity).toBeNull()
+    expect(schemaHandler.apply).not.toHaveBeenCalled()
   })
 
   it('lists entities for a type', async () => {
@@ -49,7 +56,10 @@ describe('EntityManagerImpl', () => {
       { key: ['entities', type, '2'], body: { title: 'Neuromancer' } },
       { key: ['entities', 'movie', '1'], body: { title: 'Alien' } },
     ])
-    const manager = new EntityManagerImpl(store)
+    const schemaHandler = {
+      apply: vi.fn(async (_entity: Entity<{ title: string }>) => undefined),
+    } as unknown as EntitySchemaHandler
+    const manager = new EntityManagerImpl(store, schemaHandler)
 
     const entities = await manager.list<{ title: string }>(type)
 
@@ -58,12 +68,14 @@ describe('EntityManagerImpl', () => {
       { type, id: '2', body: { title: 'Neuromancer' } },
     ])
     expect(store.list).toHaveBeenCalledWith(['entities', type])
+    expect(schemaHandler.apply).toHaveBeenCalledTimes(2)
   })
 
   it('saves an entity to the document store', async () => {
     const type = 'book' as EntityTypeID
     const store = makeStore([])
-    const manager = new EntityManagerImpl(store)
+    const schemaHandler = { apply: vi.fn() } as unknown as EntitySchemaHandler
+    const manager = new EntityManagerImpl(store, schemaHandler)
     const entity: Entity<{ title: string }> = { type, id: '1', body: { title: 'Dune' } }
 
     await manager.save(entity)
@@ -77,7 +89,8 @@ describe('EntityManagerImpl', () => {
   it('uses a deep merge strategy when saving entities', async () => {
     const type = 'book' as EntityTypeID
     const store = makeStore([])
-    const manager = new EntityManagerImpl(store)
+    const schemaHandler = { apply: vi.fn() } as unknown as EntitySchemaHandler
+    const manager = new EntityManagerImpl(store, schemaHandler)
     const entity: Entity<{ meta: { a?: number; b?: number } }> = { type, id: '1', body: { meta: { b: 2 } } }
 
     await manager.save(entity)
@@ -91,7 +104,8 @@ describe('EntityManagerImpl', () => {
   it('throws for unimplemented find/findOne', async () => {
     const type = 'book' as EntityTypeID
     const store = makeStore([])
-    const manager = new EntityManagerImpl(store)
+    const schemaHandler = { apply: vi.fn() } as unknown as EntitySchemaHandler
+    const manager = new EntityManagerImpl(store, schemaHandler)
 
     await expect(manager.findOne(type, { title: 'Dune' })).rejects.toThrow('Method not implemented.')
     await expect(manager.find(type, { title: 'Dune' })).rejects.toThrow('Method not implemented.')
