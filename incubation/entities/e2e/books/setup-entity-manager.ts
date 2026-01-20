@@ -1,31 +1,30 @@
-import PouchDB from 'pouchdb'
-import PouchDBAdapterMemory from 'pouchdb-adapter-memory'
-import { PouchDBStore } from '../../src/v1/document-store/pouchdb-store'
+import { DocumentStore } from '../../src/v1/document-store/index'
+import { MemoryStore } from '../../src/v1/document-store/memory-store'
 import { EntityManager, EntityManagerImpl } from '../../src/v1/entity'
 import { Collection, Collections } from './types.ts'
 
-PouchDB.plugin(PouchDBAdapterMemory)
-
-async function insertItem(database: PouchDB.Database, type: string, id: string, body: any) {
-  await database.put({
-    _id: `entities/${type}/${id}`,
-    body,
-  })
+async function insertItem(store: DocumentStore, type: string, id: string, body: any) {
+  await store.merge(
+    {
+      key: [`entities`, type, id],
+      body,
+    },
+    (current, incoming) => current
+  )
 }
 
-async function insertCollection(database: PouchDB.Database, collection: Collection) {
+async function insertCollection(store: DocumentStore, collection: Collection) {
   for (const item of collection.items) {
     const { id, ...body } = item
-    await insertItem(database, collection.type, id, body)
+    await insertItem(store, collection.type, id, body)
   }
 }
 
 export async function setupEntityManager(collections: Collections): Promise<EntityManager> {
-  const db = new PouchDB('entities-test-db', { adapter: 'memory' })
-  const store = new PouchDBStore(db)
+  const store = new MemoryStore()
   const entityManager = new EntityManagerImpl(store)
   for (const entity of Object.values(collections)) {
-    await insertCollection(db, entity)
+    await insertCollection(store, entity)
   }
   return entityManager
 }
