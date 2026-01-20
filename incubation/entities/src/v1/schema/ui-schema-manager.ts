@@ -14,6 +14,8 @@ class UiSchemaCache {
   private uiSchemaByTypeAndVariant = new Map<string, Map<string, UISchemaElement>>()
 
   constructor(entries: UiSchemaEntry[]) {
+    console.log('UiSchemaCache initialized', entries)
+
     for (const entry of entries) {
       this.uiSchemaByTypeAndVariant.set(
         entry.type,
@@ -21,6 +23,7 @@ class UiSchemaCache {
       )
       this.uiSchemaByTypeAndVariant.get(entry.type)!.set(entry.variant, entry.element)
     }
+    console.log('UiSchemaCache initialized', entries, this.uiSchemaByTypeAndVariant)
   }
 
   get(type: EntityTypeID, variant: UiSchemaVariant): UISchemaElement | undefined {
@@ -29,7 +32,7 @@ class UiSchemaCache {
 }
 
 async function buildUiSchemaCache(store: DocumentStore<any>): Promise<UiSchemaCache> {
-  const entries = await store.list<UiSchemaEntry>(['types'])
+  const entries = await store.list<UiSchemaEntry>(['ui-schemas'])
   return new UiSchemaCache(entries.map((doc) => doc.body))
 }
 
