@@ -1,9 +1,13 @@
 - ~~Add tests for collections~~
 - ~~Extract setup to separate file~~
-- Use @alias and separate tsconfig
-- Create storybook to show single entity
+- ~~Use @alias and separate tsconfig~~
+- ~~Create storybook to show single entity~~
   - ~~Schema handling~~
-  - Ui schema handling
+  - ~~Ui schema handling~~
+- Make entity display component
+  - Component itself
+  - Services setup
+  - Storybook for component
 - Create storybook to show entity collection
   - Item resolution
 - Create storybook to edit single entity
