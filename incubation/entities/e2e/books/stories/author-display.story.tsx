@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { EntityDisplay } from './EntityDisplay.tsx'
+import { EntityDisplay } from '@v1/components/entity-display/EntityDisplay.tsx'
 
 import { collections } from '../utils/data-browser.ts'
 import { schemas } from '../utils/schema-browser.ts'
