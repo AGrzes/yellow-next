@@ -4,11 +4,15 @@
 - ~~Create storybook to show single entity~~
   - ~~Schema handling~~
   - ~~Ui schema handling~~
-- Make entity display component
-  - Component itself
-  - Services setup
-  - Storybook for component
+- ~~Make entity display component~~
+  - ~~Component itself~~
+  - ~~Services setup~~
+  - ~~Storybook for component~~
 - Create storybook to show entity collection
+  - Simple static list (wrap with wrapper schema)
+  - Dynamic List (wrapper schema + dynamic dispatch)
+  - List type
+  - Item type
   - Item resolution
 - Create storybook to edit single entity
   - UI
