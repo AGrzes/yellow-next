@@ -63,10 +63,13 @@ describe('EntityManagerImpl', () => {
 
     const entities = await manager.list<{ title: string }>(type)
 
-    expect(entities).toEqual([
-      { type, id: '1', body: { title: 'Dune' } },
-      { type, id: '2', body: { title: 'Neuromancer' } },
-    ])
+    expect(entities).toEqual({
+      type,
+      items: [
+        { type, id: '1', body: { title: 'Dune' } },
+        { type, id: '2', body: { title: 'Neuromancer' } },
+      ],
+    })
     expect(store.list).toHaveBeenCalledWith(['entities', type])
     expect(schemaHandler.apply).toHaveBeenCalledTimes(2)
   })

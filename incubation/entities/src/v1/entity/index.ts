@@ -14,9 +14,14 @@ export interface Entity<Body> {
   meta?: EntityMeta
 }
 
+export interface EntityList<Body> {
+  type?: EntityTypeID
+  items: Entity<Body>[]
+}
+
 export interface EntityManager {
   get<Body extends Record<string, any>>(type: EntityTypeID, id: EntityID): Promise<Entity<Body> | null>
-  list<Body extends Record<string, any>>(type: EntityTypeID): Promise<Entity<Body>[]>
+  list<Body extends Record<string, any>>(type: EntityTypeID): Promise<EntityList<Body>>
   save<Body extends Record<string, any>>(entity: Entity<Body>): Promise<void>
   findOne<Body extends Record<string, any>>(type: EntityTypeID, query: Query): Promise<Entity<Body>>
   find<Body extends Record<string, any>>(type: EntityTypeID, query: Query): Promise<Entity<Body>[]>
@@ -35,10 +40,7 @@ function merge<Body extends Record<string, any>>(document: Body, current: Body):
 }
 
 export class EntityManagerImpl implements EntityManager {
-  constructor(
-    private readonly store: DocumentStore<string>,
-    private readonly schemaHandler: EntitySchemaHandler
-  ) {}
+  constructor(private readonly store: DocumentStore<string>, private readonly schemaHandler: EntitySchemaHandler) {}
   async get<Body extends Record<string, any>>(type: EntityTypeID, id: EntityID): Promise<Entity<Body> | null> {
     const document = await this.store.get<Body>(['entities', type, id])
     if (document) {
@@ -53,7 +55,7 @@ export class EntityManagerImpl implements EntityManager {
     return null
   }
 
-  async list<Body extends Record<string, any>>(type: EntityTypeID): Promise<Entity<Body>[]> {
+  async list<Body extends Record<string, any>>(type: EntityTypeID): Promise<EntityList<Body>> {
     const documents = await this.store.list<Body>(['entities', type])
     const entities = documents.map((doc) => ({
       type,
@@ -61,7 +63,10 @@ export class EntityManagerImpl implements EntityManager {
       body: doc.body,
     }))
     await Promise.all(entities.map((entity) => this.schemaHandler.apply(entity)))
-    return entities
+    return {
+      type,
+      items: entities,
+    }
   }
 
   async save<Body extends Record<string, any>>(entity: Entity<Body>): Promise<void> {
