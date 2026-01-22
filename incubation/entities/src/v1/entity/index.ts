@@ -14,9 +14,12 @@ export interface Entity<Body> {
   meta?: EntityMeta
 }
 
+export interface EntityListMeta {}
+
 export interface EntityList<Body> {
   type?: EntityTypeID
   items: Entity<Body>[]
+  meta?: EntityListMeta
 }
 
 export interface EntityManager {
@@ -49,7 +52,7 @@ export class EntityManagerImpl implements EntityManager {
         id,
         body: document.body,
       }
-      await this.schemaHandler.apply(entity)
+      await this.schemaHandler.handleEntity(entity)
       return entity
     }
     return null
@@ -62,11 +65,9 @@ export class EntityManagerImpl implements EntityManager {
       id: doc.key[2],
       body: doc.body,
     }))
-    await Promise.all(entities.map((entity) => this.schemaHandler.apply(entity)))
-    return {
-      type,
-      items: entities,
-    }
+    const list: EntityList<Body> = { type, items: entities }
+    await this.schemaHandler.handleList(list)
+    return list
   }
 
   async save<Body extends Record<string, any>>(entity: Entity<Body>): Promise<void> {

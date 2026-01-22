@@ -26,7 +26,8 @@ describe('EntityManagerImpl', () => {
     const type = 'book' as EntityTypeID
     const store = makeStore([{ key: ['entities', type, '1'], body: { title: 'Dune' } }])
     const schemaHandler = {
-      apply: vi.fn(async (_entity: Entity<{ title: string }>) => undefined),
+      handleEntity: vi.fn(async (_entity: Entity<{ title: string }>) => undefined),
+      handleList: vi.fn(async () => undefined),
     } as unknown as EntitySchemaHandler
     const manager = new EntityManagerImpl(store, schemaHandler)
 
@@ -34,19 +35,19 @@ describe('EntityManagerImpl', () => {
 
     expect(entity).toEqual({ type, id: '1', body: { title: 'Dune' } })
     expect(store.get).toHaveBeenCalledWith(['entities', type, '1'])
-    expect(schemaHandler.apply).toHaveBeenCalledWith({ type, id: '1', body: { title: 'Dune' } })
+    expect(schemaHandler.handleEntity).toHaveBeenCalledWith({ type, id: '1', body: { title: 'Dune' } })
   })
 
   it('returns null when entity is missing', async () => {
     const type = 'book' as EntityTypeID
     const store = makeStore([])
-    const schemaHandler = { apply: vi.fn() } as unknown as EntitySchemaHandler
+    const schemaHandler = { handleEntity: vi.fn(), handleList: vi.fn() } as unknown as EntitySchemaHandler
     const manager = new EntityManagerImpl(store, schemaHandler)
 
     const entity = await manager.get(type, 'missing')
 
     expect(entity).toBeNull()
-    expect(schemaHandler.apply).not.toHaveBeenCalled()
+    expect(schemaHandler.handleEntity).not.toHaveBeenCalled()
   })
 
   it('lists entities for a type', async () => {
@@ -57,7 +58,8 @@ describe('EntityManagerImpl', () => {
       { key: ['entities', 'movie', '1'], body: { title: 'Alien' } },
     ])
     const schemaHandler = {
-      apply: vi.fn(async (_entity: Entity<{ title: string }>) => undefined),
+      handleEntity: vi.fn(async (_entity: Entity<{ title: string }>) => undefined),
+      handleList: vi.fn(async () => undefined),
     } as unknown as EntitySchemaHandler
     const manager = new EntityManagerImpl(store, schemaHandler)
 
@@ -71,13 +73,19 @@ describe('EntityManagerImpl', () => {
       ],
     })
     expect(store.list).toHaveBeenCalledWith(['entities', type])
-    expect(schemaHandler.apply).toHaveBeenCalledTimes(2)
+    expect(schemaHandler.handleList).toHaveBeenCalledWith({
+      type,
+      items: [
+        { type, id: '1', body: { title: 'Dune' } },
+        { type, id: '2', body: { title: 'Neuromancer' } },
+      ],
+    })
   })
 
   it('saves an entity to the document store', async () => {
     const type = 'book' as EntityTypeID
     const store = makeStore([])
-    const schemaHandler = { apply: vi.fn() } as unknown as EntitySchemaHandler
+    const schemaHandler = { handleEntity: vi.fn(), handleList: vi.fn() } as unknown as EntitySchemaHandler
     const manager = new EntityManagerImpl(store, schemaHandler)
     const entity: Entity<{ title: string }> = { type, id: '1', body: { title: 'Dune' } }
 
@@ -92,7 +100,7 @@ describe('EntityManagerImpl', () => {
   it('uses a deep merge strategy when saving entities', async () => {
     const type = 'book' as EntityTypeID
     const store = makeStore([])
-    const schemaHandler = { apply: vi.fn() } as unknown as EntitySchemaHandler
+    const schemaHandler = { handleEntity: vi.fn(), handleList: vi.fn() } as unknown as EntitySchemaHandler
     const manager = new EntityManagerImpl(store, schemaHandler)
     const entity: Entity<{ meta: { a?: number; b?: number } }> = { type, id: '1', body: { meta: { b: 2 } } }
 
@@ -107,7 +115,7 @@ describe('EntityManagerImpl', () => {
   it('throws for unimplemented find/findOne', async () => {
     const type = 'book' as EntityTypeID
     const store = makeStore([])
-    const schemaHandler = { apply: vi.fn() } as unknown as EntitySchemaHandler
+    const schemaHandler = { handleEntity: vi.fn(), handleList: vi.fn() } as unknown as EntitySchemaHandler
     const manager = new EntityManagerImpl(store, schemaHandler)
 
     await expect(manager.findOne(type, { title: 'Dune' })).rejects.toThrow('Method not implemented.')

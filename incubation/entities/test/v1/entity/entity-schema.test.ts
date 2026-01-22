@@ -16,7 +16,7 @@ describe('EntitySchemaHandler', () => {
       body: { title: 'Dune' },
     }
 
-    await handler.apply(entity)
+    await handler.handleEntity(entity)
 
     expect(entity.meta?.type).toBe(resolvedType)
   })
@@ -32,6 +32,6 @@ describe('EntitySchemaHandler', () => {
       body: { title: 'Dune' },
     }
 
-    await expect(handler.apply(entity)).rejects.toThrow('Unknown entity type: Book')
+    await expect(handler.handleEntity(entity)).rejects.toThrow('Unknown entity type: Book')
   })
 })
