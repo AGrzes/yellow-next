@@ -2,6 +2,7 @@ name: Series
 schema:
   title: Series
   type: object
+  entity: true
   additionalProperties: false
   required:
     - title

@@ -2,6 +2,7 @@ name: ReadingEntry
 schema:
   title: ReadingEntry
   type: object
+  entity: true
   additionalProperties: false
   required:
     - book

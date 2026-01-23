@@ -2,6 +2,7 @@ name: Author
 schema:
   title: Author
   type: object
+  entity: true
   additionalProperties: false
   required:
     - name

@@ -2,6 +2,7 @@ name: Book
 schema:
   title: Book
   type: object
+  entity: true
   additionalProperties: false
   required:
     - title

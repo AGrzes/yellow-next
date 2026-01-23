@@ -4,25 +4,15 @@ import type { Change, DocumentStore } from '../document-store/index.ts'
 export type EntityTypeID = string
 
 export interface SchemaExtensions {}
-
-export interface ExtendedSchema extends JsonSchema7 {
-  extensions?: SchemaExtensions
-  additionalItems?: boolean | ExtendedSchema
-  items?: ExtendedSchema | ExtendedSchema[]
-  additionalProperties?: boolean | ExtendedSchema
-  definitions?: { [key: string]: ExtendedSchema }
-  properties?: { [property: string]: ExtendedSchema }
-  patternProperties?: { [pattern: string]: ExtendedSchema }
-  dependencies?: { [key: string]: ExtendedSchema | string[] }
-  allOf?: ExtendedSchema[]
-  anyOf?: ExtendedSchema[]
-  oneOf?: ExtendedSchema[]
-  not?: ExtendedSchema
-  contains?: ExtendedSchema
-  propertyNames?: ExtendedSchema
-  if?: ExtendedSchema
-  then?: ExtendedSchema
-  else?: ExtendedSchema
+declare module '@jsonforms/core' {
+  interface JsonSchema7 {
+    entity?: boolean
+    extensions?: SchemaExtensions
+  }
+  interface JsonSchema4 {
+    entity?: boolean
+    extensions?: SchemaExtensions
+  }
 }
 
 export interface Type {
@@ -30,12 +20,12 @@ export interface Type {
   ancestors: Type[]
   descendants?: Type[]
   name: string
-  schema: ExtendedSchema
+  schema: JsonSchema7
 }
 
 export interface SerializedType {
   name: EntityTypeID
-  schema: ExtendedSchema
+  schema: JsonSchema7
   parent?: EntityTypeID
 }
 
