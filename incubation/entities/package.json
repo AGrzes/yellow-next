@@ -46,7 +46,7 @@
     "@vitejs/plugin-react": "^5.0.4",
     "@vitest/coverage-v8": "^4.0.17",
     "globals": "^16.4.0",
-    "storybook": "^10.1.10",
+    "storybook": "^10.2.10",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.45.0",
     "vite": "^7.1.7",
