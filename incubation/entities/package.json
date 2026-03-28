@@ -52,6 +52,6 @@
     "vite": "^7.1.7",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^4.0.17",
-    "yaml": "^2.8.0"
+    "yaml": "^2.8.3"
   }
 }
