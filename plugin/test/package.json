@@ -24,7 +24,7 @@
   "dependencies": {
     "@agrzes/yellow-next-plugin-core": "workspace:*",
     "debug": "4.4.1",
-    "lodash": "4.17.21"
+    "lodash": "4.18.1"
   },
   "devDependencies": {
     "@types/chai": "^5.2.2",
