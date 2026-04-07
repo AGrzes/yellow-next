@@ -30,7 +30,7 @@
     "@mui/material": "5.15.15",
     "@types/react": "^18.2.64",
     "jsonld": "8.3.2",
-    "lodash": "4.17.21",
+    "lodash": "4.18.1",
     "n3": "1.17.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
